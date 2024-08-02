@@ -1,0 +1,14 @@
+.env
+public
+build
+storage
+node_modules
+package-lock.json
+static/demo.html
+static/tinysearch_engine.js
+static/tinysearch_engine.d.ts
+static/tinysearch_engine_bg.wasm.d.ts
+static/package.json
+static/js/pagefind.*.pf_meta
+static/js/index
+static/js/fragment

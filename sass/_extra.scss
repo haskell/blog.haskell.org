@@ -1,0 +1,26 @@
+/******************************************************************************
+ *   Extra - Put your extra SASS/CSS here, it will get bundled with abridge.css
+ *****************************************************************************/
+
+body {
+  font-size: 16px;
+}
+
+a {
+  color: #9E358F;
+  text-decoration: underline ;
+}
+
+a:hover, a:focus {
+  color: #65225b;
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+h1 {
+  font-family: "Raleway",Helvetica,Arial,sans-serif;
+}

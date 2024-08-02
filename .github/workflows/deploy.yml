@@ -1,0 +1,58 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@main
+        with:
+          submodules: "recursive"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: |
+          sudo apt-get update && sudo apt-get install -y wget git
+      - run: |
+          wget -q -O - \
+            "https://github.com/getzola/zola/releases/download/v0.19.1/zola-v0.19.1-x86_64-unknown-linux-gnu.tar.gz" \
+            | sudo tar xzf - -C /usr/local/bin
+
+      - run: npm install
+      - run: npm run abridge
+      - name: 'Build only'
+        uses: shalzz/zola-deploy-action@v0.19.1
+        env:
+          BUILD_DIR: .
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_ONLY: true
+
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@main
+        with:
+          submodules: "recursive"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: |
+          sudo apt-get update && sudo apt-get install -y wget git
+      - run: |
+          wget -q -O - \
+            "https://github.com/getzola/zola/releases/download/v0.19.1/zola-v0.19.1-x86_64-unknown-linux-gnu.tar.gz" \
+            | sudo tar xzf - -C /usr/local/bin
+      - run: npm install
+      - run: npm run abridge
+      - name: 'Build and deploy'
+        uses: shalzz/zola-deploy-action@v0.19.1
+        env:
+          PAGES_BRANCH: gh-pages
+          BUILD_DIR: .
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

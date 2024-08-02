@@ -1,0 +1,312 @@
+# do NOT include a trailing slash on the base URL
+base_url = "https://blog.haskell.org"
+# Usable site directly from disk, Including Search: "/home/jieiku/.dev/abridge/public"
+# Also set index format = "elasticlunr_javascript", and in [extra] uglyurls = true, integrity = false
+# If you use the npm/node script then all you have to do is set offline = true, and everything else is automatic.
+
+title = "The Haskell Programming Language's blog"
+description = ""
+theme = "abridge"
+
+default_language = "en"
+compile_sass = true
+minify_html = false
+build_search_index = true
+generate_feeds = true
+taxonomies = [
+    {name = "categories", feed = true},
+    {name = "tags"},
+    {name = "authors"}
+]
+
+#feed_filename = "atom.xml"
+#output_dir = "public"
+#ignored_content = ["*.{graphml,xlsx}", "temp.*"]
+#hard_link_static = false # set to true to hard link instead of copying, useful for very large files.
+
+[search]                # Options specific to elasticlunr search.
+# index format can be: elasticlunr_json or elasticlunr_javascript or fuse_json
+index_format = "elasticlunr_json"
+include_title = true        # include title of page/section in index
+include_description = true # include description of page/section in index
+include_content = true      # include rendered content of page/section in index
+# truncate_content_length = 100 # Truncate at nth character. May be useful if index is getting too large.
+
+[markdown]
+highlight_code = true
+highlight_theme = "css"
+render_emoji = false
+external_links_target_blank = true # rel="noopener"
+external_links_no_follow = false   # rel="nofollow"
+external_links_no_referrer = false # rel="noreferrer"
+smart_punctuation = false          # `...` to `…`, `"quote"` to `“curly”` etc
+
+[extra]
+###############################################################################
+### Layout & Format
+### position: top, bottom, both, false(hidden)
+### size: s150, s140, s130, s120, s110, s95, s90, s85, s80, s75, s70, false(full size)
+### divider:    " "        "&middot;"        "&bull;"
+###############################################################################
+
+menu = [
+    {url = "https://haskell.org", name = "Haskell", slash = false, size = "s110"},
+    {url = "archive", name = "Posts", slash = true, blank = false, size="s110"},
+    {url = "categories", name = "Categories", slash = true, blank = false, size="s110"},
+    {url = "about", name = "About", slash = true, blank = false, size="s110"},
+]
+
+toc = true
+recent = true # TOC / index
+recent_items = 15
+series = true
+series_items = 9 # Max number of items to display in series list, use 0 to disable
+#Series_parts = "$NUMBER_OF_PARTS part Series"
+
+#arrow_pagination = true # If set to true then the pagination will use the old arrows mode, be sure to also enable the icons.
+
+meta_index = { position="bottom", size="s90", author=false, readtime=false, readstring="min", date=true, updated=false, categories_tags=true, divider="" }
+meta_post = { position="top", size="s95", author=true, readtime=false, readstring="min read", date=true, updated=true, categories_tags=true, divider="" }
+
+hide_section_dates = false # hides the date for sections that use posts.html as their template.
+hide_page_nextprev_titles = false # hides the next/previous titles for pages that use page.html as their template.
+title_size_index = "s85"
+footer_size = "s80" # the size of the copyright and powered by text
+footer_credit = true
+#footer_credit_override = '<p class="s90">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> &#38; <a href="https://github.com/Jieiku/abridge/" target="_blank">Abridge</a></p>'
+#archive_reverse = true # Set to True to sort posts chronologically per year instead of newest first on the archive page: example.com/archive/
+
+### Uncomment one of the below lines, or neither, depending on which type of logo you want to use:
+logo = { file="images/haskell.svg", width="40", height="28", alt="Haskell", text="Haskell Blog" }
+
+sitedesc = false # enables or disables the display of the site description below the logo.
+headhr = false # show or hide horizontal rule below header
+foothr = false # show or hide horizontal rule above footer
+
+### $CURRENT_YEAR and $SITE_TITLE can be used anywhere within the copyright, you can change their position or you can also delete them and type whatever you want instead.
+#copyright = false # set to false to disable the copyright.
+#copyright_override = '© 2019-$CURRENT_YEAR $SITE_TITLE'
+#copyright_override = '© $CURRENT_YEAR $SITE_TITLE • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.'
+
+
+###############################################################################
+### meta/seo/analytic tags
+### To disable title_addition but keep built in page additions eg, Posts page: "Posts | Abridge" set title_addition to an empty string
+### To always set the page title exactly eg "Abridge" then comment out title_addition or set to false (not recommend, bad for SEO)
+###############################################################################
+
+title_separator = "|"  # Separator between title and title_addition, set as |, -, _, etc
+title_addition = "Fast & Lightweight Zola Theme" # a default value for title addition
+author = "Haskell.org"
+keywords = "haskell, functional programming, blog" # used for the primary site index
+banner = "banner.png" # Used as default image for OpenGraph/Twitter if page specific image is undefined.
+seo = true  # enable or disable seo-related meta tags: opengraph, facebook, twitter
+#dev = false # development mode, if true then robots.txt should prevent search indexing.
+
+#head_extra = '<meta name="analytics" content="my-analytics-id" /><meta name="advertising" content="my-advertising-id" />'
+
+
+###############################################################################
+### Footer social links; these are used in macros/social.html
+###   https://github.com/Jieiku/abridge/blob/master/templates/macros/social.html
+###############################################################################
+
+feed = true # this adds the RSS feed icon in the footer.
+mastodon = "https://fosstodon.org/@haskell"
+twitter = "haskellOrg"
+github = "haskell"
+
+
+###############################################################################
+### Resource Files
+### You can load extra css files if you need to, just separate by comma:
+### stylesheets = [ "abridge.css", "extra.css" ]
+### search_library, library to use. valid values:
+###   false, "elasticlunr", "tinysearch", "stork", "pagefind"
+### offline: implies uglyurls=true and integrity=false, when true NPM/node will
+###   automatically set the path for the base_url, it will build the site,
+###   then set the base_url back to what it was. This is a way to build a completely
+###   offline site, a feature not possible with Zola alone.
+###   The PWA feature is another way to build an offline site, so there are now two
+###   different ways to build an offline site with Abridge.
+###
+### For most people the value of online_url will be the same as base_url.
+###   online_url is used to restore the base_url after generating an Offline site.
+###   When you set offline = true and run the npm script, the base_url is set to the absolute path on disk.
+###   Once you set offline = false, the base_url will be set back to the value of online_url when you run the npm script again.
+###############################################################################
+
+# do NOT include a trailing slash on the online URL
+online_indexformat = "elasticlunr_json"# used to restore your preferred index format when offline = false
+offline = false # implies uglyurls=true and integrity=false, when true NPM/node will automatically set the path for the base_url, it will build the site, then set the base_url back to what it was.
+
+uglyurls = false # if set to true then links are generated with the full path. eg https://abridge.netlify.app/index.html
+integrity = true # increases site security, should normally be true. (setting to false is useful during js development)
+js_bundle = true # multiple javascript files combined into a single file (setting to false is useful during js development)
+
+js_copycode = true # The copy button on code blocks that allows you to copy them to the clipboard.
+js_email_encode = true # obfuscates email address in footer
+js_prestyle = true # used to preload: FontAwesome, Katex, external Google Fonts
+js_switcher = false # The button that allows manually changing between light/dark mode.
+js_switcher_default = "light" # default nojs switcher mode: dark, light (make sure to also set $switcherDefault in abridge.scss)
+
+search_library = "elasticlunr" 
+stylesheets = ["abridge.css"]
+
+webmanifest = "manifest.min.json" # Required for PWAs
+
+
+###############################################################################
+### PWA (Progressive Web Application)
+### By default Abridge has pwa_NORM_TTL and pwa_LONG_TTL set to 0, this essential turns the PWA cache strategy into network first.
+###  Abridge uses cachebust hashing on js and css files, so anytime a page cache is updated, these resources would also get updated if changed.
+###  Media files rarely change, especially font files, so it is a good idea cache indefinitely.
+###  For pwa_TTL_EXEMPT indefinitely cached resources, you can force a new cache by incrementing the pwa_VER (cache version number).
+### If you would like to try a cache first strategy then set a value higher than 0 for pwa_NORM_TTL and pwa_LONG_TTL.
+###  The options below other than pwa=true, only come into play when the npm/node script is ran.
+###############################################################################
+
+pwa = true # true to load the service worker
+pwa_VER = '3.11.0' # Service Worker cache version. (increment if you need to force a new cache)
+
+### 3600=1hour, 28800=8hours, 86400=1day, 604800=1week, 1209600=2weeks
+pwa_NORM_TTL = 0 #  86400 is reasonable. html, json, xml, anything else undefined
+pwa_LONG_TTL = 0 # 604800 is reasonable.
+
+### list of files that overrides TTL_LONG/TTL_EXEMPT to be a NORM TTL.
+pwa_TTL_NORM = '"sw.min.js", "sw_load.min.js"'
+
+### TTL_LONG file extensions will be cached for the LONG_TTL duration.
+pwa_TTL_LONG = '"jpg", "jpeg", "png", "gif", "webp", "avif", "ico", "svg", "xsl", "txt"'
+
+### TTL_EXEMPT file extensions will be cached indefinitely unless sw_load version is incremented, which would invalidate any existing cache. (and a new cache would be started)
+pwa_TTL_EXEMPT = '"js", "css", "otf", "eot", "ttf", "woff", "woff2", "mp4", "webm", "mp3", "ogg"'
+
+### If set to true then the entire site is cached. (useful for making an entire site usable while offline)
+pwa_cache_all = false
+
+### List of Files for the PWA to initially Cache, used if pwa_cache_all = false
+pwa_BASE_CACHE_FILES = "'/js/theme.min.js','/js/theme_light.min.js','/abridge.css','/js/abridge.min.js','/','/404.html','/offline/','/manifest.min.json'"
+
+
+###############################################################################
+### Favicons, comment out a line to disable loading some or all of these if needed.
+###############################################################################
+
+favicon_theme_color = "#333333"
+favicon_ms_color = "#333333"
+favicon_mask = "safari-pinned-tab.svg" # safari-pinned-tab.svg
+favicon_mask_color = "#ff9900"
+# favicon_svg = "favicon.svg" # favicon.svg
+favicon180 = "apple-touch-icon.png" # apple-touch-icon.png
+favicon32 = "favicon-32x32.png" # favicon-32x32.png
+favicon16 = "favicon-16x16.png" # favicon-16x16.png
+
+
+###############################################################################
+### Commenting System for visitors to leave comments on pages.
+###   hyvor talk
+###############################################################################
+
+#comments.hyvor = "9366" # hyvor website id, comment out to disable.
+#comments.hyvorcolor = "os" # set the color property for hyvor
+
+
+###############################################################################
+### Icons
+### Loading the entire fontawesome icon collection will negatively impact your sites performance.
+### For a lightweight solution consider adding only the icons that you need.
+### you can load individual scss based svg icons by including them in the _extra.scss file
+### https://github.com/Jieiku/abridge/blob/master/COPY-TO-ROOT-SASS/_extra.scss
+###############################################################################
+
+### To disable any of these icons set them to "false" (will default to unicode icons instead)
+#icon_search = "svgs svgm search" # Search button in search box.
+#icon_adjust = "svgs adjust" # Theme Switcher button in top menu. (add class svgh to change colors on hover)
+#icon_first = "svgs svgh angll" # Pagination First Page.
+#icon_prev = "svgs svgh angl" # Pagination Previous Page.
+#icon_next = "svgs svgh angr" # Pagination Next Page.
+#icon_last = "svgs svgh angrr" # Pagination Last Page.
+#icon_top = "svgs svgh angu" # Back to Top Button.
+
+#icon_read = "svgs fa-solid fa-glasses" # displayed in metadata on index and below title on page.
+#icon_date = "svgs fa-solid fa-calendar" # displayed in metadata on index and below title on page.
+#icon_info = "svgs fa-solid fa-circle-info" # displayed in metadata on index and below title on page for categories/tags
+#icon_author = "svgs fa-solid fa-pen-fancy" # displayed in metadata on index and below title on page.
+
+### Uncomment below line to load fontawesome, eg: <i class="fa-solid fa-heart"></i>
+#fontawesome = "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"
+#icon_read = "svgs fa-solid fa-glasses" # displayed in metadata on index and below title on page.
+#icon_date = "svgs fa-solid fa-calendar" # displayed in metadata on index and below title on page.
+#icon_info = "svgs fa-solid fa-circle-info" # displayed in metadata on index and below title on page for categories/tags
+#icon_author = "svgs fa-solid fa-pen-fancy" # displayed in metadata on index and below title on page.
+
+
+###############################################################################
+### Security Settings
+### Security Headers should preferably be set by your webserver (Nginx, Apache)
+###   https://observatory.mozilla.org  https://csp-evaluator.withgoogle.com/
+### If you are unable to load your security headers with your webserver, this will load a couple of them as meta tags.
+### There are many other security related headers most of which can only be set by the webserver method.
+### UnComment any of these lines to enable their meta tags.
+###############################################################################
+
+#security_header_referrer = "strict-origin-when-cross-origin"
+
+#security_header_csp = "default-src 'none'; object-src 'none'; base-uri 'self'; manifest-src 'self'; connect-src 'self'; form-action 'self'; script-src 'self'; img-src 'self' data: cdn.cloudflare.com; frame-src 'self' www.youtube-nocookie.com player.vimeo.com; media-src 'self' data: cdn.cloudflare.com www.youtube-nocookie.com player.vimeo.com; font-src 'self' cdn.cloudflare.com cdn.jsdelivr.net fonts.gstatic.com; style-src 'self' cdn.cloudflare.com cdn.jsdelivr.net fonts.googleapis.com;"
+
+
+###############################################################################
+### FONTS - Abridge by default uses the System Font Stack
+###   https://css-tricks.com/snippets/css/system-font-stack/
+### However if you need you can load a specific font below,
+###   make sure to have the relevant woff2 fonts in your static/fonts folder
+### I measured the least Cumulative Layout Shift with: Roboto, Lato, Arimo
+###############################################################################
+
+### For externally loaded Fonts, make sure to include the FULL url including the https prefix:
+
+#fonts = [ {url = "https://fonts.googleapis.com/css?family=Roboto:400,700,italic|Roboto+Mono:400,italic"} ]
+
+### Local fonts are defined in the css, https://github.com/Jieiku/abridge/tree/master/COPY-TO-ROOT-SASS/fonts/_Arimo.scss
+### To load a local font resource, look at the bottom of this file: https://github.com/Jieiku/abridge/blob/master/COPY-TO-ROOT-SASS/abridge.scss
+
+### After loading them in the CSS, You can also define them below and it will add the preload tag to the head.
+### preloading fonts will eliminate Content Layout Shift, but will hurt with page load time. (not recommended)
+
+fonts = [
+   {url = "fonts/source-sans-3-v9-latin-regular.woff2"},
+   {url = "fonts/ubuntu-mono-v15-latin-regular.woff2"},
+   {url = "fonts/raleway-v28-latin-700.woff2"},
+   {url = "fonts/raleway-v28-latin-900.woff2"},
+]
+
+###############################################################################
+### Katex - math js library, used to to render mathematical notations
+### It's best to enable katex on a per page bases as I did here:
+###   https://abridge.netlify.app/overview-math/
+###   https://github.com/Jieiku/abridge/blob/master/content/overview-math.md?plain=1#L11-L13
+### Otherwise you will load the katex related javascript on every page!
+###############################################################################
+
+#katex_options = "js/katexoptions.js"
+#katex_bundle = "js/katexbundle.min.js"
+
+### Load Katex Local Resources
+#katex_css = "katex.min.css" # Fonts - load the css/fonts locally
+#katex_js = "js/katex.min.js" # use local js, so that we dont have to whitelist cdn.jsdelivr.net for script src in CSP
+#mathtex_js = "js/mathtex-script-type.min.js" # use local js, so that we dont have to whitelist cdn.jsdelivr.net for script src in CSP
+#katex_autorender_js = "js/katex-auto-render.min.js"
+
+### Load Katex External Resources
+#katex_css = "https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" # Fonts - use remote fonts
+#katex_css_integrity = "sha384-ZPe7yZ91iWxYumsBEOn7ieg8q/o+qh/hQpSaPow8T6BwALcXSCS6C6fSRPIAnTQs"
+#katex_js = "https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"
+#katex_js_integrity = "sha384-ljao5I1l+8KYFXG7LNEA7DyaFvuvSCmedUf6Y6JI7LJqiu8q5dEivP2nDdFH31V4"
+#katex_autorender_js = "https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"
+#katex_autorender_js_integrity = "sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+#mathtex_js = "https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/mathtex-script-type.min.js"
+#mathtex_js_integrity = "sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT"
+
+#math = false # Recommended setting false, and enable on per page bases instead.
+#math_auto_render = false # Recommended setting false, and enable on per page bases instead.
