@@ -166,7 +166,7 @@ webmanifest = "manifest.min.json" # Required for PWAs
 ###  The options below other than pwa=true, only come into play when the npm/node script is ran.
 ###############################################################################
 
-pwa = true # true to load the service worker
+pwa = false # true to load the service worker
 pwa_VER = '3.11.0' # Service Worker cache version. (increment if you need to force a new cache)
 
 ### 3600=1hour, 28800=8hours, 86400=1day, 604800=1week, 1209600=2weeks
