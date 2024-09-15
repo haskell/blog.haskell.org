@@ -1,4 +1,4 @@
-+++ title = "Welcome" date = 2024-09-15 [taxonomies] authors = ["José"] categories = ["community"] tags = ["Community"] +++
++++ title = "Welcome" date = 2024-09-15 [taxonomies] authors = ["JMCT"] categories = ["community"] tags = ["Community"] +++
 
 
 The Haskell Ecosystem plays host to some amazing projects. Talented developers spend significant amounts of time, often their free time, helping develop, maintain, and support this ecosystem that all Haskell developers use. This space is for any of the developer teams that work on Haskell core infrastructure and power the Haskell Ecosystem
@@ -11,4 +11,4 @@ There are already a few posts to get the ball rolling. We’re really excited to
 
 Happy Hacking,
 
-JMCT
+José Manuel Calderón Trilla
