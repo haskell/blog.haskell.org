@@ -24,3 +24,15 @@ a:focus {
 h1 {
   font-family: "Raleway",Helvetica,Arial,sans-serif;
 }
+
+/* Disable the extra top-margin of the first paragraph in a blockquote, so that
+ * the blockquote has equal padding at the top and at the bottom. */
+blockquote > p:first-child {
+  margin-top: 0;
+}
+
+/* The 0.8rem defined by abridge.css results in text quite a bit smaller than
+ * the main body text. 1rem makes more sense. */
+code {
+  font-size: 1rem;
+}
