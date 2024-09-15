@@ -6,9 +6,8 @@ The blog is made with [Zola], based on the [Abridge theme].
 
 You will need:
   * The `zola` binary v0.19.1 or higher
-  * `npm`
 
-Once you have cloned this repository, run `npm install` and `npm run abridge` to initialise the front-end features like full-text search.
+Run `zola serve` in order to serve the website and automatically render it when files change.
 
 ## Contribute content
 
@@ -58,9 +57,6 @@ documentation-best-practices
 └── index.md
 ```
 
-### Local preview
-
-Run `zola serve --drafts` in order to serve the website and automatically render it when files change.
 
 [Zola]: https://www.getzola.org/
 [Abridge theme]: https://abridge.pages.dev/overview-abridge/
