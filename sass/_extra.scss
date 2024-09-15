@@ -36,3 +36,19 @@ blockquote > p:first-child {
 code {
   font-size: 1rem;
 }
+
+/* Remove the padding at the top of a code block to make space for the
+ * language/copybutton bar. */
+pre {
+  padding-top: .3rem;
+  /* To ensure that top and bottom padding are definitely the same, even if
+   * abridge updates its styles, let's set the padding-bottom to this value
+   * too. At the time of writing (2024-09-15), this is the same as abridge's
+   * value (and hence doesn't change anything). */
+  padding-bottom: .3rem;
+}
+
+/* Actually remove the language/copybutton bar at the top of a code block. */
+pre code[data-lang]::before {
+  display: none;
+}
