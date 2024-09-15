@@ -7,4 +7,4 @@ This blog will provide a space for these efforts to communicate with the wider H
 
 Blogs also form a key part of an ecosystem’s documentation. We’d like to take this idea to its conclusion in the Haskell ecosystem and provide a place for this high-value documentation to live and be maintained. In addition to helping out with editing, by hosting the posts here we’ll also have shared responsibility for maintaining the blog posts, helping prevent the all-to-common bit-rot that occurs on blog posts.
 
-There are already a few posts lined up, currently in the editing stages. We’re really excited to share these thoughts with you all.
+There are already a few posts to get the ball rolling. We’re really excited to share these thoughts with you all.
