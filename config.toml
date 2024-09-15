@@ -99,7 +99,7 @@ title_separator = "|"  # Separator between title and title_addition, set as |, -
 title_addition = "Fast & Lightweight Zola Theme" # a default value for title addition
 author = "Haskell.org"
 keywords = "haskell, functional programming, blog" # used for the primary site index
-banner = "banner.png" # Used as default image for OpenGraph/Twitter if page specific image is undefined.
+banner = "images/haskell-opengraph.png" # Used as default image for OpenGraph/Twitter if page specific image is undefined.
 seo = true  # enable or disable seo-related meta tags: opengraph, facebook, twitter
 #dev = false # development mode, if true then robots.txt should prevent search indexing.
 
