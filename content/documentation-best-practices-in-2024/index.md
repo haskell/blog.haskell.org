@@ -1,6 +1,6 @@
 +++
 title = "Documentation Best Practices in 2024"
-date = 2024-08-19
+date = 2024-09-15
 [taxonomies]
 authors = ["Hécate"]
 categories = ["Haddock"]
