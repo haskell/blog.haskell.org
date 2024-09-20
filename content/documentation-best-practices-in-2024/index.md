@@ -135,7 +135,7 @@ The focus of the tutorial is to make a prospective user acquire basic competence
 #### How-to Guides
 Someone who needs to perform a task that new to them, but well-known to their group or organisation, will be best served by "[How-to Guides](https://diataxis.fr/how-to-guides/)",
 which helps a user get something done in a safe and correct manner. As opposed to Tutorials, How-to Guides are directions that take into account the complexity of the environment
-surrounding the the user and the action, instead of providing a 
+surrounding the the user and the action, instead of providing a single path from point A to point B.
 
 #### Explanations
 However someone who is in need of a deeper – but perhaps less immediately applicable understanding of the project –
