@@ -82,7 +82,7 @@ I just don't know how, so if you do, please reach out.
 ### The build environment: making Haskell packages available
 
 Having just the [boot packages](https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/libraries/version-history) available would make for a rather bare playground (no `System.Random`, etc.), so we clearly need to provide something more.
-The current policy for additional packages is "if you can convince me that a package is useful that a package is useful and it doesn't unnecessarily bloat the dependency tree, I'll add it together with its transitive dependencies".
+The current policy for additional packages is "if you can convince me that a package is useful and it doesn't unnecessarily bloat the dependency tree, I'll add it together with its transitive dependencies".
 This has happened multiple times already (e.g. [1](https://github.com/haskell/play-haskell/issues/45), [2](https://github.com/haskell/play-haskell/issues/47), [3](https://github.com/haskell/play-haskell/issues/50)).
 This policy is admittedly completely subjective, but it's unclear if there is a real alternative.
 The only "principled" option seems to be making all of [Stackage](https://www.stackage.org/) available, but that is both unwieldy (there's _too many_ packages in there so it takes a huge amount of disk space) and not always possible (the playground aims to support new GHCs immediately after release, and Stackage naturally lags behind).
