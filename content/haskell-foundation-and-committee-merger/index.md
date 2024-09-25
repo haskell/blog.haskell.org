@@ -21,7 +21,7 @@ Both corporations are Not-for-Profit corporations and Haskell.org Inc. has also 
 
 The Committee will continue to serve the community as an important committee of the Foundation. The Committee will retain all its current responsibilities, including independent editorial control of the Haskell.org website. It will also continue to oversee much of the Haskell community infrastructure and manage Haskell's participation in Google Summer of Code.
 
-Joining forces allows us to better share resources and work together while at the same time allowing the Committee–as part of the Foundation–to retain its independence over its domain.
+Joining forces allows us to better share resources and work together while at the same time allowing the Committee (as part of the Foundation) to retain its independence over its domain.
 
 The Committee members and the directors of the Foundation remain deeply grateful for the opportunity to serve the Haskell community. We look forward to continuing this support with greater effectiveness and efficiency as a single unified organization.
 
