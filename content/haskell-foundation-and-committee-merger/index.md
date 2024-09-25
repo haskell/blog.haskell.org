@@ -7,7 +7,7 @@ categories = ["Haskell Foundation"]
 tags = ["Announcement"]
 +++
 
-The members of the Haskell.org Committee (the Committee) and the directors of the Haskell Foundation (the Foundation) are pleased to announce that we have joined forces, with the aim– subject to regulatory approval– of merging Haskell.org, Inc. and Haskell Foundation, Inc. into a single not-for-profit corporation. Together we continue our common mission to advance functional programming and to advocate for the Haskell language, its ecosystem, and its community.
+The members of the Haskell.org Committee (the Committee) and the directors of the Haskell Foundation (the Foundation) are pleased to announce that we have joined forces, with the aim (subject to regulatory approval) of merging Haskell.org, Inc. and Haskell Foundation, Inc. into a single not-for-profit corporation. Together we continue our common mission to advance functional programming and to advocate for the Haskell language, its ecosystem, and its community.
 
 ## The Committee
 The Committee has a long history of supporting the Haskell community and ecosystem, supervising the resources under the "haskell.org" domain, including the www.haskell.org website, Hackage, Discourse, and the Haskell mailing lists, as well as organizing events such as Haskell.org’s participation in Google Summer of Code and the Haskell Summer of Code.
