@@ -18,7 +18,7 @@ Here are some highlights:
 
 ### Language Extensions
 
-This release brings its lot of new and exciting extensions:
+This release brings many new and exciting extensions:
 * [Multiline string literals][MultilineStrings] to spread a piece of text over several lines;
 * [Or-Patterns][OrPatterns], allowing you to match on several patterns in a single `case` branch:
 
