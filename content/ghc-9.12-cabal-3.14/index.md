@@ -50,7 +50,7 @@ Which means that in a module with [`OverloadedStrings`][OverloadedStrings], stri
 
 #### ⚠️ Deprecations
 
-* The deprecation cycle of [GHC.Pack][GHC.Pack] has come to an end. Goodbye!
+* The deprecation period for [GHC.Pack][GHC.Pack] has come to an end. Goodbye!
 * [GHC.Desugar][GHC.Desugar] will be removed in GHC 9.14.
 
 ### Code Generation
