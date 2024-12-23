@@ -19,7 +19,8 @@ Here are some highlights:
 ### Language Extensions
 
 This release brings many new and exciting extensions:
-* [Multiline string literals][MultilineStrings] to spread a piece of text over several lines;
+* [Multiline string literals][MultilineStrings] to write string literals with newlines kept verbatim,
+  enabling multiline strings without the need for string gaps and literal \n characters";
 * [Or-Patterns][OrPatterns], allowing you to match on several patterns in a single `case` branch:
 
 ```haskell
