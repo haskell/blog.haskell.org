@@ -87,7 +87,7 @@ You can read the full release notes [here](https://downloads.haskell.org/ghc/9.1
 
 * `cabal init` remembers the chosen language within current session (`Haskell2010`, `GHC2021`, etc.).
 
-* `cabal check` will warn about the insecure `git://` protocol in source-repository.
+* `cabal check` will raise an error about the insecure `git://` protocol in `source-repository`.
 
 * Enable recompilation avoidance during Haddock generation.
 
