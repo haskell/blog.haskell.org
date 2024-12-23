@@ -104,7 +104,7 @@ Now, it is possible to write: `--promised-dependency=void-0.5.8=void-0.5.8`.
 
 * Enhance error detection for cabal root project files, including broken symlinks.
 
-* Don't pass `--coverage-for` for non-dependency libs of testsuite.
+* Don't pass `--coverage-for` for non-dependency libs of a testsuite.
 
 * Fix a bug that causes `cabal init` to crash if `git` is not installed.
 
