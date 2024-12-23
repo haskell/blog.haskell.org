@@ -61,7 +61,7 @@ Which means that in a module with [`OverloadedStrings`][OverloadedStrings], stri
 
 #### ⚠️ Deprecations
 
-* Support 32-bit Windows & macOS/iOS has been dropped;
+* Support for 32-bit Windows and macOS/iOS has been dropped;
 * As a result, friendship with the `stdcall` calling convention for FFI is ended. Now `ccall` is your best friend.
 
 You can read the full release notes [here](https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/9.12.1-notes.html).
