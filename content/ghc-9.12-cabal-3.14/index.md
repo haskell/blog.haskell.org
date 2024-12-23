@@ -43,7 +43,8 @@ You can now apply this mechanism to other typeclasses, like:
 default IsString (Text, String)
 ```
 
-Which means that in a module with [`OverloadedStrings`][OverloadedStrings], string literals `"like this"` will default to [`Text`][Text] instead of a vague polymorphic type.
+Which means that in a module with [`OverloadedStrings`][OverloadedStrings], string literals `"like this"` will default to [`Text`][Text]
+instead of triggering an error about a polymorphic type.
 
 ### Base Library
 
