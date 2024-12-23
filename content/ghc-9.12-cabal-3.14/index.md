@@ -7,7 +7,7 @@ categories = ["Cabal", "GHC"]
 tags = ["Release"]
 +++
 
-To conclude the year 2024, the GHC and Cabal teams are happy to announce the release of GHC 9.12 and cabal 3.14.
+To conclude the year 2024, the GHC and Cabal teams are happy to announce the releases of GHC 9.12 and cabal 3.14.
 
 <!-- more -->
 
