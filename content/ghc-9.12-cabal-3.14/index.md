@@ -1,5 +1,5 @@
 +++
-title = "GHC 9.12 & cabal 3.14 releases"
+title = "GHC 9.12 & Cabal 3.14 releases"
 date = 2024-12-22
 [taxonomies]
 authors = ["Hécate"]
@@ -52,7 +52,7 @@ instead of triggering an error about a polymorphic type.
 
 #### ⚠️ Deprecations
 
-* The deprecation period for [GHC.Pack][GHC.Pack] has come to an end. Goodbye!
+* The deprecation cycle of [GHC.Pack][GHC.Pack] has reached its conclusion and the module has been removed.
 * [GHC.Desugar][GHC.Desugar] will be removed in GHC 9.14.
 
 ### Code Generation
@@ -63,8 +63,8 @@ instead of triggering an error about a polymorphic type.
 
 #### ⚠️ Deprecations
 
-* Support for 32-bit Windows and macOS/iOS has been dropped;
-* As a result, friendship with the `stdcall` calling convention for FFI is ended. Now `ccall` is your best friend.
+* Support 32-bit Windows & macOS/iOS has been dropped;
+* As a result, the `stdcall` calling convention for FFI has been dropped, `ccall` should be used instead.
 
 You can read the full release notes [here](https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/9.12.1-notes.html).
 
