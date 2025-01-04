@@ -2,7 +2,7 @@
 
 ## Local installation
 
-The blog is made with [Zola], based on the [Abridge theme].
+The blog is made with [Zola], based on the [Abridge theme][^1].
 
 You will need:
   * The `zola` binary v0.19.1 or higher
@@ -60,3 +60,4 @@ documentation-best-practices
 
 [Zola]: https://www.getzola.org/
 [Abridge theme]: https://abridge.pages.dev/overview-abridge/
+[^1]: Included as a git submodule, so clone recursively or `git submodule update --init --recursive`.
