@@ -58,7 +58,7 @@ instead of triggering an error about a polymorphic type.
 ### Code Generation
 
 * Experimental support for the [RISC-V Platform](https://gitlab.haskell.org/ghc/ghc/-/issues/16783);
-* SIMD! In the x86: Most floating-point operations and some integer vector operations are supported 128-bit vectors **without LLVM**. [Get in touch](https://matrix.to/#/#ghc:matrix.org) to help with this effort
+* SIMD! On x86, most floating-point operations and some integer vector operations are supported for 128-bit vectors **without requiring LLVM**. [Get in touch](https://matrix.to/#/#ghc:matrix.org) to help with this effort
 * You can try the new experimental [`-fobject-determinism`][-fobject-determinism] flag to enable deterministic object code generation.
 
 #### ⚠️ Deprecations
