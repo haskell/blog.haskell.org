@@ -1,6 +1,6 @@
 +++
 title = "GHC 9.12 & Cabal 3.14 releases"
-date = 2024-12-22
+date = 2025-01-06
 [taxonomies]
 authors = ["Hécate"]
 categories = ["Cabal", "GHC"]
