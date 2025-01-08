@@ -67,7 +67,7 @@ Currently, `google-closure-compiler` is supported for minification of the bundle
 ```sh
 mateusz@m12844:~/personal/halogen-blog$ ./run_example 1
 (...)
-+ npx google-closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET --isolation_mode IIFE --assume_function_wrapper --emit_use_strict --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example1-0.1.0.0/x/example1/build/example1/example1.jsexe/all.js --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example1-0.1.0.0/x/example1/build/example1/example1.jsexe/all.externs.js --js_output_file ../dev/index.js
++ npx google-closure-compiler --language_in UNSTABLE --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET --isolation_mode IIFE --assume_function_wrapper --emit_use_strict --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example1-0.1.0.0/x/example1/build/example1/example1.jsexe/all.js --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example1-0.1.0.0/x/example1/build/example1/example1.jsexe/all.externs.js --js_output_file ../dev/index.js
 Input size: 1.8M
 Output size: 396K
 ```
@@ -295,7 +295,7 @@ Let's run the example.
 ```sh
 mateusz@m12844:~/personal/halogen-blog$ ./run_example 2
 (...)
-+ npx google-closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET --isolation_mode IIFE --assume_function_wrapper --emit_use_strict --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-0.1.0.0/x/example2/build/example2/example2.jsexe/all.js --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-0.1.0.0/x/example2/build/example2/example2.jsexe/all.externs.js --js_output_file ./example2/assets/index.js
++ npx google-closure-compiler --language_in UNSTABLE --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET --isolation_mode IIFE --assume_function_wrapper --emit_use_strict --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-0.1.0.0/x/example2/build/example2/example2.jsexe/all.js --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-0.1.0.0/x/example2/build/example2/example2.jsexe/all.externs.js --js_output_file ./example2/assets/index.js
 /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-0.1.0.0/x/example2/build/example2/example2.jsexe/all.js:17760:0: ERROR - [JSC_INVALID_MODULE_PATH] Invalid module path "@material/ripple" for resolution mode "BROWSER"
   17760| import {MDCRipple} from '@material/ripple';
 ```
@@ -324,7 +324,7 @@ Now we add it to our `google-closure-compiler` invokation:
 ```sh
 mateusz@m12844:~/personal/halogen-blog$ ./run_example 2-workaround
 (...)
-+ npx google-closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET --isolation_mode IIFE --assume_function_wrapper --emit_use_strict --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-workaround-0.1.0.0/x/example2-workaround/build/example2-workaround/example2-workaround.jsexe/all.js --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-workaround-0.1.0.0/x/example2-workaround/build/example2-workaround/example2-workaround.jsexe/all.externs.js --js ./example2-workaround/src/Button.externs.js --js_output_file ./example2-workaround/assets/index.js
++ npx google-closure-compiler --language_in UNSTABLE --compilation_level ADVANCED_OPTIMIZATIONS --warning_level QUIET --isolation_mode IIFE --assume_function_wrapper --emit_use_strict --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-workaround-0.1.0.0/x/example2-workaround/build/example2-workaround/example2-workaround.jsexe/all.js --js /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-workaround-0.1.0.0/x/example2-workaround/build/example2-workaround/example2-workaround.jsexe/all.externs.js --js ./example2-workaround/src/Button.externs.js --js_output_file ./example2-workaround/assets/index.js
 Input size: 3.4M
 Output size: 756K
 ```
