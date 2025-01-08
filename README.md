@@ -11,7 +11,7 @@ You will need:
 Run `zola serve` in order to serve the website and automatically render it when files change.
 
 ```
-$ git clone git@github.com:haskell/blog.haskell.org.git --recursive
+$ git clone git@github.com:haskell/blog.haskell.org.git --recurse-submodules
 $ cd blog.haskell.org
 $ zola serve
 ```
