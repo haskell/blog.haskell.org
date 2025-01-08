@@ -2,12 +2,19 @@
 
 ## Local installation
 
-The blog is made with [Zola], based on the [Abridge theme][^1].
+The blog is made with [Zola] and based on the [Abridge theme] that is included
+as a git submodule.
 
 You will need:
   * The `zola` binary v0.19.1 or higher
 
 Run `zola serve` in order to serve the website and automatically render it when files change.
+
+```
+$ git clone git@github.com:haskell/blog.haskell.org.git --recursive
+$ cd blog.haskell.org
+$ zola serve
+```
 
 ## Contribute content
 
@@ -60,4 +67,3 @@ documentation-best-practices
 
 [Zola]: https://www.getzola.org/
 [Abridge theme]: https://abridge.pages.dev/overview-abridge/
-[^1]: Included as a git submodule, so clone recursively or `git submodule update --init --recursive`.
