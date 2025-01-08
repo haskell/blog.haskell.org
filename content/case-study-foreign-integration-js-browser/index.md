@@ -408,7 +408,7 @@ https://github.com/user-attachments/assets/4abe2e52-0bd2-4cb7-99c0-c0b0a1796528
 ### Bundling with `webpack` and `swc-loader`
 
 However, while the above trick works for standalone executables, it isn't really useful for libraries that have to ship with full code - haskell and javascript.
-Making downstream users to the to add separately-shipped externs and js files to their pipeline sounds like an unpleasant thing to do, and exposes
+Requiring downstream users to add separately-shipped externs and js files to their pipeline sounds like an unpleasant thing to do, and exposes
 them to too much implementation detail. Can we do better?
 
 The answer is - yes, if we ditch the closure compiler but use `swc` instead. [swc](https://swc.rs/) is a Rust-based platform used by a lot of tools like `Parser`, `Next.js` 
