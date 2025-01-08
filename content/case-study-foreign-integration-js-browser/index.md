@@ -51,7 +51,7 @@ however it is both outdated (being a GHC fork requiring separate maintenance; cu
 During this journey I was using [purescript-halogen](https://github.com/purescript-halogen/purescript-halogen) library - a typesafe, declarative VDOM framework based on [The Elm Architecture](https://guide.elm-lang.org/architecture/).
 
 However, with all the joy that the Haskell-like web programming brought me, I couldn't shake the feeling that there is a room for improvement. From the small things that are
-always annoying in polyglot stacks (like FE-BE JSON encoding discrepancies or lack of code sharing), to sometimes very illegible `purs` compiler error messages and of course lack of a lot of language features. This is not my intention to criticize - for a language this small I was amazed by the number and quality of existing tools and frameworks and a plenty of documentation; the overall experience exceeded my expectations by far. I would still recommend PureScript to anyone that wants a lightweight, easy to setup web language with strong type system.
+always annoying in polyglot stacks (like FE-BE JSON encoding discrepancies or lack of code sharing), to sometimes very illegible `purs` compiler error messages and of course lack of a lot of language features. This is not my intention to criticize - for a language this small I was amazed by the number and quality of existing tools and frameworks and plenty of documentation; the overall experience exceeded my expectations by far. I would still recommend PureScript to anyone that wants a lightweight, easy to setup web language with strong type system.
 
 However the mentioned shortcomings were why I was closely following the development of the GHC JS backend, wishing to port the `purescript-halogen` library to GHC as soon as it's possible. A fruit of this labour was recently released as [haskell-halogen](https://github.com/Swordlash/haskell-halogen).
 
@@ -182,7 +182,7 @@ const buttonRipple = new MDCRipple(element);
 - Destroy the element once it's removed from DOM: `buttonRipple.destroy()`.
 
 With this, we can start implementation!
-file: example2/src/Button.hs 
+file: [example2/src/Button.hs](https://github.com/Swordlash/halogen-blog/blob/master/example2/src/Button.hs)
 
 First, a few imports:
 ```haskell
@@ -302,7 +302,7 @@ mateusz@m12844:~/personal/halogen-blog$ ./run_example 2
 ```
 
 Oof. `google-closure-compiler` doesn't like our `import`. And it makes total sense, since it checks for undefined variables, so it doesn't know what are we importing.
-Now, there isn't an easy way to fix this. We would essentially have to pass it all `node_modules` in question - unfortunately the webpack plugin is outdated to Webpack 4.
+Now, there isn't an easy way to fix this. We would essentially have to pass it all `node_modules` in question - unfortunately the webpack plugin is outdated; stuck at version Webpack 4.
 
 However, there is a workaround if you really like `google-closure-compiler`, and want to use it. What we can do is not bundle the `js-sources`, but instead create externs
 file for the closure compiler, and bundle the actual implementation later with webpack. To prevent name mangling just in case we hook our functions into `window` variable, like
@@ -321,7 +321,7 @@ foreign import javascript unsafe "window.Halogen.init_ripple" initRipple :: HTML
 foreign import javascript unsafe "window.Halogen.destroy_ripple" destroyRipple :: MDCRipple -> IO ()
 ```
 
-Now we add it to our `google-closure-compiler` invokation:
+Now we add it to our `google-closure-compiler` invocation:
 ```sh
 mateusz@m12844:~/personal/halogen-blog$ ./run_example 2-workaround
 (...)
@@ -465,12 +465,12 @@ The above article shows how to use the JavaScript backend effectively and integr
 
 What's next? There is still a lot to do in terms of code size & performance, as well as integration with other tools:
 
-- This cabal [PR](https://github.com/haskell/cabal/pull/10722) adds a new field, `js-options`, that allows to pass custom flags to `js-sources` preprocessor.
+- This cabal [PR](https://github.com/haskell/cabal/pull/10722) adds a new field, `js-options`, that allows passing custom flags to `js-sources` preprocessor.
   Notably that would enable i.e. conditional compilation of traces along the lines of `#ifdef XXX <put-trace>` in foreign library code and `if flag(trace-flag) js-options: -optJSP-DXXX` in cabal file.
 - Low-hanging fruits like [adding multiline strings support to inline foreign imports](https://gitlab.haskell.org/ghc/ghc/-/issues/25633).
-- Bigger [integration efforts](https://gitlab.haskell.org/ghc/ghc/-/issues/25469) with npm.
+- [Integration efforts](https://gitlab.haskell.org/ghc/ghc/-/issues/25469) with npm.
 
-What is still a small unknown is deeper integration of the GHC build pipeline with `webpack` build pipeline, in the spirit of gathering `npm` libraries that need to be installed for each Haskell dependency, like `@material/button` in the above example. 
+What is still a minor unknown is deeper integration of the GHC build pipeline with `webpack` build pipeline, in the spirit of gathering `npm` libraries that need to be installed for each Haskell dependency, like `@material/button` in the above example. 
 I believe there will have to be a way of declaring inside the cabal package an `npm` dependency (something like the existing `pkgconfig-depends`) and
 a webpack plugin will be created for loading haskell package for bundling.
 
