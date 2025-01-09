@@ -1,10 +1,10 @@
 +++
-title = "Case Study - Using foreign component library inside a Haskell application"
+title = "Case Study — Using a JavaScript component inside a Haskell application"
 date = 2025-01-08
 [taxonomies]
 authors = ["Mateusz Goślinowski"]
 categories = ["GHC"]
-tags = ["javascript"]
+tags = ["javascript", "case-study"]
 +++
 
 GHC since version 9.8 allows us to create callbacks from JS to Haskell code, which enables us to create full-fledged browser apps.
