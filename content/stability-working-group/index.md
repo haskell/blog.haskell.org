@@ -13,9 +13,9 @@ What is stability? What has the Haskell Foundation Stability Working Group been 
 
 ## Who am I?
 
-The health of the Haskell ecosystem is very important to me. Most of my professional career to this point has involved using Haskell. As such it is in my own best interest to help the community to be healthy and grow. That way I can continue to work in the language and ecosystem! Even prior to my professional career, I used Haskell as an undergraduate. Despite it not being a part of the curriculum and being met with skepticism from several advisors that I could ever find work in Haskell.
+I am Trevis, chair of the Stability Working Group. The health of the Haskell ecosystem is very important to me. Most of my professional career to this point has involved using Haskell. As such it is in my own best interest to help the community to be healthy and grow. That way I can continue to work in the language and ecosystem! Even prior to my professional career, I used Haskell as an undergraduate. Despite it not being a part of the curriculum and being met with skepticism from several advisors that I could ever find work in Haskell.
 
-Working as first a member and now chair of the Haskell Foundation Stability Working Group has been enlightening. Over the last few years two things have become very apparent. First, that there is a real appetite for movement from practitioners on some notion of stability. Second, getting things done in this area takes much more time and effort than it would seem.
+Working first as a member and now chair of the Haskell Foundation Stability Working Group has been enlightening. Over the last few years two things have become very apparent. First, that there is a real appetite for movement from practitioners on some notion of stability. Second, getting things done in this area takes much more time and effort than it would seem.
 
 With the appetite from practitioners and effort in mind, let me describe my views on stability, the operating goals of the Stability Working Group, who the group is, what we have been working on, and how you can help.
 
@@ -29,7 +29,7 @@ Recognizing this diversity means realizing where there are gaps in representatio
 
 Now with the ecosystem in mind, what exactly is stability?
 
-For many they will read that word and think immutability. We are talking about the Haskell ecosystem after all. However, stability here does not mean a complete lack of change. To forego change entirely would mean to not be able to incorporate new ideas or react to the rest of the world changing. If this was the case Haskell would never have grown to include a huge number of things, including the IO monad! Interaction with he rest of the world will continue to require changes, for example the first version of The Unicode Standard was published after Haskell 1.0!
+For many they will read that word and think immutability. We are talking about the Haskell ecosystem after all. However, stability here does not mean a complete lack of change. To forego change entirely would mean to not be able to incorporate new ideas or react to the rest of the world changing. If this was the case Haskell would never have grown to include a huge number of things, including the IO monad! Interaction with the rest of the world will continue to require changes, for example the first version of The Unicode Standard was published after Haskell 1.0!
 
 So we accept that not only will change happen, it must. This leads to how I would describe stability: the ability to react to change in an informed and graceful way. With change as a given, we must be able to react to it. But the other parts are also extremely important. Change can be extremely disruptive. In the ecosystem, change might mean:
  - industrial users need to spend time away from their employer's goals
@@ -37,7 +37,7 @@ So we accept that not only will change happen, it must. This leads to how I woul
  - academic materials might need to be rewritten
  - any other number of issues that are difficult to predict
 
-But we just said that change is going to happen! As such, _ecosystem stability_ is managing the *impact* of change as felt by all members described above . In order to reduce the negative impacts of change to the ecosystem there must be a graceful handling path, not a lack of change entirely. For example, deprecating something before removal. Another important factor here is the timing. Being predictable in change management means that the various groups can schedule work rather than being interrupted. This is why it is critical to be able to handle change as gracefully as possible.
+But we just said that change is going to happen! As such, _ecosystem stability_ is managing the *impact* of change as felt by all members described above. In order to reduce the negative impacts of change to the ecosystem there must be a graceful handling path, not a lack of change entirely. For example, deprecating something before removal. Another important factor here is the timing. Being predictable in change management means that the various groups can schedule work rather than being interrupted. This is why it is critical to be able to handle change as gracefully as possible.
 
 ## The Stability Working Group
 
