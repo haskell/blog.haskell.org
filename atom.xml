@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-01-08T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Case Study — Using a JavaScript component inside a Haskell application</title>
+        <published>2025-01-08T00:00:00+00:00</published>
+        <updated>2025-01-08T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/case-study-foreign-integration-js-browser/"/>
+        <id>https://blog.haskell.org/case-study-foreign-integration-js-browser/</id>
+        
+        <summary type="html">&lt;p&gt;GHC since version 9.8 allows us to create callbacks from JS to Haskell code, which enables us to create full-fledged browser apps.
+This article shows how to use the JS backend with foreign component libraries.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC 9.12 &amp; Cabal 3.14 releases</title>
+        <published>2025-01-06T00:00:00+00:00</published>
+        <updated>2025-01-06T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-9-12-cabal-3-14/"/>
+        <id>https://blog.haskell.org/ghc-9-12-cabal-3-14/</id>
+        
+        <summary type="html">&lt;p&gt;To conclude the year 2024, the GHC and Cabal teams are happy to announce the releases of GHC 9.12 and cabal 3.14.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>How to collect performance statistics with Cabal</title>
+        <published>2024-12-23T00:00:00+00:00</published>
+        <updated>2024-12-23T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/"/>
+        <id>https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/</id>
+        
+        <summary type="html">&lt;p&gt;The &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cabal.readthedocs.io&#x2F;en&#x2F;latest&#x2F;&quot;&gt;Cabal Manual&lt;&#x2F;a&gt; now has a guide on how to collect performance statistics of Haskell applications.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Google Summer of Code 2024 Wrap-up</title>
+        <published>2024-11-21T00:00:00+00:00</published>
+        <updated>2024-11-21T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/gsoc-2024/"/>
+        <id>https://blog.haskell.org/gsoc-2024/</id>
+        
+        <summary type="html">&lt;p&gt;The Haskell.org committee is pleased to present the results of Haskell&#x27;s
+participation in the Google Summer of Code 2024. This marks our 13th time
+taking part in GSoC!&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Haskell.org and the Haskell Foundation Join Forces</title>
+        <published>2024-09-25T00:00:00+00:00</published>
+        <updated>2024-09-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/haskell-foundation-and-committee-merger/"/>
+        <id>https://blog.haskell.org/haskell-foundation-and-committee-merger/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/haskell-foundation-and-committee-merger/">&lt;p&gt;The members of the Haskell.org Committee (the Committee) and the directors of the Haskell Foundation (the Foundation) are pleased to announce that we have joined forces, with the aim (subject to regulatory approval) of merging Haskell.org, Inc. and Haskell Foundation, Inc. into a single not-for-profit corporation. Together we continue our common mission to advance functional programming and to advocate for the Haskell language, its ecosystem, and its community.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-committee&quot;&gt;The Committee&lt;&#x2F;h2&gt;
+&lt;p&gt;The Committee has a long history of supporting the Haskell community and ecosystem, supervising the resources under the &quot;haskell.org&quot; domain, including the www.haskell.org website, Hackage, Discourse, and the Haskell mailing lists, as well as organizing events such as Haskell.org’s participation in Google Summer of Code and the Haskell Summer of Code.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-foundation&quot;&gt;The Foundation&lt;&#x2F;h2&gt;
+&lt;p&gt;The Foundation is a newer organization, dedicated to broadening the adoption of Haskell by supporting its ecosystem of tools, libraries, education, and research. It has had similar goals to Haskell.org, and been engaged in complementary activities. Amongst its activities, it facilitates cross-team collaboration on fundamental tooling (e.g. Cabal, Stack, GHCup and the Haskell Language Server), hosts Stackage, financially supports the development of essential ecosystem components (e.g. the GHCup project and Botan bindings), runs workshops that help new contributors to fundamental tooling, and actively seeks financial sponsorship to help fund these efforts.&lt;&#x2F;p&gt;
+&lt;p&gt;Both corporations are Not-for-Profit corporations and Haskell.org Inc. has also been recognised as exempt from taxation in the USA. For that reason, most of the transactions of the Foundation are conducted by Haskell.org, Inc. One of the biggest factors in the desire to merge corporate entities is to make it easier to manage the legal and financial responsibilities around non-profit status and holding funds. Having only one corporation would also address a source of confusion for donors and sponsors.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-next&quot;&gt;What Next?&lt;&#x2F;h2&gt;
+&lt;p&gt;The Committee will continue to serve the community as an important committee of the Foundation. The Committee will retain all its current responsibilities, including independent editorial control of the Haskell.org website. It will also continue to oversee much of the Haskell community infrastructure and manage Haskell&#x27;s participation in Google Summer of Code.&lt;&#x2F;p&gt;
+&lt;p&gt;Joining forces allows us to better share resources and work together while at the same time allowing the Committee (as part of the Foundation) to retain its independence over its domain.&lt;&#x2F;p&gt;
+&lt;p&gt;The Committee members and the directors of the Foundation remain deeply grateful for the opportunity to serve the Haskell community. We look forward to continuing this support with greater effectiveness and efficiency as a single unified organization.&lt;&#x2F;p&gt;
+&lt;p&gt;Sincerely,&lt;br &#x2F;&gt;
+The Haskell.org Committee and The Haskell Foundation&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Documentation Best Practices in 2024</title>
+        <published>2024-09-15T00:00:00+00:00</published>
+        <updated>2024-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/documentation-best-practices-in-2024/"/>
+        <id>https://blog.haskell.org/documentation-best-practices-in-2024/</id>
+        
+        <summary type="html">&lt;p&gt;In the Haddock team, part of our mission is to help with writing documentation, and promoting best practices. This article will help you write the best documentation you can!&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>JavaScript Code Minification Report</title>
+        <published>2024-09-15T00:00:00+00:00</published>
+        <updated>2024-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/report-of-js-code-minification/"/>
+        <id>https://blog.haskell.org/report-of-js-code-minification/</id>
+        
+        <summary type="html">&lt;p&gt;The JavaScript world has been battling for low bundle size from the very beginning.
+It is now our turn to enter the battle&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>The Haskell Playground</title>
+        <published>2024-09-15T00:00:00+00:00</published>
+        <updated>2024-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/the-haskell-playground/"/>
+        <id>https://blog.haskell.org/the-haskell-playground/</id>
+        
+        <summary type="html">&lt;p&gt;The playground (&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;play.haskell.org&quot;&gt;play.haskell.org&lt;&#x2F;a&gt;) allows you to run single-file Haskell programs right from your browser, and share them with others.
+In this post, I will introduce the playground and give some implementation details.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Welcome</title>
+        <published>2024-09-14T00:00:00+00:00</published>
+        <updated>2024-09-14T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/intro/"/>
+        <id>https://blog.haskell.org/intro/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/intro/">&lt;p&gt;The Haskell Ecosystem plays host to some amazing projects. Talented developers spend significant amounts of time, often their free time, helping develop, maintain, and support this ecosystem that all Haskell developers use. This space is for all of the developer teams that work on Haskell core infrastructure and power the Haskell Ecosystem.&lt;&#x2F;p&gt;
+&lt;p&gt;This blog will provide a space for these efforts to communicate with the wider Haskell community. Things you might see here: calls for volunteers, project updates, requests for comments&#x2F;feedback.&lt;&#x2F;p&gt;
+&lt;p&gt;Blogs also form a key part of an ecosystem’s documentation. We’d like to take this idea to its conclusion in the Haskell ecosystem and provide a place for this high-value documentation to live and be maintained. In addition to helping out with editing, by hosting the posts here we’ll also have shared responsibility for maintaining the blog posts, helping prevent the all-too-common bit-rot that occurs on blog posts.&lt;&#x2F;p&gt;
+&lt;p&gt;There are already a few posts to get the ball rolling. We’re really excited to share these thoughts with you all.&lt;&#x2F;p&gt;
+&lt;p&gt;Happy Hacking,&lt;&#x2F;p&gt;
+&lt;p&gt;José Manuel Calderón Trilla&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
