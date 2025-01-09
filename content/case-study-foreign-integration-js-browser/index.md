@@ -44,7 +44,10 @@ main = do
 In the above snippet we're creating an `IORef` and pass a callback incrementing it to a foreign function that installs a button in body, counting a number of clicks
 (note for brevity I used a multiline syntax that is not yet available for foreign calls). The callback closes over the `IORef` and correctly updates the number after each click.
 
-https://github.com/user-attachments/assets/ceb86903-d136-4821-8e2d-de2e433889a5
+<video controls>
+  <source src="https://github.com/user-attachments/assets/ceb86903-d136-4821-8e2d-de2e433889a5" type="video/quicktime" />
+</video>
+
 
 Callbacks fully enable probably the most fascinating purpose of JavaScript backend, which is web programming. GHCJS has been around for quite some time now,
 however it is both outdated (being a GHC fork requiring separate maintenance; currently stuck on 8.10) and cumbersome to use (often necessitating a separate setup, typically through Nix). In one of my previous companies, while evaluating potential options for rewriting the frontend, I decided to use PureScript. It was close enough to Haskell and very easy to set up - it can be installed directly through `npm`, has its own `stack`-like package manager `spago` with a suite of existing bundler plugins, and a blazing fast language server. 
@@ -403,7 +406,9 @@ Starting up http-server, serving dist/
 
 Behold, a material button!
 
-https://github.com/user-attachments/assets/4abe2e52-0bd2-4cb7-99c0-c0b0a1796528
+<video controls>
+  <source src="https://github.com/user-attachments/assets/4abe2e52-0bd2-4cb7-99c0-c0b0a1796528" type="video/quicktime" />
+</video>
 
 ### Bundling with `webpack` and `swc-loader`
 
