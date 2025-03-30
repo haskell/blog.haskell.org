@@ -1,5 +1,5 @@
 +++
-title = "Haskell Foundation Stability Working Group"
+title = "Introducing the Haskell Foundation Stability Working Group"
 date = 2025-01-07
 [taxonomies]
 authors = ["Trevis Elser"]
