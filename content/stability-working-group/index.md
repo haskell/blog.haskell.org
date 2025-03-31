@@ -1,6 +1,6 @@
 +++
 title = "Introducing the Haskell Foundation Stability Working Group"
-date = 2025-01-07
+date = 2025-03-31
 [taxonomies]
 authors = ["Trevis Elser"]
 categories = ["Haskell Foundation"]
