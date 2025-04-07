@@ -31,13 +31,15 @@ We expect `2.10.0.0` to be the last HLS release having support for GHC `9.4` ver
 We added support for a new LSP feature called `Go to Implementations`.
 This LSP feature allows you to jump to the implementation of overloaded functions.
 
-<img src="jump-to-implementations.gif" alt="A simple 'Demo' typeclass illustrating that the 'Go to Implementations request sends the cursor to the instance declaration 'Demo Char'." width=70%>
+<img src="jump-to-implementations.gif" alt="A simple 'Demo' typeclass illustrating that the 'Go to Implementations' request sends the cursor to the instance declaration 'Demo Char'." width=70%>
 
 ### Inlay Hints
 
 Inlay hints allow you to display additional information within a line of code.
-This can be an elegant alternative to code lenses, which can be a bit more invasive in the editor.
+These can be an elegant alternative to code lenses, which display additional information as a separate line above the actual line of code.
 For GSoC 2024, `jetjiinser` added inlay hints for various Haskell constructs where additional information can be provided.
+
+Inlay hints are enabled by default in editors that support them, and some plugins, like the `explicit-imports` plugin, have been updated to use the new inlay hints instead of code lenses if possible.
 
 #### Record Wildcards
 
@@ -96,13 +98,13 @@ This is mostly a proof of concept, we expand on this idea in [PR #4428](https://
 ### GHC Structured Errors
 
 This release is also the first release which uses GHC's structured errors infrastructure.
-You might not notice this at first as an end-user, as it is a rather technical detail mainly concerned with refactoring internals of HLS to provide many of its features based on structured diagnostics, improving accuracy and maintainability of HLS.
+You might not notice this at first as an end-user, as it is a rather technical detail mainly concerned with refactoring internals of HLS to provide many of its features based on structured error messages, improving accuracy and maintainability of HLS.
 
 But it also has the useful side effect of allowing us to integrate with [the Haskell Error Index](https://errors.haskell.org/):
 
 <img src="error-index.jpeg" alt="A GHC error message, displaying the error code associated with this particular error message." width=70%>
 
-For anyone wondering how HLS is providing code actions and other LSP features without structured diagnostics... the answer is [lots of GHC version dependent regexes](https://github.com/haskell/haskell-language-server/blob/master/plugins/hls-refactor-plugin/src/Development/IDE/Plugin/CodeAction.hs#L975).
+For anyone wondering how HLS is providing code actions and other LSP features without structured error messages... the answer is [lots of GHC version dependent regexes](https://github.com/haskell/haskell-language-server/blob/master/plugins/hls-refactor-plugin/src/Development/IDE/Plugin/CodeAction.hs#L975).
 
 We want to replace most of these regexes with structured errors.
 Do you want to help? Pick an HLS plugin and hack away!
@@ -124,4 +126,4 @@ We want to thank our countless contributors from the community and our Google Su
 This is a community project, and the HLS team is grateful for every contribution, be it documentation, bug fixes or new features.
 
 Finally, a reminder that you can donate to the development of HLS via [OpenCollective](https://opencollective.com/haskell-language-server).
-The OpenCollective money pays for tedious, but important maintenance work and, sometimes, development of new features.
+The OpenCollective money pays for tedious, but important maintenance work and, sometimes, for getting new features over the finish line.
