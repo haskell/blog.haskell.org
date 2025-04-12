@@ -40,7 +40,7 @@ date = YYYY-MM-DD
 [taxonomies]
 authors = ["Author's Name"] # The author's name. Will be indexed.
 categories = ["Haddock"] # A minima should be the name of the team ("Haddock", "HLS", "Cabal"). Will be indexed.
-tags = ["Practices"] # Something more precise like "Release", "Practice", "JavaScript", can be aded. Will be indexed.
+tags = ["Practices"] # Something more precise like "Release", "Practice", "JavaScript", can be added. Will be indexed.
 +++
 ```
 
