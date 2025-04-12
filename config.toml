@@ -114,7 +114,7 @@ seo = true  # enable or disable seo-related meta tags: opengraph, facebook, twit
 feed = true # this adds the RSS feed icon in the footer.
 mastodon = "https://fosstodon.org/@haskell"
 twitter = "haskellOrg"
-github = "haskell"
+github = "haskell/blog.haskell.org"
 
 
 ###############################################################################
