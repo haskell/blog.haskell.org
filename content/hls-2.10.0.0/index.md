@@ -1,6 +1,6 @@
 +++
 title = "Haskell Language Server 2.10.0.0 release"
-date = 2025-04-07
+date = 2025-04-15
 [taxonomies]
 authors = ["Fendor"]
 categories = ["HLS"]
