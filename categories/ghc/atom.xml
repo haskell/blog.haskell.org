@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog - GHC</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/categories/ghc/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-01-08T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/categories/ghc/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Case Study — Using a JavaScript component inside a Haskell application</title>
+        <published>2025-01-08T00:00:00+00:00</published>
+        <updated>2025-01-08T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/case-study-foreign-integration-js-browser/"/>
+        <id>https://blog.haskell.org/case-study-foreign-integration-js-browser/</id>
+        
+        <summary type="html">&lt;p&gt;GHC since version 9.8 allows us to create callbacks from JS to Haskell code, which enables us to create full-fledged browser apps.
+This article shows how to use the JS backend with foreign component libraries.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC 9.12 &amp; Cabal 3.14 releases</title>
+        <published>2025-01-06T00:00:00+00:00</published>
+        <updated>2025-01-06T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-9-12-cabal-3-14/"/>
+        <id>https://blog.haskell.org/ghc-9-12-cabal-3-14/</id>
+        
+        <summary type="html">&lt;p&gt;To conclude the year 2024, the GHC and Cabal teams are happy to announce the releases of GHC 9.12 and cabal 3.14.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>JavaScript Code Minification Report</title>
+        <published>2024-09-15T00:00:00+00:00</published>
+        <updated>2024-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/report-of-js-code-minification/"/>
+        <id>https://blog.haskell.org/report-of-js-code-minification/</id>
+        
+        <summary type="html">&lt;p&gt;The JavaScript world has been battling for low bundle size from the very beginning.
+It is now our turn to enter the battle&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>
