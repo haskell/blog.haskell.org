@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=d58d95c5efe846728d7b" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>GHC 9.12 & Cabal 3.14 releases | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="" />
+  <link rel="canonical" href="https://blog.haskell.org/ghc-9-12-cabal-3-14/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/ghc-9-12-cabal-3-14/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/ghc-9-12-cabal-3-14/" />
+  <meta property="og:description" content="" />
+  <meta name="twitter:description" content="" />
+  <meta property="og:title" content="GHC 9.12 &amp; Cabal 3.14 releases | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="GHC 9.12 &amp; Cabal 3.14 releases | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2025-01-06" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/ghc-9-12-cabal-3-14/">GHC 9.12 &amp; Cabal 3.14 releases</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/hecate/">Hécate</a> <span class="rpad"></span> January 06, 2025 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/cabal/">Cabal</a>, <a href="https://blog.haskell.org/categories/ghc/">GHC</a>] #<a href="https://blog.haskell.org/tags/release/">Release</a> </span>
+
+    
+
+
+<p>To conclude the year 2024, the GHC and Cabal teams are happy to announce the releases of GHC 9.12 and cabal 3.14.</p>
+<span id="continue-reading"></span>
+<p>Here are some highlights:</p>
+<h2 id="ghc-9-12">GHC 9.12</h2>
+<h3 id="language-extensions">Language Extensions</h3>
+<p>This release brings many new and exciting extensions:</p>
+<ul>
+<li><a rel="noopener" target="_blank" href="https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/exts/multiline_strings.html#multiline-string-literals">Multiline string literals</a> to write string literals with newlines kept verbatim,
+enabling multiline strings without the need for string gaps and literal \n characters";</li>
+<li><a rel="noopener" target="_blank" href="https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/exts/or_patterns.html#or-patterns">Or-Patterns</a>, allowing you to match on several patterns in a single <code>case</code> branch:</li>
+</ul>
+<pre data-lang="haskell" class="language-haskell z-code"><code class="language-haskell" data-lang="haskell"><span class="z-source z-haskell"><span class="z-keyword z-other z-haskell">data</span> <span class="z-constant z-other z-haskell">Sweet</span> <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">Cupcake</span> <span class="z-keyword z-operator z-haskell">|</span> <span class="z-constant z-other z-haskell">Liquorice</span> <span class="z-keyword z-operator z-haskell">|</span> <span class="z-constant z-other z-haskell">Cookie</span> <span class="z-keyword z-operator z-haskell">|</span> <span class="z-constant z-other z-haskell">Raisins</span>
+</span><span class="z-source z-haskell">
+</span><span class="z-source z-haskell"><span class="z-comment z-line z-double-dash z-haskell"><span class="z-punctuation z-definition z-comment z-haskell">--</span> Without Or-Patterns
+</span></span><span class="z-source z-haskell">tasty <span class="z-constant z-other z-haskell">Cupcake</span> <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">True</span>
+</span><span class="z-source z-haskell">tasty <span class="z-constant z-other z-haskell">Cookie</span> <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">True</span>
+</span><span class="z-source z-haskell">tasty _ <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">False</span>
+</span><span class="z-source z-haskell">
+</span><span class="z-source z-haskell"><span class="z-comment z-line z-double-dash z-haskell"><span class="z-punctuation z-definition z-comment z-haskell">--</span> With Or-Patterns
+</span></span><span class="z-source z-haskell">tasty (<span class="z-constant z-other z-haskell">Cupcake</span>; <span class="z-constant z-other z-haskell">Cookie</span>) <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">True</span>
+</span><span class="z-source z-haskell">tasty (<span class="z-constant z-other z-haskell">Liquorice</span>; <span class="z-constant z-other z-haskell">Raisins</span>) <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">False</span>
+</span></code></pre>
+<ul>
+<li><a rel="noopener" target="_blank" href="https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/exts/named_defaults.html#named-default-declarations">NamedDefaults</a> allows you to create type defaulting declarations for literals other than for the <code>Num</code> class. This mechanism is used to make sure that in the expression <code>print (6 + 7)</code>, the multiplication gets a concrete type like <code>Integer</code>, <code>Int</code> or <code>Double</code>, instead of the vague  <code>Num a =&gt; a</code>.<br />
+You can now apply this mechanism to other typeclasses, like:</li>
+</ul>
+<pre data-lang="haskell" class="language-haskell z-code"><code class="language-haskell" data-lang="haskell"><span class="z-source z-haskell"><span class="z-keyword z-other z-haskell">default</span> <span class="z-constant z-other z-haskell">IsString</span> (<span class="z-constant z-other z-haskell">Text</span><span class="z-punctuation z-separator z-comma z-haskell">,</span> <span class="z-constant z-other z-haskell">String</span>)
+</span></code></pre>
+<p>Which means that in a module with <a rel="noopener" target="_blank" href="https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/exts/overloaded_strings.html"><code>OverloadedStrings</code></a>, string literals <code>"like this"</code> will default to <a rel="noopener" target="_blank" href="https://hackage.haskell.org/package/text/docs/Data-Text.html#t:Text"><code>Text</code></a>
+instead of triggering an error about a polymorphic type.</p>
+<h3 id="base-library">Base Library</h3>
+<ul>
+<li>Improvements to backtraces and exceptions. Lots of them.</li>
+</ul>
+<h4 id="warning-deprecations">⚠️ Deprecations</h4>
+<ul>
+<li>The deprecation cycle of <a rel="noopener" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/issues/21461">GHC.Pack</a> has reached its conclusion and the module has been removed.</li>
+<li><a rel="noopener" target="_blank" href="https://hackage.haskell.org/package/base-4.21.0.0/docs/GHC-Desugar.html">GHC.Desugar</a> will be removed in GHC 9.14.</li>
+</ul>
+<h3 id="code-generation">Code Generation</h3>
+<ul>
+<li>Experimental support for the <a rel="noopener" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/issues/16783">RISC-V Platform</a>;</li>
+<li>SIMD! On x86, most floating-point operations and some integer vector operations are supported for 128-bit vectors <strong>without requiring LLVM</strong>. <a rel="noopener" target="_blank" href="https://matrix.to/#/#ghc:matrix.org">Get in touch</a> to help with this effort</li>
+<li>You can try the new experimental <a rel="noopener" target="_blank" href="https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/using-optimisation.html#ghc-flag-fobject-determinism"><code>-fobject-determinism</code></a> flag to enable deterministic object code generation.</li>
+</ul>
+<h4 id="warning-deprecations-1">⚠️ Deprecations</h4>
+<ul>
+<li>Support 32-bit Windows &amp; macOS/iOS has been dropped;</li>
+<li>As a result, the <code>stdcall</code> calling convention for FFI has been dropped, <code>ccall</code> should be used instead.</li>
+</ul>
+<p>You can read the full release notes <a rel="noopener" target="_blank" href="https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/9.12.1-notes.html">here</a>.</p>
+<h2 id="cabal-3-14">Cabal 3.14</h2>
+<h3 id="new-things">New things</h3>
+<ul>
+<li>
+<p>(Spec v3.14 only) New field: <code>extra-files</code> allows you to bundle files in the source distribution (<em>sdist</em>) of your cabal package. It serves as an alternative when the files you want to bundle do not fit in the existing <code>data-files</code> (for runtime data), <code>extra-source-files</code> (built by cabal) or <code>extra-doc-files</code> (shipped with Haddocks). This field has no inherent meaning, to avoid misuse of the already existing fields. For instance, you can use <code>extra-files</code> to ship <code>stack.yaml</code> files, which are not used either by the program at run-time, nor by Cabal or Haddock.</p>
+</li>
+<li>
+<p>You can now compile projects dynamically with profiling enabled. The following options are now available:</p>
+<ul>
+<li>cabal.project: <code>profiling-shared: &lt;Boolean&gt;</code>;</li>
+<li>cabal file: <code>ghc-prof-shared-options</code> for passing options when building in profiling dynamic way;</li>
+<li>Command-line arguments: <code>--enable-profiling --enable-executable-dynamic</code>.</li>
+</ul>
+</li>
+<li>
+<p><a rel="noopener" target="_blank" href="https://downloads.haskell.org/ghc/9.12.1/docs/users_guide/9.12.1-notes.html">New GHC options and extensions</a> are supported.</p>
+</li>
+<li>
+<p>New build type: Hooks. This build type, intended to eventually replace the Custom build type, integrates better with the rest of the ecosystem (cabal-install, Haskell Language Server).</p>
+</li>
+<li>
+<p>The experimental <code>haddock-project</code> command supports sub-components.</p>
+</li>
+</ul>
+<h3 id="changed">Changed</h3>
+<ul>
+<li>
+<p><code>cabal init</code> remembers the chosen language within current session (<code>Haskell2010</code>, <code>GHC2021</code>, etc.).</p>
+</li>
+<li>
+<p><code>cabal check</code> will raise an error about the insecure <code>git://</code> protocol in <code>source-repository</code>.</p>
+</li>
+<li>
+<p>Enable recompilation avoidance during Haddock generation.</p>
+</li>
+<li>
+<p>Clarify error message when <code>pkg-config</code> is not found.</p>
+</li>
+<li>
+<p>Print out which project file(s) we are using.</p>
+</li>
+</ul>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li>
+<p>The <code>--promised-dependency</code> flag now accepts the version of a package in the package name. Previously you could only call it with an argument like <code>void=void-0.5.8</code>.
+Now, it is possible to write: <code>--promised-dependency=void-0.5.8=void-0.5.8</code>.</p>
+</li>
+<li>
+<p>Always pass <code>ghc-options</code> to GHC.</p>
+</li>
+<li>
+<p>Enhance error detection for cabal root project files, including broken symlinks.</p>
+</li>
+<li>
+<p>Don't pass <code>--coverage-for</code> for non-dependency libs of a testsuite.</p>
+</li>
+<li>
+<p>Fix a bug that causes <code>cabal init</code> to crash if <code>git</code> is not installed.</p>
+</li>
+</ul>
+<h3 id="unresolved">Unresolved</h3>
+<ul>
+<li>Recompilation avoidance during Haddock generation sometimes does not work on Windows (<a rel="noopener" target="_blank" href="https://github.com/haskell/cabal/pull/9177#issuecomment-2167768305">haskell/cabal#9177</a>).</li>
+</ul>
+<p>You can see the full changelogs for <a rel="noopener" target="_blank" href="https://github.com/haskell/cabal/blob/master/release-notes/Cabal-3.14.1.0.md">Cabal &amp; Cabal-syntax</a>, and for <a rel="noopener" target="_blank" href="https://github.com/haskell/cabal/blob/master/release-notes/cabal-install-3.14.0.0.md">cabal-install and cabal-install-solver</a></p>
+<p>As always, the Cabal team is always welcoming of new contributors. We have a nice back catalogue of bugs, oddities and feature requests. Stop by our <a rel="noopener" target="_blank" href="https://matrix.to/#/#hackage:matrix.org">matrix channel</a>!</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.haskell.org/case-study-foreign-integration-js-browser/">&#8249; Case Study — Using a JavaScript component inside a Haskell application</a>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/"> How to collect performance statistics with Cabal &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2025</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>
