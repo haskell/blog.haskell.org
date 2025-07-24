@@ -36,6 +36,6 @@ We thank all the contributors as well as our reviewers, QA testers, devops, and 
 
 ### Feedback
 
-Please report any issues you notice with the 3.16.0.0 release on our GitHub: https://github.com/haskell/cabal/issues
+Please report any issues you notice with the 3.16.0.0 release on our GitHub: <https://github.com/haskell/cabal/issues>
 
 — Cabal release team (Artem, Brandon, Francesco, Mikołaj)
