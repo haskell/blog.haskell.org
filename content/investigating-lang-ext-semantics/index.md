@@ -91,7 +91,7 @@ Which restores the original behavior.
 
 ## Moving of instances due to Template Haskell
 This change forces you to put the instances above the splice where
-it's being used in the same module.
+they are being used in the same module.
 A dear colleague decided to generate instances in Template Haskell.
 That was quite the puzzle!
 I asked the GHC devs why they did this,
