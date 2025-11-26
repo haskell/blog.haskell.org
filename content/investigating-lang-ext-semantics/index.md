@@ -170,7 +170,7 @@ From what I understand from the [manual](https://ghc.gitlab.haskell.org/ghc/doc/
 is that part of the syntax for type abstractions landed in GHC 9.2,
 however 9.8 and onwards requires you to enable this language extension.
 This appeared because certain new functionality was introduced behind an
-old language extension flag, according to [this proposal](https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0448-type-variable-scoping.rst#4type-arguments-in-constructor-patterns)
+old language extension flag, according to [this proposal](https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0448-type-variable-scoping.rst#4type-arguments-in-constructor-patterns).
 
 This extension enables you to bind type variables in pattern matches.
 I don't know why this happened like this, but it happened in 2023:
