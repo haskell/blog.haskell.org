@@ -25,7 +25,7 @@ and learned surprisingly enough that the root cause
 of a lot of breakage isn't Template Haskell,
 but seems to be from language extension semantics[^meaning].
 We're doing this investigation to better understand where the Haskell
-Foundation stability working group should focus it's efforts.
+Foundation stability working group should focus its efforts.
 About a year ago I started on analyzing the causes
 for all `head.hackage` patches, but I got bogged down
 by the sheer amount of work.
