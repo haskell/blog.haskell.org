@@ -148,7 +148,7 @@ quite rare for someone to do this.
 You can enable [StrictData](https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/strict.html#extension-StrictData)
 in your Cabal file and delete all those bangs!
 
-* (2) Rename forall identifiers
+## (2) Rename forall identifiers
 This changes the forall identifier into a keyword at term level.
 It already was at the type level.
 The issue is discussed [here](https://gitlab.haskell.org/ghc/ghc/-/issues/23719)
@@ -187,7 +187,7 @@ I don't know why this happened like this, but it happened in 2023:
 +
 ```
 
-* Star is type
+## Star is type
 This change was announced via a warning. 
 It tells users to write `Type` instead of `*` for kinds representing types.
 A kind is essentially the type of a type,
@@ -199,7 +199,7 @@ and as a concept is used for type-level programming type safety.
 ```
 
 
-* Conclusion
+## Conclusion
 
 Often we experience these breakages as annoying and frustrating.
 However, if we look deeper, we find that each of them has
