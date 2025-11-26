@@ -167,7 +167,7 @@ The issue is discussed [here](https://gitlab.haskell.org/ghc/ghc/-/issues/23719)
 ## TypeAbstractions
 
 From what I understand from the [manual](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/type_abstractions.html#type-abstractions)
-Is that part of the syntax for type abstractions landed in GHC 9.2,
+is that part of the syntax for type abstractions landed in GHC 9.2,
 however 9.8 and onwards requires you to enable this language extension.
 This appears to because certain new functionality was introduced behind an
 old language extension flag, according to [this proposal](https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0448-type-variable-scoping.rst#4type-arguments-in-constructor-patterns)
