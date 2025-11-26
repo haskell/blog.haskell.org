@@ -1,3 +1,12 @@
++++
+title = "Analyzing language extension semantics"
+date = 2025-11-26
+[taxonomies]
+authors = ["Jappie Klooster"]
+categories = ["Haskell Foundation"]
+tags = ["Community", "Stability"]
++++
+
 We analyzed the head.hackage patches to understand 
 why code breaks on new GHC releases.
 Surprisingly, most breakage wasn’t caused by 
