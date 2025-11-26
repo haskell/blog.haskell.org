@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=d58d95c5efe846728d7b" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Google Summer of Code 2024 Wrap-up | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="" />
+  <link rel="canonical" href="https://blog.haskell.org/gsoc-2024/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/gsoc-2024/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/gsoc-2024/" />
+  <meta property="og:description" content="" />
+  <meta name="twitter:description" content="" />
+  <meta property="og:title" content="Google Summer of Code 2024 Wrap-up | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="Google Summer of Code 2024 Wrap-up | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2024-11-21" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/gsoc-2024/">Google Summer of Code 2024 Wrap-up</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/aaron-allen/">Aaron Allen</a> <span class="rpad"></span> November 21, 2024 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/haskell-org/">Haskell.org</a>] #<a href="https://blog.haskell.org/tags/summer-of-code/">Summer of Code</a>  #<a href="https://blog.haskell.org/tags/announcement/">Announcement</a>  #<a href="https://blog.haskell.org/tags/gsoc/">GSoC</a> </span>
+
+    
+
+
+<p>The Haskell.org committee is pleased to present the results of Haskell's
+participation in the Google Summer of Code 2024. This marks our 13th time
+taking part in GSoC!</p>
+<span id="continue-reading"></span><a href="https://summerofcode.withgoogle.com/">
+<img src="gsoc-logo.svg" alt="GSoC 2024" width=600px>
+</a>
+<p>Of the five projects alloted to our organization, four were successfully
+completed:</p>
+<ul>
+<li><a href="https://blog.haskell.org/gsoc-2024/#hls-cabal-plugin-continuation">HLS Cabal Plugin Continuation</a></li>
+<li><a href="https://blog.haskell.org/gsoc-2024/#lsp-inlay-hints-feature-for-haskell-language-server">LSP Inlay Hints Feature for haskell-language-server</a></li>
+<li><a href="https://blog.haskell.org/gsoc-2024/#continuous-integration-log-explorer-tool">Continuous Integration Log Explorer Tool</a></li>
+<li><a href="https://blog.haskell.org/gsoc-2024/#parse-error-recovery-and-incrementality-for-ghc">Parse Error Recovery and Incrementality for GHC</a></li>
+</ul>
+<br>
+<p><strong>Congratulations to all the contributors and a huge thank you to our wonderful mentors!</strong></p>
+<br>
+<br>
+<hr />
+<br>
+<h2 id="hls-cabal-plugin-continuation">HLS Cabal Plugin Continuation</h2>
+<p>Contributor: Georgii Gerasev
+Mentor: Fendor</p>
+<p>For this project Georgii implemented a number of additions and fixes for the
+HLS Cabal plugin, improving the developer experience around working with cabal
+files.</p>
+<ul>
+<li>Fix an issue with <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4252">completion for shorter file names</a></li>
+<li>Add an <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4323">outline view</a> for cabal files</li>
+<li>Integrate the <code>Cabal-add</code> tool as a <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4360">code action</a></li>
+<li>Add a <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4380">go-to definition</a> for modules from <code>exposed-modules</code> and <code>other-modules</code> sections</li>
+<li>Add a <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4385">hover</a> with links to documentation for <code>build-depends</code></li>
+</ul>
+<p><em><a rel="noopener" target="_blank" href="https://gist.github.com/VenInf/ae0d45074742f88db7505659d0eb837b">Read more in the project results write-up</a>.</em></p>
+<br>
+<hr />
+<br>
+<h2 id="lsp-inlay-hints-feature-for-haskell-language-server">LSP Inlay Hints Feature for haskell-language-server</h2>
+<p>Contributor: Jinser
+Mentor: Michael Peyton Jones</p>
+<p>Jinser contributed several features to HLS utilizing inlay hints, which grant
+developers insights into certain code constructs.</p>
+<ul>
+<li><a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4235">Provide explicit imports via inlay hints</a></li>
+<li><a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4351">Support inlay hints for record wildcards</a></li>
+</ul>
+<br>
+<hr />
+<br>
+<h2 id="continuous-integration-log-explorer-tool">Continuous Integration Log Explorer Tool</h2>
+<p>Contributor: Abhinav Kumar
+Mentor: Bryan Richter</p>
+<p>Abhinav's project was aimed at assisting developers in analyzing large CI test
+logs, particularly for rare intermittent failures, by creating a web-based
+tool. This tool extends an existing service (Spuriobot) to collect CI log data
+and store it in a full-text search database. It also includes the
+development of an improved web UI, offering advanced search capabilities and
+automatic log integration from GitHub workflows.</p>
+<p><em><a rel="noopener" target="_blank" href="https://gitlab.haskell.org/abhinav_1203/gsoc-24-haskell/">Read more in the project results write-up</a>.</em></p>
+<br>
+<hr />
+<br>
+<h2 id="parse-error-recovery-and-incrementality-for-ghc">Parse Error Recovery and Incrementality for GHC</h2>
+<p>Contributor: Karim Taha
+Mentor: Sebastian Graf</p>
+<p>Karim contributed an enhancement to the <code>Happy</code> parser generater, namely an
+error recovery mechanism. GHC's parser was then extended to make use of this
+new feature. This will allow GHC to report multiple parse errors from a single
+compilation run and in turn improve how parse errors are presented in tooling
+such as HLS.</p>
+<p><em><a rel="noopener" target="_blank" href="https://gitlab.haskell.org/Kariim/ghc/-/wikis/GHC-Tolerant-Parser">Read more in the project results write-up</a>.</em></p>
+
+      <nav>
+        <div>
+          <a href="https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/">&#8249; How to collect performance statistics with Cabal</a>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/haskell-foundation-and-committee-merger/"> Haskell.org and the Haskell Foundation Join Forces &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2025</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>
