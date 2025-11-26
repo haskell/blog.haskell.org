@@ -73,7 +73,7 @@ to do this under certain existential conditions:
 +    (withLexicalCallStack (\x -> uncurry action x))
  
 ```
-You've to insert a lambda, which apparently signifies some performance impact.
+You've to insert a lambda, which apparently has some performance impact.
 This went wild with [Yesod stacks](https://www.yesodweb.com/book), 
 whose code generation helpfully created 
 the database alias in the template:
