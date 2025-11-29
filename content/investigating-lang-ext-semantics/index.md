@@ -7,7 +7,8 @@ categories = ["Haskell Foundation"]
 tags = ["Community", "Stability"]
 +++
 
-We analyzed the [head.hackage](https://gitlab.haskell.org/ghc/head.hackage)[^head.hackage] patches to understand 
+Hi I'm [Jappie](https://jappie.me) and I volunteer for the [Haskell Foundation Stability Working Group](https://blog.haskell.org/stability-working-group/).
+Recently we analyzed the [head.hackage](https://gitlab.haskell.org/ghc/head.hackage)[^head.hackage] patches to understand 
 why code breaks on new GHC releases.
 "head.hackage" is a repository of patches for Hackage. 
 GHC engineers use these to test out new GHC builds on a wide range of 
@@ -15,7 +16,9 @@ Hackage packages without having to upstream[^upstream] a patch, which can take t
 Instead, they can put the patch in "head.hackage" 
 and immediately test it on a wide range of packages.
 Surprisingly, most breakage wasn’t caused by 
-Template Haskell—it came from deeper semantic changes in language extensions.
+[Template Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/template_haskell.html),
+it came from deeper semantic changes in language extensions.
+The meaning of (some) language extensions changed between GHC releases.
 This post walks through the main categories of breakage, 
 why they happened, and what they tell us about long-term stability.
 If you care about a smoother upgrade path for Haskell users, 
@@ -23,25 +26,14 @@ we invite you to participate in the Stability Working Group.
 
 [^upstream]: Upstreaming is the process of sending a patch to the “maintainers” of an open-source project. The maintainers will then make the patch ‘official’ by merging it. In principle, the process is simple, but in practice, the burden of proof (especially for larger projects) is on the person who submitted the patch. They have to convince the maintainers that the patch is useful, which takes time in the form of communication
 
-The [Haskell Foundation Stability Working Group](https://blog.haskell.org/stability-working-group/) 
-is interested in understanding
-why breakage occurs.
-This is an extension of our initial [investigation](https://jappie.me/analyzing-haskell-stability.html).
-We've recently done further analysis on [head.hackage](https://ghc.gitlab.haskell.org/head.hackage/),
+Extending our initial [investigation](https://jappie.me/analyzing-haskell-stability.html),
+We're also interested in understanding *why* breakage occurs.
+So we've recently done further analysis on [head.hackage](https://ghc.gitlab.haskell.org/head.hackage/),
 and learned surprisingly enough that the root cause
 of a lot of breakage isn't Template Haskell,
 but seems to be from language extension semantics[^meaning].
-We're doing this investigation to better understand where the Haskell
-Foundation stability working group should focus its efforts.
-About a year ago I started on analyzing the causes
-for all `head.hackage` patches, but I got bogged down
-by the sheer amount of work.
-Trevis suggested focusing on the
-most important question,
-why do language extension semantics cause so much breakage?
-So instead of being bogged down by analyzing all
-the patches, I just looked at the 12 patches from language extension
-semantics.
+We're doing this investigation to understand better where efforts
+should be focused in improving stability.
 
 [^meaning]: The precise meaning of features enabled by language extensions. I guess parser changes also count.
 
@@ -63,7 +55,7 @@ This gave us the following table:
 `th-compat-0.1.4.patch` was miscounted so I left that out.
 Simplified subsumption appears a lot but 3 are for Cabal,
 so it's only 2 real occurrences.
-We expect that to appear a lot however,
+I'd expect that to appear a lot however,
 because it was one of *the* motivating changes for a [stability working group](https://blog.haskell.org/stability-working-group/).
 
 ## Simplified subsumption
@@ -80,8 +72,8 @@ to do this under certain existential conditions:
 +    (withLexicalCallStack (\x -> uncurry action x))
  
 ```
-You've to insert a lambda, which apparently has some performance impact.
-This went wild with [Yesod stacks](https://www.yesodweb.com/book), 
+You have to insert a lambda, which apparently has some performance impact.
+This had a big impact on [Yesod stacks](https://www.yesodweb.com/book), 
 whose code generation helpfully created 
 the database alias in the template:
 ```diff
@@ -89,11 +81,13 @@ type DB a = forall (m :: Type -> Type).
     (MonadUnliftIO m) => ReaderT SqlBackend m a
 ```
 
-So anything that now uses a query has to insert those lambdas,
-as you can imagine this would be in quite a few places for non-trivial commercial code bases.
-Which caused many issues for commercial users.
-You can just delete those aliases to solve the problem.
-Alternatively you can just enable the language extension: [DeepSubsumption](https://downloads.haskell.org/~ghc/9.12.2/docs/users_guide/exts/rank_polymorphism.html#extension-DeepSubsumption).
+Normally this is quite convenient, 
+however with the simplified subsumption change,
+any code that interacts with the database now has to insert those lambdas.
+As you can imagine this would in many places for a commercial code base.
+Causing a lot of compile errors for industrial users.
+Instead of inserting lambdas, you can also delete those existential aliases to solve the problem.
+Or you can enable the language extension: [DeepSubsumption](https://downloads.haskell.org/~ghc/9.12.2/docs/users_guide/exts/rank_polymorphism.html#extension-DeepSubsumption).
 Which restores the original behavior.
 
 ## Moving of instances due to Template Haskell
@@ -208,8 +202,8 @@ and as a concept is used for type-level programming type safety.
 
 ## Conclusion
 
-Often we experience these breakages as annoying and frustrating.
-However, if we look deeper, we find that each of them has
+Often these breakages are annoying and frustrating.
+But if we look deeper, we find that each of them has
 a little story
 and good reasons for being introduced.
 If you find this all as interesting as I do,
