@@ -8,7 +8,7 @@ tags = ["Community", "Stability"]
 +++
 
 Hi I'm [Jappie](https://jappie.me) and I volunteer for the [Haskell Foundation Stability Working Group](https://blog.haskell.org/stability-working-group/).
-Recently we analyzed the [head.hackage](https://gitlab.haskell.org/ghc/head.hackage)[^head.hackage] patches to understand 
+Recently we analyzed the [head.hackage](https://gitlab.haskell.org/ghc/head.hackage) patches to understand 
 why code breaks on new GHC releases.
 "head.hackage" is a repository of patches for Hackage. 
 GHC engineers use these to test out new GHC builds on a wide range of 
@@ -22,7 +22,7 @@ The meaning of (some) language extensions changed between GHC releases.
 This post walks through the main categories of breakage, 
 why they happened, and what they tell us about long-term stability.
 If you care about a smoother upgrade path for Haskell users, 
-we invite you to participate in the Stability Working Group.
+we invite you to participate in the [Haskell Foundation Stability Working Group](https://blog.haskell.org/stability-working-group/).
 
 [^upstream]: Upstreaming is the process of sending a patch to the “maintainers” of an open-source project. The maintainers will then make the patch ‘official’ by merging it. In principle, the process is simple, but in practice, the burden of proof (especially for larger projects) is on the person who submitted the patch. They have to convince the maintainers that the patch is useful, which takes time in the form of communication
 
@@ -76,7 +76,7 @@ You have to insert a lambda, which apparently has some performance impact.
 This had a big impact on [Yesod stacks](https://www.yesodweb.com/book), 
 whose code generation helpfully created 
 the database alias in the template:
-```diff
+```haskell
 type DB a = forall (m :: Type -> Type).
     (MonadUnliftIO m) => ReaderT SqlBackend m a
 ```
@@ -171,7 +171,9 @@ From what I understand from the [manual](https://ghc.gitlab.haskell.org/ghc/doc/
 is that part of the syntax for type abstractions landed in GHC 9.2,
 however 9.8 and onwards requires you to enable this language extension.
 This appeared because certain new functionality was introduced behind an
-old language extension flag, according to [this proposal](https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0448-type-variable-scoping.rst#4type-arguments-in-constructor-patterns).
+old language extension flag, according to [this proposal](https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0448-type-variable-scoping.rst#4type-arguments-in-constructor-patterns). It says we don't want to introduce new functionality behind established extensions,
+so that's why we require TypeAbstractions now, 
+where previously ScopedTypeVariables and TypeApplications were enough.
 
 This extension enables you to bind type variables in pattern matches.
 I don't know why this happened like this, but it happened in 2023:
