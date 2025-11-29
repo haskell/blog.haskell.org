@@ -62,7 +62,7 @@ because it was one of *the* motivating changes for a [stability working group](h
 ## Simplified subsumption
 For the blissfully ignorant reader simplified subsumption causes you
 to do this under certain existential conditions:
-```haskell
+```diff
 --- a/Distribution/Simple/Utils.hs
 +++ b/Distribution/Simple/Utils.hs
 @@ -1338,7 +1338,7 @@ withTempFileEx opts tmpDir template action =
@@ -77,7 +77,7 @@ You've to insert a lambda, which apparently has some performance impact.
 This went wild with [Yesod stacks](https://www.yesodweb.com/book), 
 whose code generation helpfully created 
 the database alias in the template:
-```haskell
+```diff
 type DB a = forall (m :: Type -> Type).
     (MonadUnliftIO m) => ReaderT SqlBackend m a
 ```
@@ -99,7 +99,7 @@ and it turns out this was a soundness issue in the typechecker.
 Here, soundness means the type system can't be tricked into allowing invalid programs.
 So the community is better off, despite this causing a fair bit of work.
 
-```haskell
+```diff
 --- a/src/Ipe/Content.hs
 +++ b/src/Ipe/Content.hs
 @@ -288,6 +288,14 @@ 
@@ -122,7 +122,7 @@ The parser is the component of the compiler that transforms text
 into a memory structure the compiler can work with. 
 This structure is called an abstract syntax tree.
 
-```haskell
+```diff
 -      Node4 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a), getC3 :: ! (RTree a), getC4 :: ! (RTree a) }
 -    | Node3 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a), getC3 :: ! (RTree a) }
 -    | Node2 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a) }
@@ -153,7 +153,7 @@ This changes the forall identifier into a keyword at term level.
 It already was at the type level.
 The issue is discussed [here](https://gitlab.haskell.org/ghc/ghc/-/issues/23719)
 
-```haskell
+```diff
  hintExplicitForall :: Located Token -> P ()
  hintExplicitForall tok = do
 -    forall   <- getBit ExplicitForallBit
@@ -175,7 +175,7 @@ old language extension flag, according to [this proposal](https://github.com/ghc
 This extension enables you to bind type variables in pattern matches.
 I don't know why this happened like this, but it happened in 2023:
 
-```haskell
+```diff
 +-- Invisible type binders in type declarations, such as
 +--
 +--   type family Sing @k
@@ -193,7 +193,7 @@ It tells users to write `Type` instead of `*` for kinds representing types.
 A kind is essentially the type of a type,
 and as a concept is used for type-level programming type safety.
 
-```haskell
+```diff
 -  type Basis v :: *
 +  type Basis v :: Type
 ```
