@@ -7,14 +7,21 @@ categories = ["Haskell Foundation"]
 tags = ["Community", "Stability"]
 +++
 
-We analyzed the head.hackage patches to understand 
+We analyzed the [head.hackage](https://gitlab.haskell.org/ghc/head.hackage)[^head.hackage] patches to understand 
 why code breaks on new GHC releases.
+"head.hackage" is a repository of patches for Hackage. 
+GHC engineers use these to test out new GHC builds on a wide range of 
+Hackage packages without having to upstream[^upstream] a patch, which can take time. 
+Instead, they can put the patch in "head.hackage" 
+and immediately test it on a wide range of packages.
 Surprisingly, most breakage wasn’t caused by 
 Template Haskell—it came from deeper semantic changes in language extensions.
 This post walks through the main categories of breakage, 
 why they happened, and what they tell us about long-term stability.
 If you care about a smoother upgrade path for Haskell users, 
 we invite you to participate in the Stability Working Group.
+
+[^upstream]: Upstreaming is the process of sending a patch to the “maintainers” of an open-source project. The maintainers will then make the patch ‘official’ by merging it. In principle, the process is simple, but in practice, the burden of proof (especially for larger projects) is on the person who submitted the patch. They have to convince the maintainers that the patch is useful, which takes time in the form of communication
 
 The [Haskell Foundation Stability Working Group](https://blog.haskell.org/stability-working-group/) 
 is interested in understanding
