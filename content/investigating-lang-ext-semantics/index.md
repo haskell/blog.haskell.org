@@ -58,7 +58,7 @@ This gave us the following table:
 | hgeometry-ipe-0.13.patch            | Instances moved due to splice enforcement    | no            |
 | singletons-3.0.2.patch              | add TypeAbstractions as a language extension | yes           |
 | singletons-base-3.1.1.patch         | add TypeAbstractions as a language extension | yes           |
-| vector-space-0.16.patch             | * is type (4)                                | yes           |
+| vector-space-0.16.patch             | Star is type (4)                                | yes           |
 
 `th-compat-0.1.4.patch` was miscounted so I left that out.
 Simplified subsumption appears a lot but 3 are for Cabal,
