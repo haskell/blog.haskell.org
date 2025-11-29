@@ -40,7 +40,7 @@ should be focused in improving stability.
 This gave us the following table:
 
 | Name                                | Cause                                        | Had warnings? |
-|-------------------------------------+----------------------------------------------+---------------|
+|-------------------------------------|----------------------------------------------|---------------|
 | Cabal-2.4.1.0.patch                 | simplified subsumption                       | no            |
 | Cabal-3.0.2.0.patch                 | simplified subsumption                       | no            |
 | Cabal-3.2.1.0.patch                 | simplified subsumption                       | no            |
@@ -51,6 +51,8 @@ This gave us the following table:
 | singletons-3.0.2.patch              | add TypeAbstractions as a language extension | yes           |
 | singletons-base-3.1.1.patch         | add TypeAbstractions as a language extension | yes           |
 | vector-space-0.16.patch             | Star is type (4)                             | yes           |
+
+|--
 
 `th-compat-0.1.4.patch` was miscounted so I left that out.
 Simplified subsumption appears a lot but 3 are for Cabal,
