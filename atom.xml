@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-11-30T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Analyzing language extension semantics</title>
+        <published>2025-11-30T00:00:00+00:00</published>
+        <updated>2025-11-30T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/investigating-language-extension-semantics/"/>
+        <id>https://blog.haskell.org/investigating-language-extension-semantics/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/investigating-language-extension-semantics/">&lt;p&gt;Hi I&#x27;m &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;jappie.me&quot;&gt;Jappie&lt;&#x2F;a&gt; and I volunteer for the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;stability-working-group&#x2F;&quot;&gt;Haskell Foundation Stability Working Group&lt;&#x2F;a&gt;.
+Recently we analyzed the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;ghc&#x2F;head.hackage&quot;&gt;head.hackage&lt;&#x2F;a&gt; patches to understand
+why code breaks on new GHC releases.
+&quot;head.hackage&quot; is a repository of patches for Hackage.
+GHC engineers use these to test out new GHC builds on a wide range of
+Hackage packages without having to upstream&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#upstream&quot;&gt;1&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt; a patch, which can take time.
+Instead, they can put the patch in &quot;head.hackage&quot;
+and immediately test it on a wide range of packages.
+Surprisingly, most breakage wasn’t caused by
+&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;ghc&#x2F;doc&#x2F;users_guide&#x2F;exts&#x2F;template_haskell.html&quot;&gt;Template Haskell&lt;&#x2F;a&gt;,
+it came from deeper semantic changes in language extensions.
+The meaning of (some) language extensions changed between GHC releases.
+This post walks through the main categories of breakage,
+why they happened, and what they tell us about long-term stability.
+If you care about a smoother upgrade path for Haskell users,
+we invite you to participate in the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;stability-working-group&#x2F;&quot;&gt;Haskell Foundation Stability Working Group&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Extending our initial &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;jappie.me&#x2F;analyzing-haskell-stability.html&quot;&gt;investigation&lt;&#x2F;a&gt;,
+We&#x27;re also interested in understanding &lt;em&gt;why&lt;&#x2F;em&gt; breakage occurs.
+So we&#x27;ve recently done further analysis on &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;head.hackage&#x2F;&quot;&gt;head.hackage&lt;&#x2F;a&gt;,
+and learned surprisingly enough that the root cause
+of a lot of breakage isn&#x27;t Template Haskell,
+but seems to be from language extension semantics&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#meaning&quot;&gt;2&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;.
+We&#x27;re doing this investigation to understand better where efforts
+should be focused in improving stability.&lt;&#x2F;p&gt;
+&lt;p&gt;This gave us the following table:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Name&lt;&#x2F;th&gt;&lt;th&gt;Cause&lt;&#x2F;th&gt;&lt;th&gt;Had warnings?&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Cabal-2.4.1.0.patch&lt;&#x2F;td&gt;&lt;td&gt;simplified subsumption&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Cabal-3.0.2.0.patch&lt;&#x2F;td&gt;&lt;td&gt;simplified subsumption&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Cabal-3.2.1.0.patch&lt;&#x2F;td&gt;&lt;td&gt;simplified subsumption&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;data-r-tree-0.6.0.patch&lt;&#x2F;td&gt;&lt;td&gt;parser change (see 1)&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;drinkery-0.4.patch&lt;&#x2F;td&gt;&lt;td&gt;simplified subsumption&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;ghc-lib-parser-9.8.1.20231121.patch&lt;&#x2F;td&gt;&lt;td&gt;rename forall identifiers (2)&lt;&#x2F;td&gt;&lt;td&gt;yes&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;hgeometry-ipe-0.13.patch&lt;&#x2F;td&gt;&lt;td&gt;Instances moved due to splice enforcement&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;singletons-3.0.2.patch&lt;&#x2F;td&gt;&lt;td&gt;add TypeAbstractions as a language extension&lt;&#x2F;td&gt;&lt;td&gt;yes&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;singletons-base-3.1.1.patch&lt;&#x2F;td&gt;&lt;td&gt;add TypeAbstractions as a language extension&lt;&#x2F;td&gt;&lt;td&gt;yes&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;vector-space-0.16.patch&lt;&#x2F;td&gt;&lt;td&gt;Star is type (4)&lt;&#x2F;td&gt;&lt;td&gt;yes&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;&lt;code&gt;th-compat-0.1.4.patch&lt;&#x2F;code&gt; was miscounted so I left that out.
+Simplified subsumption appears a lot but 3 are for Cabal,
+so it&#x27;s only 2 real occurrences.
+I&#x27;d expect that to appear a lot however,
+because it was one of &lt;em&gt;the&lt;&#x2F;em&gt; motivating changes for a &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;stability-working-group&#x2F;&quot;&gt;stability working group&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;simplified-subsumption&quot;&gt;Simplified subsumption&lt;&#x2F;h2&gt;
+&lt;p&gt;For the blissfully ignorant reader simplified subsumption causes you
+to do this under certain existential conditions:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-header z-from-file&quot;&gt;&lt;span class=&quot;z-meta z-header z-from-file z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-from-file z-diff&quot;&gt;---&lt;&#x2F;span&gt; a&#x2F;Distribution&#x2F;Simple&#x2F;Utils.hs
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-header z-to-file&quot;&gt;&lt;span class=&quot;z-meta z-header z-to-file z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-to-file z-diff&quot;&gt;+++&lt;&#x2F;span&gt; b&#x2F;Distribution&#x2F;Simple&#x2F;Utils.hs
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-range z-unified&quot;&gt;&lt;span class=&quot;z-meta z-range z-unified z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-toc-list z-line-number z-diff&quot;&gt;-1338,7 +1338,7&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt; &lt;span class=&quot;z-entity z-name z-section z-diff&quot;&gt;withTempFileEx opts tmpDir template action =&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;     (\(name, handle) -&amp;gt; do hClose handle
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;                            unless (optKeepTempFiles opts) $
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;                              handleDoesNotExist () . removeFile $ name)
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    (withLexicalCallStack (uncurry action))
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    (withLexicalCallStack (\x -&amp;gt; uncurry action x))
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;You have to insert a lambda, which apparently has some performance impact.
+This had a big impact on &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.yesodweb.com&#x2F;book&quot;&gt;Yesod stacks&lt;&#x2F;a&gt;,
+whose code generation helpfully created
+the database alias in the template:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;haskell&quot; class=&quot;language-haskell z-code&quot;&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;type&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;DB&lt;&#x2F;span&gt; a &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&lt;&#x2F;span&gt; forall (m &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;::&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Type&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Type&lt;&#x2F;span&gt;)&lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;.&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;    (&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;MonadUnliftIO&lt;&#x2F;span&gt; m) &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;ReaderT&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;SqlBackend&lt;&#x2F;span&gt; m a
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Normally this is quite convenient,
+however with the simplified subsumption change,
+any code that interacts with the database now has to insert those lambdas.
+As you can imagine this would in many places for a commercial code base.
+Causing a lot of compile errors for industrial users.
+Instead of inserting lambdas, you can also delete those existential aliases to solve the problem.
+Or you can enable the language extension: &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;~ghc&#x2F;9.12.2&#x2F;docs&#x2F;users_guide&#x2F;exts&#x2F;rank_polymorphism.html#extension-DeepSubsumption&quot;&gt;DeepSubsumption&lt;&#x2F;a&gt;.
+Which restores the original behavior.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;moving-of-instances-due-to-template-haskell&quot;&gt;Moving of instances due to Template Haskell&lt;&#x2F;h2&gt;
+&lt;p&gt;This change forces you to put the instances above the splice where
+they are being used in the same module.
+A dear colleague decided to generate instances in Template Haskell.
+That was quite the puzzle!
+I asked the GHC devs why they did this,
+and it turns out this was a soundness issue in the typechecker.
+Here, soundness means the type system can&#x27;t be tricked into allowing invalid programs.
+So the community is better off, despite this causing a fair bit of work.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-header z-from-file&quot;&gt;&lt;span class=&quot;z-meta z-header z-from-file z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-from-file z-diff&quot;&gt;---&lt;&#x2F;span&gt; a&#x2F;src&#x2F;Ipe&#x2F;Content.hs
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-header z-to-file&quot;&gt;&lt;span class=&quot;z-meta z-header z-to-file z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-to-file z-diff&quot;&gt;+++&lt;&#x2F;span&gt; b&#x2F;src&#x2F;Ipe&#x2F;Content.hs
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-range z-unified&quot;&gt;&lt;span class=&quot;z-meta z-range z-unified z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-toc-list z-line-number z-diff&quot;&gt;-288,6 +288,14&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;instance Fractional r =&amp;gt; IsTransformable (IpeObject r) where
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;  transformBy t (IpeGroup i)     = IpeGroup     $ i&amp;amp;core %~ transformBy t
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt; ...
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt; makePrisms &amp;#39;&amp;#39;IpeObject
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-range z-unified&quot;&gt;&lt;span class=&quot;z-meta z-range z-unified z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-toc-list z-line-number z-diff&quot;&gt;-303,14 +311,6&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;instance Fractional r =&amp;gt; IsTransformable (IpeObject r) where
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;  transformBy t (IpeGroup i)     = IpeGroup     $ i&amp;amp;core %~ transformBy t
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt; ...
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;1-parser-change&quot;&gt;(1) Parser change&lt;&#x2F;h2&gt;
+&lt;p&gt;The parser is the component of the compiler that transforms text
+into a memory structure the compiler can work with.
+This structure is called an abstract syntax tree.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;      Node4 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a), getC3 :: ! (RTree a), getC4 :: ! (RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    | Node3 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a), getC3 :: ! (RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    | Node2 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;      Node4 {getMBB :: {-# UNPACK #-} !MBB, getC1 :: !(RTree a), getC2 :: !(RTree a), getC3 :: !(RTree a), getC4 :: !(RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    | Node3 {getMBB :: {-# UNPACK #-} !MBB, getC1 :: !(RTree a), getC2 :: !(RTree a), getC3 :: !(RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    | Node2 {getMBB :: {-# UNPACK #-} !MBB, getC1 :: !(RTree a), getC2 :: !(RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;     | Node  {getMBB ::                  MBB, getChildren&amp;#39; :: [RTree a] }
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    | Leaf  {getMBB :: {-# UNPACK #-} ! MBB, getElem :: a}
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    | Leaf  {getMBB :: {-# UNPACK #-} !MBB, getElem :: a}
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;     | Empty
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This is a change from all the way back in 2020, where the &lt;em&gt;core&lt;&#x2F;em&gt; language changed by
+disallowing &lt;code&gt;!&lt;&#x2F;code&gt; before parens.
+Here the bang &lt;code&gt;!&lt;&#x2F;code&gt; indicates strict fields.
+Technically this doesn&#x27;t fit into the category
+because the core language isn&#x27;t a language extension.
+But semantics did change!
+Actually I don&#x27;t think we expected to find something like this at all.
+I&#x27;m not sure how relevant this is to discuss further because it appears
+quite rare for someone to do this.
+You can enable &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;latest&#x2F;docs&#x2F;users_guide&#x2F;exts&#x2F;strict.html#extension-StrictData&quot;&gt;StrictData&lt;&#x2F;a&gt;
+in your Cabal file and delete all those bangs!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;2-rename-forall-identifiers&quot;&gt;(2) Rename forall identifiers&lt;&#x2F;h2&gt;
+&lt;p&gt;This changes the forall identifier into a keyword at term level.
+It already was at the type level.
+The issue is discussed &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;ghc&#x2F;ghc&#x2F;-&#x2F;issues&#x2F;23719&quot;&gt;here&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt; hintExplicitForall :: Located Token -&amp;gt; P ()
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt; hintExplicitForall tok = do
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    forall   &amp;lt;- getBit ExplicitForallBit
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    forAll   &amp;lt;- getBit ExplicitForallBit
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;     rulePrag &amp;lt;- getBit InRulePragBit
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    unless (forall || rulePrag) $ addError $ mkPlainErrorMsgEnvelope (getLoc tok) $
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    unless (forAll || rulePrag) $ addError $ mkPlainErrorMsgEnvelope (getLoc tok) $
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;       (PsErrExplicitForall (isUnicode tok))
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;3-typeabstractions&quot;&gt;(3) TypeAbstractions&lt;&#x2F;h2&gt;
+&lt;p&gt;From what I understand from the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;ghc&#x2F;doc&#x2F;users_guide&#x2F;exts&#x2F;type_abstractions.html#type-abstractions&quot;&gt;manual&lt;&#x2F;a&gt;
+is that part of the syntax for type abstractions landed in GHC 9.2,
+however 9.8 and onwards requires you to enable this language extension.
+This appeared because certain new functionality was introduced behind an
+old language extension flag, according to &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ghc-proposals&#x2F;ghc-proposals&#x2F;blob&#x2F;master&#x2F;proposals&#x2F;0448-type-variable-scoping.rst#4type-arguments-in-constructor-patterns&quot;&gt;this proposal&lt;&#x2F;a&gt;. It says we don&#x27;t want to introduce new functionality behind established extensions,
+so that&#x27;s why we require TypeAbstractions now,
+where previously ScopedTypeVariables and TypeApplications were enough.&lt;&#x2F;p&gt;
+&lt;p&gt;This extension enables you to bind type variables in pattern matches.
+I don&#x27;t know why this happened like this, but it happened in 2023:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;-- Invisible type binders in type declarations, such as
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;--
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;--   type family Sing @k
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;--
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;-- require the TypeAbstractions extension.
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;#if __GLASGOW_HASKELL__ &amp;gt;= 909
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;{-# LANGUAGE TypeAbstractions #-}
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;#endif
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;4-star-is-type&quot;&gt;(4) Star is type&lt;&#x2F;h2&gt;
+&lt;p&gt;This change was announced via a warning.
+It tells users to write &lt;code&gt;Type&lt;&#x2F;code&gt; instead of &lt;code&gt;*&lt;&#x2F;code&gt; for kinds representing types.
+A kind is essentially the type of a type,
+and as a concept is used for type-level programming type safety.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;  type Basis v :: *
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;  type Basis v :: Type
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;Often these breakages are annoying and frustrating.
+But if we look deeper, we find that each of them has
+a little story
+and good reasons for being introduced.
+If you find this all as interesting as I do,
+please consider joining some of the stability
+working group meetings!&lt;&#x2F;p&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;upstream&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;1&lt;&#x2F;sup&gt;
+&lt;p&gt;Upstreaming is the process of sending a patch to the “maintainers” of an open-source project. The maintainers will then make the patch ‘official’ by merging it. In principle, the process is simple, but in practice, the burden of proof (especially for larger projects) is on the person who submitted the patch. They have to convince the maintainers that the patch is useful, which takes time in the form of communication&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;meaning&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;2&lt;&#x2F;sup&gt;
+&lt;p&gt;The precise meaning of features enabled by language extensions. I guess parser changes also count.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Google Summer of Code 2025 Wrap-up</title>
+        <published>2025-11-24T00:00:00+00:00</published>
+        <updated>2025-11-24T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/gsoc-2025/"/>
+        <id>https://blog.haskell.org/gsoc-2025/</id>
+        
+        <summary type="html">&lt;p&gt;The Haskell.org committee is pleased to present the results of Haskell&#x27;s
+participation in the Google Summer of Code 2025. This marks our 14th time
+taking part in GSoC!&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC 9.14.1-alpha1 is now available</title>
+        <published>2025-08-19T00:00:00+00:00</published>
+        <updated>2025-08-19T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-9-14-1-alpha1/"/>
+        <id>https://blog.haskell.org/ghc-9-14-1-alpha1/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/ghc-9-14-1-alpha1/">&lt;p&gt;The GHC developers are very pleased to announce the availability of the
+first alpha prerelease of GHC 9.14.1. Binary distributions, source
+distributions, and documentation are available at &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;9.14.1-alpha1&quot;&gt;downloads.haskell.org&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;GHC 9.14 will bring a number of new features and improvements, including:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Significant improvements in specialisation:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;SPECIALISE&lt;&#x2F;code&gt; pragma now allows use of type application syntax&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;SPECIALISE&lt;&#x2F;code&gt; pragma can be used to specialise for expression arguments
+as well as type arguments.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Specialisation is now considerably more reliable in the presence of
+&lt;code&gt;newtype&lt;&#x2F;code&gt;s&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;the specialiser is now able to produce specialisations with
+polymorphic typeclass constraints, considerably broadening its scope.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Significant improvements in the GHCi debugger&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Record fields can be defined to be non-linear when &lt;code&gt;LinearTypes&lt;&#x2F;code&gt; is enabled.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;RequiredTypeArgments&lt;&#x2F;code&gt; can now be used in more contexts&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;SSE&#x2F;AVX support in the x86 native code generator backend&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;A major update of the Windows toolchain&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;... and many more&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;A full accounting of changes can be found in the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;9.14.1-alpha1&#x2F;docs&#x2F;users_guide&#x2F;9.14.1-notes.html&quot;&gt;release notes&lt;&#x2F;a&gt;. Given the
+many specialisation improvements and their potential for regression, we would
+very much appreciate testing and performance characterisation on downstream
+workloads.&lt;&#x2F;p&gt;
+&lt;p&gt;Due to unexpected complications, this initial prerelease comes a bit later than
+expected. Consequently, we expect to have three condensed alphas prior to the
+release candidate. We expect the next alpha
+will come the week of 9 Sept. 2025, while the third will come 23 Sept. 2025,
+with the release candidate coming 7 Oct. 2025.&lt;&#x2F;p&gt;
+&lt;p&gt;We would like to thank the Zw3rk stake pool,
+Well-Typed, Mercury, Channable, Tweag I&#x2F;O, Serokell, SimSpace, the Haskell
+Foundation, and other anonymous contributors whose on-going financial
+and in-kind support has facilitated GHC maintenance and release
+management over the years. Finally, this release would not have been
+possible without the hundreds of open-source contributors whose work
+comprise this release.&lt;&#x2F;p&gt;
+&lt;p&gt;As always, do give this release a try and open a &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;ghc&#x2F;homepage&#x2F;-&#x2F;issues&#x2F;new&quot;&gt;ticket&lt;&#x2F;a&gt; if you see
+anything amiss.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Cabal 3.16 release</title>
+        <published>2025-07-24T00:00:00+00:00</published>
+        <updated>2025-07-24T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/cabal-3-16-0-0-release/"/>
+        <id>https://blog.haskell.org/cabal-3-16-0-0-release/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/cabal-3-16-0-0-release/">&lt;p&gt;The Cabal release team brings you a new release of the cabal-install tool and accompanying libraries, version 3.16.0.0. This release supports the (not yet available) GHC 9.14, including its upcoming alpha. We expect to publish cabal-install 3.16.1.0 soon after GHC 9.14 is out and address any discovered issues and incompatibilities that can be fixed in the respective timeframe.&lt;&#x2F;p&gt;
+&lt;p&gt;The binaries for cabal-install are available:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;In the GHCup main channel (we thank the GHCup maintainers for the swift support of our release).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;cabal&#x2F;cabal-install-3.16.0.0&#x2F;&quot;&gt;On our website&lt;&#x2F;a&gt; (the same set of binaries can also be installed via the GHCup vanilla channel); these binaries are signed by &quot;Francesco Ariis &lt;a href=&quot;mailto:francesco@ariis.it&quot;&gt;francesco@ariis.it&lt;&#x2F;a&gt;&quot; (fingerprint: &lt;code&gt;DAFB 4D8A F684 1435 18D5  051F A9AF 0AAA 6B87 EC51&lt;&#x2F;code&gt;; the key is hosted on keyserver.ubuntu.com).&lt;&#x2F;li&gt;
+&lt;li&gt;As usual, &lt;code&gt;cabal update &amp;amp;&amp;amp; cabal install cabal-install-3.16.0.0&lt;&#x2F;code&gt; is an option too.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;what-s-new&quot;&gt;What&#x27;s new&lt;&#x2F;h3&gt;
+&lt;p&gt;Some of the cool features in the release:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The new &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cabal.readthedocs.io&#x2F;en&#x2F;stable&#x2F;cabal-commands.html#cabal-target&quot;&gt;&lt;code&gt;cabal target&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; command;&lt;&#x2F;li&gt;
+&lt;li&gt;Faster Git clones;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;cabal haddock-project&lt;&#x2F;code&gt; handles user-provided CSS;&lt;&#x2F;li&gt;
+&lt;li&gt;Multiple &lt;code&gt;flags&lt;&#x2F;code&gt; stanzas in &lt;code&gt;cabal.project&lt;&#x2F;code&gt; accumulate values instead of using the last one;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;cabal gen-bounds&lt;&#x2F;code&gt; works with multi-package projects (i.e., embraces the &lt;code&gt;v2&lt;&#x2F;code&gt;-commands infrastructure);&lt;&#x2F;li&gt;
+&lt;li&gt;Cabal multi-repl supports reexported-modules with renaming for GHC &amp;gt;= 9.12, and more!&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;See the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;blob&#x2F;master&#x2F;release-notes&#x2F;cabal-install-3.16.0.0.md&quot;&gt;cabal-install release notes on Github&lt;&#x2F;a&gt; for the full changelog. Power users may be interested in &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;blob&#x2F;master&#x2F;release-notes&#x2F;Cabal-3.16.0.0.md&quot;&gt;Cabal-the-library notes&lt;&#x2F;a&gt; too.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-16-0-0-contributors&quot;&gt;3.16.0.0 Contributors&lt;&#x2F;h3&gt;
+&lt;p&gt;The credits go to: Andreas Abel, Andreas Klebinger, Artem Pelenitsyn, Benjamin, Benjamin McRae, Berk Özkütük, Bodigrim, brandon s allbery kf8nh, Bryan Richter, Francesco Ariis, Francesco Gazzetta, Gleb Popov, Hécate Moonlight, James Blackburn, Jaro, Jasper Van der Jeugt, Javier Sagredo, Jens Petersen, Kazu Yamamoto, Kevin Quick, Leonid Znamenok, malteneuss, Matthew Pickering, Matt Parsons, Mike Pilgrem, Mikolaj Konarski, Moritz Angermann, noiioiu, parsonsmatt, Peter Becich, Phil de Joux, PHO, Praneya Kumar, Rebecca Turner, Rodrigo Mesquita, Sdywolf, Serge S. Gulin, Sergey Vinokurov, sheaf, Sylvain Henry, Teo Camarasu, theGhostJW, Tom Smeding, Trevis, Troels Henriksen, Yi Fang, Yuto Takano, zlonast, Zubin Duggal.&lt;&#x2F;p&gt;
+&lt;p&gt;We thank all the contributors as well as our reviewers, QA testers, devops, and others without whom this release wouldn’t be possible.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;feedback&quot;&gt;Feedback&lt;&#x2F;h3&gt;
+&lt;p&gt;Please report any issues you notice with the 3.16.0.0 release on our GitHub: &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;issues&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;issues&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;— Cabal release team (Artem, Brandon, Francesco, Mikołaj)&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC LTS Releases</title>
+        <published>2025-07-07T00:00:00+00:00</published>
+        <updated>2025-07-07T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-lts-releases/"/>
+        <id>https://blog.haskell.org/ghc-lts-releases/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/ghc-lts-releases/">&lt;h1 id=&quot;ghc-will-start-maintaining-an-lts-release-branch-in-the-near-future&quot;&gt;GHC will start maintaining an LTS release&#x2F;branch in the near future&lt;&#x2F;h1&gt;
+&lt;p&gt;A release being designated LTS (Long Term Support) in this case means we plan
+to support it over a longer timeframe than usual.&lt;&#x2F;p&gt;
+&lt;p&gt;Concretely the plan is to provide updates for a LTS releases for &lt;em&gt;at least&lt;&#x2F;em&gt; two
+years. Most likely we will support LTS releases for even longer than that,
+aiming for a support window of three years currently.&lt;&#x2F;p&gt;
+&lt;p&gt;During this time we will be providing minor releases fixing bugs as with any
+other release. The main difference being that we will do so for a longer period
+of time.&lt;&#x2F;p&gt;
+&lt;p&gt;There are no plans to backport any new features to LTS releases after their
+initial release.&lt;&#x2F;p&gt;
+&lt;p&gt;In terms of frequency of LTS releases we plan to have an overlap between LTS
+support windows of different LTS series of six months.&lt;&#x2F;p&gt;
+&lt;p&gt;A potential timeline might then look like this:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;z-code&quot;&gt;&lt;code&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2025 Aug - LTS 9.14 released
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2028 Spring - LTS 9.22 released
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2028 Summer - LTS 9.14.X - last 9.14 point release
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2031 Spring - LTS 9.X released
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2031 Summer - Last 9.22 point release
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;…
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;non-lts-releases&quot;&gt;Non-LTS releases&lt;&#x2F;h1&gt;
+&lt;p&gt;GHC will continue to release new major non-lts releases on a ~6 Month cadence.
+We expect to cut back on the lifetime of these releases slightly, dedicating
+the resources freed up this way to enable a longer support window for the LTS
+releases.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;why-lts-releases&quot;&gt;Why LTS releases?&lt;&#x2F;h1&gt;
+&lt;p&gt;In practice some releases always saw more adoption than others by users. The
+GHC Team has not been blind to this fact and has at times informally extended
+the life of a certain release based on this as well.&lt;&#x2F;p&gt;
+&lt;p&gt;This resulted in a sort of informal &quot;post-hoc LTS&quot; status of releases. At times
+with support windows not much shorter than our proposed minimum of two years.&lt;&#x2F;p&gt;
+&lt;p&gt;This worked reasonable well for people who were confident to stay on a fairly
+old release, only upgrading to a newer &quot;post-hoc LTS&quot; once the dust settled. It
+also worked out for those who picked one of those &quot;post-hoc LTS&quot; releases by
+happenstance before it was clear the release would end up as &quot;post-hoc LTS&quot;.&lt;&#x2F;p&gt;
+&lt;p&gt;However users who adopted major releases which did not end up as &quot;post-hoc LTS&quot;
+often had to choose between upgrading earlier than expected, or risk running
+into a show stopping bug after the support window of the release had already
+ended. Similarly much of this was based on informal community sentiment and
+rarely written down explicitly. Making this information hard to access for
+members not deeply involved in the day to day of the haskell community.&lt;&#x2F;p&gt;
+&lt;p&gt;By designating a major release as LTS ahead of time we hope that users can make
+a informed decision about which GHC version they pick. Making it clear what the
+tradeoffs will be. With a clear choice between a longer support window or the
+newest features.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;why-not-make-post-hoc-lts-releases-official-instead&quot;&gt;Why not make post-hoc LTS releases official instead?&lt;&#x2F;h1&gt;
+&lt;p&gt;This is a question that has come up a lot in discussion. The major downsides of
+this are a lack of predictability, and that a lot of time might be lost between
+the initial release and any such decision. If we declare a release as LTS 9
+months after its .1 release we essentially shaved off months from the LTS
+support window.&lt;&#x2F;p&gt;
+&lt;p&gt;On the flip side if we announce it ahead of time everyone knows that a given
+release will be the new LTS. So the hope is that this encourages more and
+quicker support for the release by the community. Hopefully compressing the
+timeline of bug fixing, testing and eventual widespread adoption.&lt;&#x2F;p&gt;
+&lt;p&gt;Overall I&#x27;m hopeful that LTS releases being explicit will remove a lot of
+ambiguity around GHC versions. And while the guaranteed LTS support window
+might not be as long as one might hope having LTS releases with longer
+guaranteed support window should still be helpful to people working on long
+running haskell projects.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;next-steps&quot;&gt;Next steps&lt;&#x2F;h1&gt;
+&lt;p&gt;The first LTS release will be GHC 9.14, which will be released this summer!&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Haskell Language Server 2.10.0.0 release</title>
+        <published>2025-04-15T00:00:00+00:00</published>
+        <updated>2025-04-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/hls-2-10-0-0/"/>
+        <id>https://blog.haskell.org/hls-2-10-0-0/</id>
+        
+        <summary type="html">&lt;p&gt;The HLS Team is proud to announce the new release of the Haskell Language Server &lt;code&gt;2.10.0.0&lt;&#x2F;code&gt;!&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Introducing the Haskell Foundation Stability Working Group</title>
+        <published>2025-03-31T00:00:00+00:00</published>
+        <updated>2025-03-31T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/stability-working-group/"/>
+        <id>https://blog.haskell.org/stability-working-group/</id>
+        
+        <summary type="html">&lt;p&gt;What is stability? What has the Haskell Foundation Stability Working Group been working on?&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Case Study — Using a JavaScript component inside a Haskell application</title>
+        <published>2025-01-08T00:00:00+00:00</published>
+        <updated>2025-01-08T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/case-study-foreign-integration-js-browser/"/>
+        <id>https://blog.haskell.org/case-study-foreign-integration-js-browser/</id>
+        
+        <summary type="html">&lt;p&gt;GHC since version 9.8 allows us to create callbacks from JS to Haskell code, which enables us to create full-fledged browser apps.
+This article shows how to use the JS backend with foreign component libraries.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC 9.12 &amp; Cabal 3.14 releases</title>
+        <published>2025-01-06T00:00:00+00:00</published>
+        <updated>2025-01-06T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-9-12-cabal-3-14/"/>
+        <id>https://blog.haskell.org/ghc-9-12-cabal-3-14/</id>
+        
+        <summary type="html">&lt;p&gt;To conclude the year 2024, the GHC and Cabal teams are happy to announce the releases of GHC 9.12 and cabal 3.14.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>How to collect performance statistics with Cabal</title>
+        <published>2024-12-23T00:00:00+00:00</published>
+        <updated>2024-12-23T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/"/>
+        <id>https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/</id>
+        
+        <summary type="html">&lt;p&gt;The &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cabal.readthedocs.io&#x2F;en&#x2F;latest&#x2F;&quot;&gt;Cabal Manual&lt;&#x2F;a&gt; now has a guide on how to collect performance statistics of Haskell applications.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Google Summer of Code 2024 Wrap-up</title>
+        <published>2024-11-21T00:00:00+00:00</published>
+        <updated>2024-11-21T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/gsoc-2024/"/>
+        <id>https://blog.haskell.org/gsoc-2024/</id>
+        
+        <summary type="html">&lt;p&gt;The Haskell.org committee is pleased to present the results of Haskell&#x27;s
+participation in the Google Summer of Code 2024. This marks our 13th time
+taking part in GSoC!&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Haskell.org and the Haskell Foundation Join Forces</title>
+        <published>2024-09-25T00:00:00+00:00</published>
+        <updated>2024-09-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/haskell-foundation-and-committee-merger/"/>
+        <id>https://blog.haskell.org/haskell-foundation-and-committee-merger/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/haskell-foundation-and-committee-merger/">&lt;p&gt;The members of the Haskell.org Committee (the Committee) and the directors of the Haskell Foundation (the Foundation) are pleased to announce that we have joined forces, with the aim (subject to regulatory approval) of merging Haskell.org, Inc. and Haskell Foundation, Inc. into a single not-for-profit corporation. Together we continue our common mission to advance functional programming and to advocate for the Haskell language, its ecosystem, and its community.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-committee&quot;&gt;The Committee&lt;&#x2F;h2&gt;
+&lt;p&gt;The Committee has a long history of supporting the Haskell community and ecosystem, supervising the resources under the &quot;haskell.org&quot; domain, including the www.haskell.org website, Hackage, Discourse, and the Haskell mailing lists, as well as organizing events such as Haskell.org’s participation in Google Summer of Code and the Haskell Summer of Code.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-foundation&quot;&gt;The Foundation&lt;&#x2F;h2&gt;
+&lt;p&gt;The Foundation is a newer organization, dedicated to broadening the adoption of Haskell by supporting its ecosystem of tools, libraries, education, and research. It has had similar goals to Haskell.org, and been engaged in complementary activities. Amongst its activities, it facilitates cross-team collaboration on fundamental tooling (e.g. Cabal, Stack, GHCup and the Haskell Language Server), hosts Stackage, financially supports the development of essential ecosystem components (e.g. the GHCup project and Botan bindings), runs workshops that help new contributors to fundamental tooling, and actively seeks financial sponsorship to help fund these efforts.&lt;&#x2F;p&gt;
+&lt;p&gt;Both corporations are Not-for-Profit corporations and Haskell.org Inc. has also been recognised as exempt from taxation in the USA. For that reason, most of the transactions of the Foundation are conducted by Haskell.org, Inc. One of the biggest factors in the desire to merge corporate entities is to make it easier to manage the legal and financial responsibilities around non-profit status and holding funds. Having only one corporation would also address a source of confusion for donors and sponsors.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-next&quot;&gt;What Next?&lt;&#x2F;h2&gt;
+&lt;p&gt;The Committee will continue to serve the community as an important committee of the Foundation. The Committee will retain all its current responsibilities, including independent editorial control of the Haskell.org website. It will also continue to oversee much of the Haskell community infrastructure and manage Haskell&#x27;s participation in Google Summer of Code.&lt;&#x2F;p&gt;
+&lt;p&gt;Joining forces allows us to better share resources and work together while at the same time allowing the Committee (as part of the Foundation) to retain its independence over its domain.&lt;&#x2F;p&gt;
+&lt;p&gt;The Committee members and the directors of the Foundation remain deeply grateful for the opportunity to serve the Haskell community. We look forward to continuing this support with greater effectiveness and efficiency as a single unified organization.&lt;&#x2F;p&gt;
+&lt;p&gt;Sincerely,&lt;br &#x2F;&gt;
+The Haskell.org Committee and The Haskell Foundation&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Documentation Best Practices in 2024</title>
+        <published>2024-09-15T00:00:00+00:00</published>
+        <updated>2024-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/documentation-best-practices-in-2024/"/>
+        <id>https://blog.haskell.org/documentation-best-practices-in-2024/</id>
+        
+        <summary type="html">&lt;p&gt;In the Haddock team, part of our mission is to help with writing documentation, and promoting best practices. This article will help you write the best documentation you can!&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>JavaScript Code Minification Report</title>
+        <published>2024-09-15T00:00:00+00:00</published>
+        <updated>2024-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/report-of-js-code-minification/"/>
+        <id>https://blog.haskell.org/report-of-js-code-minification/</id>
+        
+        <summary type="html">&lt;p&gt;The JavaScript world has been battling for low bundle size from the very beginning.
+It is now our turn to enter the battle&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>The Haskell Playground</title>
+        <published>2024-09-15T00:00:00+00:00</published>
+        <updated>2024-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/the-haskell-playground/"/>
+        <id>https://blog.haskell.org/the-haskell-playground/</id>
+        
+        <summary type="html">&lt;p&gt;The playground (&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;play.haskell.org&quot;&gt;play.haskell.org&lt;&#x2F;a&gt;) allows you to run single-file Haskell programs right from your browser, and share them with others.
+In this post, I will introduce the playground and give some implementation details.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Welcome</title>
+        <published>2024-09-14T00:00:00+00:00</published>
+        <updated>2024-09-14T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/intro/"/>
+        <id>https://blog.haskell.org/intro/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/intro/">&lt;p&gt;The Haskell Ecosystem plays host to some amazing projects. Talented developers spend significant amounts of time, often their free time, helping develop, maintain, and support this ecosystem that all Haskell developers use. This space is for all of the developer teams that work on Haskell core infrastructure and power the Haskell Ecosystem.&lt;&#x2F;p&gt;
+&lt;p&gt;This blog will provide a space for these efforts to communicate with the wider Haskell community. Things you might see here: calls for volunteers, project updates, requests for comments&#x2F;feedback.&lt;&#x2F;p&gt;
+&lt;p&gt;Blogs also form a key part of an ecosystem’s documentation. We’d like to take this idea to its conclusion in the Haskell ecosystem and provide a place for this high-value documentation to live and be maintained. In addition to helping out with editing, by hosting the posts here we’ll also have shared responsibility for maintaining the blog posts, helping prevent the all-too-common bit-rot that occurs on blog posts.&lt;&#x2F;p&gt;
+&lt;p&gt;There are already a few posts to get the ball rolling. We’re really excited to share these thoughts with you all.&lt;&#x2F;p&gt;
+&lt;p&gt;Happy Hacking,&lt;&#x2F;p&gt;
+&lt;p&gt;José Manuel Calderón Trilla&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

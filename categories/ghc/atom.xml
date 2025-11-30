@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog - GHC</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/categories/ghc/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-08-19T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/categories/ghc/atom.xml</id>
+    <entry xml:lang="en">
+        <title>GHC 9.14.1-alpha1 is now available</title>
+        <published>2025-08-19T00:00:00+00:00</published>
+        <updated>2025-08-19T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-9-14-1-alpha1/"/>
+        <id>https://blog.haskell.org/ghc-9-14-1-alpha1/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/ghc-9-14-1-alpha1/">&lt;p&gt;The GHC developers are very pleased to announce the availability of the
+first alpha prerelease of GHC 9.14.1. Binary distributions, source
+distributions, and documentation are available at &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;9.14.1-alpha1&quot;&gt;downloads.haskell.org&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;GHC 9.14 will bring a number of new features and improvements, including:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Significant improvements in specialisation:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;SPECIALISE&lt;&#x2F;code&gt; pragma now allows use of type application syntax&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;SPECIALISE&lt;&#x2F;code&gt; pragma can be used to specialise for expression arguments
+as well as type arguments.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Specialisation is now considerably more reliable in the presence of
+&lt;code&gt;newtype&lt;&#x2F;code&gt;s&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;the specialiser is now able to produce specialisations with
+polymorphic typeclass constraints, considerably broadening its scope.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Significant improvements in the GHCi debugger&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Record fields can be defined to be non-linear when &lt;code&gt;LinearTypes&lt;&#x2F;code&gt; is enabled.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;RequiredTypeArgments&lt;&#x2F;code&gt; can now be used in more contexts&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;SSE&#x2F;AVX support in the x86 native code generator backend&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;A major update of the Windows toolchain&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;... and many more&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;A full accounting of changes can be found in the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;9.14.1-alpha1&#x2F;docs&#x2F;users_guide&#x2F;9.14.1-notes.html&quot;&gt;release notes&lt;&#x2F;a&gt;. Given the
+many specialisation improvements and their potential for regression, we would
+very much appreciate testing and performance characterisation on downstream
+workloads.&lt;&#x2F;p&gt;
+&lt;p&gt;Due to unexpected complications, this initial prerelease comes a bit later than
+expected. Consequently, we expect to have three condensed alphas prior to the
+release candidate. We expect the next alpha
+will come the week of 9 Sept. 2025, while the third will come 23 Sept. 2025,
+with the release candidate coming 7 Oct. 2025.&lt;&#x2F;p&gt;
+&lt;p&gt;We would like to thank the Zw3rk stake pool,
+Well-Typed, Mercury, Channable, Tweag I&#x2F;O, Serokell, SimSpace, the Haskell
+Foundation, and other anonymous contributors whose on-going financial
+and in-kind support has facilitated GHC maintenance and release
+management over the years. Finally, this release would not have been
+possible without the hundreds of open-source contributors whose work
+comprise this release.&lt;&#x2F;p&gt;
+&lt;p&gt;As always, do give this release a try and open a &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;ghc&#x2F;homepage&#x2F;-&#x2F;issues&#x2F;new&quot;&gt;ticket&lt;&#x2F;a&gt; if you see
+anything amiss.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC LTS Releases</title>
+        <published>2025-07-07T00:00:00+00:00</published>
+        <updated>2025-07-07T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-lts-releases/"/>
+        <id>https://blog.haskell.org/ghc-lts-releases/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/ghc-lts-releases/">&lt;h1 id=&quot;ghc-will-start-maintaining-an-lts-release-branch-in-the-near-future&quot;&gt;GHC will start maintaining an LTS release&#x2F;branch in the near future&lt;&#x2F;h1&gt;
+&lt;p&gt;A release being designated LTS (Long Term Support) in this case means we plan
+to support it over a longer timeframe than usual.&lt;&#x2F;p&gt;
+&lt;p&gt;Concretely the plan is to provide updates for a LTS releases for &lt;em&gt;at least&lt;&#x2F;em&gt; two
+years. Most likely we will support LTS releases for even longer than that,
+aiming for a support window of three years currently.&lt;&#x2F;p&gt;
+&lt;p&gt;During this time we will be providing minor releases fixing bugs as with any
+other release. The main difference being that we will do so for a longer period
+of time.&lt;&#x2F;p&gt;
+&lt;p&gt;There are no plans to backport any new features to LTS releases after their
+initial release.&lt;&#x2F;p&gt;
+&lt;p&gt;In terms of frequency of LTS releases we plan to have an overlap between LTS
+support windows of different LTS series of six months.&lt;&#x2F;p&gt;
+&lt;p&gt;A potential timeline might then look like this:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;z-code&quot;&gt;&lt;code&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2025 Aug - LTS 9.14 released
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2028 Spring - LTS 9.22 released
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2028 Summer - LTS 9.14.X - last 9.14 point release
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2031 Spring - LTS 9.X released
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;2031 Summer - Last 9.22 point release
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;…
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;non-lts-releases&quot;&gt;Non-LTS releases&lt;&#x2F;h1&gt;
+&lt;p&gt;GHC will continue to release new major non-lts releases on a ~6 Month cadence.
+We expect to cut back on the lifetime of these releases slightly, dedicating
+the resources freed up this way to enable a longer support window for the LTS
+releases.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;why-lts-releases&quot;&gt;Why LTS releases?&lt;&#x2F;h1&gt;
+&lt;p&gt;In practice some releases always saw more adoption than others by users. The
+GHC Team has not been blind to this fact and has at times informally extended
+the life of a certain release based on this as well.&lt;&#x2F;p&gt;
+&lt;p&gt;This resulted in a sort of informal &quot;post-hoc LTS&quot; status of releases. At times
+with support windows not much shorter than our proposed minimum of two years.&lt;&#x2F;p&gt;
+&lt;p&gt;This worked reasonable well for people who were confident to stay on a fairly
+old release, only upgrading to a newer &quot;post-hoc LTS&quot; once the dust settled. It
+also worked out for those who picked one of those &quot;post-hoc LTS&quot; releases by
+happenstance before it was clear the release would end up as &quot;post-hoc LTS&quot;.&lt;&#x2F;p&gt;
+&lt;p&gt;However users who adopted major releases which did not end up as &quot;post-hoc LTS&quot;
+often had to choose between upgrading earlier than expected, or risk running
+into a show stopping bug after the support window of the release had already
+ended. Similarly much of this was based on informal community sentiment and
+rarely written down explicitly. Making this information hard to access for
+members not deeply involved in the day to day of the haskell community.&lt;&#x2F;p&gt;
+&lt;p&gt;By designating a major release as LTS ahead of time we hope that users can make
+a informed decision about which GHC version they pick. Making it clear what the
+tradeoffs will be. With a clear choice between a longer support window or the
+newest features.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;why-not-make-post-hoc-lts-releases-official-instead&quot;&gt;Why not make post-hoc LTS releases official instead?&lt;&#x2F;h1&gt;
+&lt;p&gt;This is a question that has come up a lot in discussion. The major downsides of
+this are a lack of predictability, and that a lot of time might be lost between
+the initial release and any such decision. If we declare a release as LTS 9
+months after its .1 release we essentially shaved off months from the LTS
+support window.&lt;&#x2F;p&gt;
+&lt;p&gt;On the flip side if we announce it ahead of time everyone knows that a given
+release will be the new LTS. So the hope is that this encourages more and
+quicker support for the release by the community. Hopefully compressing the
+timeline of bug fixing, testing and eventual widespread adoption.&lt;&#x2F;p&gt;
+&lt;p&gt;Overall I&#x27;m hopeful that LTS releases being explicit will remove a lot of
+ambiguity around GHC versions. And while the guaranteed LTS support window
+might not be as long as one might hope having LTS releases with longer
+guaranteed support window should still be helpful to people working on long
+running haskell projects.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;next-steps&quot;&gt;Next steps&lt;&#x2F;h1&gt;
+&lt;p&gt;The first LTS release will be GHC 9.14, which will be released this summer!&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Case Study — Using a JavaScript component inside a Haskell application</title>
+        <published>2025-01-08T00:00:00+00:00</published>
+        <updated>2025-01-08T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/case-study-foreign-integration-js-browser/"/>
+        <id>https://blog.haskell.org/case-study-foreign-integration-js-browser/</id>
+        
+        <summary type="html">&lt;p&gt;GHC since version 9.8 allows us to create callbacks from JS to Haskell code, which enables us to create full-fledged browser apps.
+This article shows how to use the JS backend with foreign component libraries.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC 9.12 &amp; Cabal 3.14 releases</title>
+        <published>2025-01-06T00:00:00+00:00</published>
+        <updated>2025-01-06T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-9-12-cabal-3-14/"/>
+        <id>https://blog.haskell.org/ghc-9-12-cabal-3-14/</id>
+        
+        <summary type="html">&lt;p&gt;To conclude the year 2024, the GHC and Cabal teams are happy to announce the releases of GHC 9.12 and cabal 3.14.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>JavaScript Code Minification Report</title>
+        <published>2024-09-15T00:00:00+00:00</published>
+        <updated>2024-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/report-of-js-code-minification/"/>
+        <id>https://blog.haskell.org/report-of-js-code-minification/</id>
+        
+        <summary type="html">&lt;p&gt;The JavaScript world has been battling for low bundle size from the very beginning.
+It is now our turn to enter the battle&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

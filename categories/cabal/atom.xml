@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog - Cabal</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/categories/cabal/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-07-24T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/categories/cabal/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Cabal 3.16 release</title>
+        <published>2025-07-24T00:00:00+00:00</published>
+        <updated>2025-07-24T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/cabal-3-16-0-0-release/"/>
+        <id>https://blog.haskell.org/cabal-3-16-0-0-release/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/cabal-3-16-0-0-release/">&lt;p&gt;The Cabal release team brings you a new release of the cabal-install tool and accompanying libraries, version 3.16.0.0. This release supports the (not yet available) GHC 9.14, including its upcoming alpha. We expect to publish cabal-install 3.16.1.0 soon after GHC 9.14 is out and address any discovered issues and incompatibilities that can be fixed in the respective timeframe.&lt;&#x2F;p&gt;
+&lt;p&gt;The binaries for cabal-install are available:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;In the GHCup main channel (we thank the GHCup maintainers for the swift support of our release).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;cabal&#x2F;cabal-install-3.16.0.0&#x2F;&quot;&gt;On our website&lt;&#x2F;a&gt; (the same set of binaries can also be installed via the GHCup vanilla channel); these binaries are signed by &quot;Francesco Ariis &lt;a href=&quot;mailto:francesco@ariis.it&quot;&gt;francesco@ariis.it&lt;&#x2F;a&gt;&quot; (fingerprint: &lt;code&gt;DAFB 4D8A F684 1435 18D5  051F A9AF 0AAA 6B87 EC51&lt;&#x2F;code&gt;; the key is hosted on keyserver.ubuntu.com).&lt;&#x2F;li&gt;
+&lt;li&gt;As usual, &lt;code&gt;cabal update &amp;amp;&amp;amp; cabal install cabal-install-3.16.0.0&lt;&#x2F;code&gt; is an option too.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;what-s-new&quot;&gt;What&#x27;s new&lt;&#x2F;h3&gt;
+&lt;p&gt;Some of the cool features in the release:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The new &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cabal.readthedocs.io&#x2F;en&#x2F;stable&#x2F;cabal-commands.html#cabal-target&quot;&gt;&lt;code&gt;cabal target&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; command;&lt;&#x2F;li&gt;
+&lt;li&gt;Faster Git clones;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;cabal haddock-project&lt;&#x2F;code&gt; handles user-provided CSS;&lt;&#x2F;li&gt;
+&lt;li&gt;Multiple &lt;code&gt;flags&lt;&#x2F;code&gt; stanzas in &lt;code&gt;cabal.project&lt;&#x2F;code&gt; accumulate values instead of using the last one;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;cabal gen-bounds&lt;&#x2F;code&gt; works with multi-package projects (i.e., embraces the &lt;code&gt;v2&lt;&#x2F;code&gt;-commands infrastructure);&lt;&#x2F;li&gt;
+&lt;li&gt;Cabal multi-repl supports reexported-modules with renaming for GHC &amp;gt;= 9.12, and more!&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;See the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;blob&#x2F;master&#x2F;release-notes&#x2F;cabal-install-3.16.0.0.md&quot;&gt;cabal-install release notes on Github&lt;&#x2F;a&gt; for the full changelog. Power users may be interested in &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;blob&#x2F;master&#x2F;release-notes&#x2F;Cabal-3.16.0.0.md&quot;&gt;Cabal-the-library notes&lt;&#x2F;a&gt; too.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-16-0-0-contributors&quot;&gt;3.16.0.0 Contributors&lt;&#x2F;h3&gt;
+&lt;p&gt;The credits go to: Andreas Abel, Andreas Klebinger, Artem Pelenitsyn, Benjamin, Benjamin McRae, Berk Özkütük, Bodigrim, brandon s allbery kf8nh, Bryan Richter, Francesco Ariis, Francesco Gazzetta, Gleb Popov, Hécate Moonlight, James Blackburn, Jaro, Jasper Van der Jeugt, Javier Sagredo, Jens Petersen, Kazu Yamamoto, Kevin Quick, Leonid Znamenok, malteneuss, Matthew Pickering, Matt Parsons, Mike Pilgrem, Mikolaj Konarski, Moritz Angermann, noiioiu, parsonsmatt, Peter Becich, Phil de Joux, PHO, Praneya Kumar, Rebecca Turner, Rodrigo Mesquita, Sdywolf, Serge S. Gulin, Sergey Vinokurov, sheaf, Sylvain Henry, Teo Camarasu, theGhostJW, Tom Smeding, Trevis, Troels Henriksen, Yi Fang, Yuto Takano, zlonast, Zubin Duggal.&lt;&#x2F;p&gt;
+&lt;p&gt;We thank all the contributors as well as our reviewers, QA testers, devops, and others without whom this release wouldn’t be possible.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;feedback&quot;&gt;Feedback&lt;&#x2F;h3&gt;
+&lt;p&gt;Please report any issues you notice with the 3.16.0.0 release on our GitHub: &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;issues&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;issues&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;— Cabal release team (Artem, Brandon, Francesco, Mikołaj)&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC 9.12 &amp; Cabal 3.14 releases</title>
+        <published>2025-01-06T00:00:00+00:00</published>
+        <updated>2025-01-06T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-9-12-cabal-3-14/"/>
+        <id>https://blog.haskell.org/ghc-9-12-cabal-3-14/</id>
+        
+        <summary type="html">&lt;p&gt;To conclude the year 2024, the GHC and Cabal teams are happy to announce the releases of GHC 9.12 and cabal 3.14.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>How to collect performance statistics with Cabal</title>
+        <published>2024-12-23T00:00:00+00:00</published>
+        <updated>2024-12-23T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/"/>
+        <id>https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/</id>
+        
+        <summary type="html">&lt;p&gt;The &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cabal.readthedocs.io&#x2F;en&#x2F;latest&#x2F;&quot;&gt;Cabal Manual&lt;&#x2F;a&gt; now has a guide on how to collect performance statistics of Haskell applications.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog - Haskell Foundation</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/categories/haskell-foundation/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-11-30T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/categories/haskell-foundation/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Analyzing language extension semantics</title>
+        <published>2025-11-30T00:00:00+00:00</published>
+        <updated>2025-11-30T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/investigating-language-extension-semantics/"/>
+        <id>https://blog.haskell.org/investigating-language-extension-semantics/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/investigating-language-extension-semantics/">&lt;p&gt;Hi I&#x27;m &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;jappie.me&quot;&gt;Jappie&lt;&#x2F;a&gt; and I volunteer for the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;stability-working-group&#x2F;&quot;&gt;Haskell Foundation Stability Working Group&lt;&#x2F;a&gt;.
+Recently we analyzed the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;ghc&#x2F;head.hackage&quot;&gt;head.hackage&lt;&#x2F;a&gt; patches to understand
+why code breaks on new GHC releases.
+&quot;head.hackage&quot; is a repository of patches for Hackage.
+GHC engineers use these to test out new GHC builds on a wide range of
+Hackage packages without having to upstream&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#upstream&quot;&gt;1&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt; a patch, which can take time.
+Instead, they can put the patch in &quot;head.hackage&quot;
+and immediately test it on a wide range of packages.
+Surprisingly, most breakage wasn’t caused by
+&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;ghc&#x2F;doc&#x2F;users_guide&#x2F;exts&#x2F;template_haskell.html&quot;&gt;Template Haskell&lt;&#x2F;a&gt;,
+it came from deeper semantic changes in language extensions.
+The meaning of (some) language extensions changed between GHC releases.
+This post walks through the main categories of breakage,
+why they happened, and what they tell us about long-term stability.
+If you care about a smoother upgrade path for Haskell users,
+we invite you to participate in the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;stability-working-group&#x2F;&quot;&gt;Haskell Foundation Stability Working Group&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Extending our initial &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;jappie.me&#x2F;analyzing-haskell-stability.html&quot;&gt;investigation&lt;&#x2F;a&gt;,
+We&#x27;re also interested in understanding &lt;em&gt;why&lt;&#x2F;em&gt; breakage occurs.
+So we&#x27;ve recently done further analysis on &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;head.hackage&#x2F;&quot;&gt;head.hackage&lt;&#x2F;a&gt;,
+and learned surprisingly enough that the root cause
+of a lot of breakage isn&#x27;t Template Haskell,
+but seems to be from language extension semantics&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#meaning&quot;&gt;2&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;.
+We&#x27;re doing this investigation to understand better where efforts
+should be focused in improving stability.&lt;&#x2F;p&gt;
+&lt;p&gt;This gave us the following table:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Name&lt;&#x2F;th&gt;&lt;th&gt;Cause&lt;&#x2F;th&gt;&lt;th&gt;Had warnings?&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Cabal-2.4.1.0.patch&lt;&#x2F;td&gt;&lt;td&gt;simplified subsumption&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Cabal-3.0.2.0.patch&lt;&#x2F;td&gt;&lt;td&gt;simplified subsumption&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Cabal-3.2.1.0.patch&lt;&#x2F;td&gt;&lt;td&gt;simplified subsumption&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;data-r-tree-0.6.0.patch&lt;&#x2F;td&gt;&lt;td&gt;parser change (see 1)&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;drinkery-0.4.patch&lt;&#x2F;td&gt;&lt;td&gt;simplified subsumption&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;ghc-lib-parser-9.8.1.20231121.patch&lt;&#x2F;td&gt;&lt;td&gt;rename forall identifiers (2)&lt;&#x2F;td&gt;&lt;td&gt;yes&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;hgeometry-ipe-0.13.patch&lt;&#x2F;td&gt;&lt;td&gt;Instances moved due to splice enforcement&lt;&#x2F;td&gt;&lt;td&gt;no&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;singletons-3.0.2.patch&lt;&#x2F;td&gt;&lt;td&gt;add TypeAbstractions as a language extension&lt;&#x2F;td&gt;&lt;td&gt;yes&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;singletons-base-3.1.1.patch&lt;&#x2F;td&gt;&lt;td&gt;add TypeAbstractions as a language extension&lt;&#x2F;td&gt;&lt;td&gt;yes&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;vector-space-0.16.patch&lt;&#x2F;td&gt;&lt;td&gt;Star is type (4)&lt;&#x2F;td&gt;&lt;td&gt;yes&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;&lt;code&gt;th-compat-0.1.4.patch&lt;&#x2F;code&gt; was miscounted so I left that out.
+Simplified subsumption appears a lot but 3 are for Cabal,
+so it&#x27;s only 2 real occurrences.
+I&#x27;d expect that to appear a lot however,
+because it was one of &lt;em&gt;the&lt;&#x2F;em&gt; motivating changes for a &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;stability-working-group&#x2F;&quot;&gt;stability working group&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;simplified-subsumption&quot;&gt;Simplified subsumption&lt;&#x2F;h2&gt;
+&lt;p&gt;For the blissfully ignorant reader simplified subsumption causes you
+to do this under certain existential conditions:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-header z-from-file&quot;&gt;&lt;span class=&quot;z-meta z-header z-from-file z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-from-file z-diff&quot;&gt;---&lt;&#x2F;span&gt; a&#x2F;Distribution&#x2F;Simple&#x2F;Utils.hs
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-header z-to-file&quot;&gt;&lt;span class=&quot;z-meta z-header z-to-file z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-to-file z-diff&quot;&gt;+++&lt;&#x2F;span&gt; b&#x2F;Distribution&#x2F;Simple&#x2F;Utils.hs
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-range z-unified&quot;&gt;&lt;span class=&quot;z-meta z-range z-unified z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-toc-list z-line-number z-diff&quot;&gt;-1338,7 +1338,7&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt; &lt;span class=&quot;z-entity z-name z-section z-diff&quot;&gt;withTempFileEx opts tmpDir template action =&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;     (\(name, handle) -&amp;gt; do hClose handle
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;                            unless (optKeepTempFiles opts) $
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;                              handleDoesNotExist () . removeFile $ name)
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    (withLexicalCallStack (uncurry action))
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    (withLexicalCallStack (\x -&amp;gt; uncurry action x))
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;You have to insert a lambda, which apparently has some performance impact.
+This had a big impact on &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.yesodweb.com&#x2F;book&quot;&gt;Yesod stacks&lt;&#x2F;a&gt;,
+whose code generation helpfully created
+the database alias in the template:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;haskell&quot; class=&quot;language-haskell z-code&quot;&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;type&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;DB&lt;&#x2F;span&gt; a &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&lt;&#x2F;span&gt; forall (m &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;::&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Type&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Type&lt;&#x2F;span&gt;)&lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;.&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;    (&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;MonadUnliftIO&lt;&#x2F;span&gt; m) &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;ReaderT&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;SqlBackend&lt;&#x2F;span&gt; m a
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Normally this is quite convenient,
+however with the simplified subsumption change,
+any code that interacts with the database now has to insert those lambdas.
+As you can imagine this would in many places for a commercial code base.
+Causing a lot of compile errors for industrial users.
+Instead of inserting lambdas, you can also delete those existential aliases to solve the problem.
+Or you can enable the language extension: &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;~ghc&#x2F;9.12.2&#x2F;docs&#x2F;users_guide&#x2F;exts&#x2F;rank_polymorphism.html#extension-DeepSubsumption&quot;&gt;DeepSubsumption&lt;&#x2F;a&gt;.
+Which restores the original behavior.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;moving-of-instances-due-to-template-haskell&quot;&gt;Moving of instances due to Template Haskell&lt;&#x2F;h2&gt;
+&lt;p&gt;This change forces you to put the instances above the splice where
+they are being used in the same module.
+A dear colleague decided to generate instances in Template Haskell.
+That was quite the puzzle!
+I asked the GHC devs why they did this,
+and it turns out this was a soundness issue in the typechecker.
+Here, soundness means the type system can&#x27;t be tricked into allowing invalid programs.
+So the community is better off, despite this causing a fair bit of work.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-header z-from-file&quot;&gt;&lt;span class=&quot;z-meta z-header z-from-file z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-from-file z-diff&quot;&gt;---&lt;&#x2F;span&gt; a&#x2F;src&#x2F;Ipe&#x2F;Content.hs
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-header z-to-file&quot;&gt;&lt;span class=&quot;z-meta z-header z-to-file z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-to-file z-diff&quot;&gt;+++&lt;&#x2F;span&gt; b&#x2F;src&#x2F;Ipe&#x2F;Content.hs
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-range z-unified&quot;&gt;&lt;span class=&quot;z-meta z-range z-unified z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-toc-list z-line-number z-diff&quot;&gt;-288,6 +288,14&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;instance Fractional r =&amp;gt; IsTransformable (IpeObject r) where
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;  transformBy t (IpeGroup i)     = IpeGroup     $ i&amp;amp;core %~ transformBy t
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt; ...
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt; makePrisms &amp;#39;&amp;#39;IpeObject
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-meta z-diff z-range z-unified&quot;&gt;&lt;span class=&quot;z-meta z-range z-unified z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-toc-list z-line-number z-diff&quot;&gt;-303,14 +311,6&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-definition z-range z-diff&quot;&gt;@@&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;instance Fractional r =&amp;gt; IsTransformable (IpeObject r) where
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;  transformBy t (IpeGroup i)     = IpeGroup     $ i&amp;amp;core %~ transformBy t
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt; ...
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;1-parser-change&quot;&gt;(1) Parser change&lt;&#x2F;h2&gt;
+&lt;p&gt;The parser is the component of the compiler that transforms text
+into a memory structure the compiler can work with.
+This structure is called an abstract syntax tree.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;      Node4 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a), getC3 :: ! (RTree a), getC4 :: ! (RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    | Node3 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a), getC3 :: ! (RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    | Node2 {getMBB :: {-# UNPACK #-} ! MBB, getC1 :: ! (RTree a), getC2 :: ! (RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;      Node4 {getMBB :: {-# UNPACK #-} !MBB, getC1 :: !(RTree a), getC2 :: !(RTree a), getC3 :: !(RTree a), getC4 :: !(RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    | Node3 {getMBB :: {-# UNPACK #-} !MBB, getC1 :: !(RTree a), getC2 :: !(RTree a), getC3 :: !(RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    | Node2 {getMBB :: {-# UNPACK #-} !MBB, getC1 :: !(RTree a), getC2 :: !(RTree a) }
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;     | Node  {getMBB ::                  MBB, getChildren&amp;#39; :: [RTree a] }
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    | Leaf  {getMBB :: {-# UNPACK #-} ! MBB, getElem :: a}
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    | Leaf  {getMBB :: {-# UNPACK #-} !MBB, getElem :: a}
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;     | Empty
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This is a change from all the way back in 2020, where the &lt;em&gt;core&lt;&#x2F;em&gt; language changed by
+disallowing &lt;code&gt;!&lt;&#x2F;code&gt; before parens.
+Here the bang &lt;code&gt;!&lt;&#x2F;code&gt; indicates strict fields.
+Technically this doesn&#x27;t fit into the category
+because the core language isn&#x27;t a language extension.
+But semantics did change!
+Actually I don&#x27;t think we expected to find something like this at all.
+I&#x27;m not sure how relevant this is to discuss further because it appears
+quite rare for someone to do this.
+You can enable &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;latest&#x2F;docs&#x2F;users_guide&#x2F;exts&#x2F;strict.html#extension-StrictData&quot;&gt;StrictData&lt;&#x2F;a&gt;
+in your Cabal file and delete all those bangs!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;2-rename-forall-identifiers&quot;&gt;(2) Rename forall identifiers&lt;&#x2F;h2&gt;
+&lt;p&gt;This changes the forall identifier into a keyword at term level.
+It already was at the type level.
+The issue is discussed &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;ghc&#x2F;ghc&#x2F;-&#x2F;issues&#x2F;23719&quot;&gt;here&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt; hintExplicitForall :: Located Token -&amp;gt; P ()
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt; hintExplicitForall tok = do
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    forall   &amp;lt;- getBit ExplicitForallBit
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    forAll   &amp;lt;- getBit ExplicitForallBit
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;     rulePrag &amp;lt;- getBit InRulePragBit
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;    unless (forall || rulePrag) $ addError $ mkPlainErrorMsgEnvelope (getLoc tok) $
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;    unless (forAll || rulePrag) $ addError $ mkPlainErrorMsgEnvelope (getLoc tok) $
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;       (PsErrExplicitForall (isUnicode tok))
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;3-typeabstractions&quot;&gt;(3) TypeAbstractions&lt;&#x2F;h2&gt;
+&lt;p&gt;From what I understand from the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;ghc&#x2F;doc&#x2F;users_guide&#x2F;exts&#x2F;type_abstractions.html#type-abstractions&quot;&gt;manual&lt;&#x2F;a&gt;
+is that part of the syntax for type abstractions landed in GHC 9.2,
+however 9.8 and onwards requires you to enable this language extension.
+This appeared because certain new functionality was introduced behind an
+old language extension flag, according to &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ghc-proposals&#x2F;ghc-proposals&#x2F;blob&#x2F;master&#x2F;proposals&#x2F;0448-type-variable-scoping.rst#4type-arguments-in-constructor-patterns&quot;&gt;this proposal&lt;&#x2F;a&gt;. It says we don&#x27;t want to introduce new functionality behind established extensions,
+so that&#x27;s why we require TypeAbstractions now,
+where previously ScopedTypeVariables and TypeApplications were enough.&lt;&#x2F;p&gt;
+&lt;p&gt;This extension enables you to bind type variables in pattern matches.
+I don&#x27;t know why this happened like this, but it happened in 2023:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;-- Invisible type binders in type declarations, such as
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;--
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;--   type family Sing @k
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;--
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;-- require the TypeAbstractions extension.
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;#if __GLASGOW_HASKELL__ &amp;gt;= 909
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;{-# LANGUAGE TypeAbstractions #-}
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;#endif
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;4-star-is-type&quot;&gt;(4) Star is type&lt;&#x2F;h2&gt;
+&lt;p&gt;This change was announced via a warning.
+It tells users to write &lt;code&gt;Type&lt;&#x2F;code&gt; instead of &lt;code&gt;*&lt;&#x2F;code&gt; for kinds representing types.
+A kind is essentially the type of a type,
+and as a concept is used for type-level programming type safety.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff z-code&quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-deleted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-deleted z-diff&quot;&gt;-&lt;&#x2F;span&gt;  type Basis v :: *
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-diff&quot;&gt;&lt;span class=&quot;z-markup z-inserted z-diff&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-inserted z-diff&quot;&gt;+&lt;&#x2F;span&gt;  type Basis v :: Type
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;Often these breakages are annoying and frustrating.
+But if we look deeper, we find that each of them has
+a little story
+and good reasons for being introduced.
+If you find this all as interesting as I do,
+please consider joining some of the stability
+working group meetings!&lt;&#x2F;p&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;upstream&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;1&lt;&#x2F;sup&gt;
+&lt;p&gt;Upstreaming is the process of sending a patch to the “maintainers” of an open-source project. The maintainers will then make the patch ‘official’ by merging it. In principle, the process is simple, but in practice, the burden of proof (especially for larger projects) is on the person who submitted the patch. They have to convince the maintainers that the patch is useful, which takes time in the form of communication&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;meaning&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;2&lt;&#x2F;sup&gt;
+&lt;p&gt;The precise meaning of features enabled by language extensions. I guess parser changes also count.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Introducing the Haskell Foundation Stability Working Group</title>
+        <published>2025-03-31T00:00:00+00:00</published>
+        <updated>2025-03-31T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/stability-working-group/"/>
+        <id>https://blog.haskell.org/stability-working-group/</id>
+        
+        <summary type="html">&lt;p&gt;What is stability? What has the Haskell Foundation Stability Working Group been working on?&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Haskell.org and the Haskell Foundation Join Forces</title>
+        <published>2024-09-25T00:00:00+00:00</published>
+        <updated>2024-09-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/haskell-foundation-and-committee-merger/"/>
+        <id>https://blog.haskell.org/haskell-foundation-and-committee-merger/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/haskell-foundation-and-committee-merger/">&lt;p&gt;The members of the Haskell.org Committee (the Committee) and the directors of the Haskell Foundation (the Foundation) are pleased to announce that we have joined forces, with the aim (subject to regulatory approval) of merging Haskell.org, Inc. and Haskell Foundation, Inc. into a single not-for-profit corporation. Together we continue our common mission to advance functional programming and to advocate for the Haskell language, its ecosystem, and its community.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-committee&quot;&gt;The Committee&lt;&#x2F;h2&gt;
+&lt;p&gt;The Committee has a long history of supporting the Haskell community and ecosystem, supervising the resources under the &quot;haskell.org&quot; domain, including the www.haskell.org website, Hackage, Discourse, and the Haskell mailing lists, as well as organizing events such as Haskell.org’s participation in Google Summer of Code and the Haskell Summer of Code.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;the-foundation&quot;&gt;The Foundation&lt;&#x2F;h2&gt;
+&lt;p&gt;The Foundation is a newer organization, dedicated to broadening the adoption of Haskell by supporting its ecosystem of tools, libraries, education, and research. It has had similar goals to Haskell.org, and been engaged in complementary activities. Amongst its activities, it facilitates cross-team collaboration on fundamental tooling (e.g. Cabal, Stack, GHCup and the Haskell Language Server), hosts Stackage, financially supports the development of essential ecosystem components (e.g. the GHCup project and Botan bindings), runs workshops that help new contributors to fundamental tooling, and actively seeks financial sponsorship to help fund these efforts.&lt;&#x2F;p&gt;
+&lt;p&gt;Both corporations are Not-for-Profit corporations and Haskell.org Inc. has also been recognised as exempt from taxation in the USA. For that reason, most of the transactions of the Foundation are conducted by Haskell.org, Inc. One of the biggest factors in the desire to merge corporate entities is to make it easier to manage the legal and financial responsibilities around non-profit status and holding funds. Having only one corporation would also address a source of confusion for donors and sponsors.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-next&quot;&gt;What Next?&lt;&#x2F;h2&gt;
+&lt;p&gt;The Committee will continue to serve the community as an important committee of the Foundation. The Committee will retain all its current responsibilities, including independent editorial control of the Haskell.org website. It will also continue to oversee much of the Haskell community infrastructure and manage Haskell&#x27;s participation in Google Summer of Code.&lt;&#x2F;p&gt;
+&lt;p&gt;Joining forces allows us to better share resources and work together while at the same time allowing the Committee (as part of the Foundation) to retain its independence over its domain.&lt;&#x2F;p&gt;
+&lt;p&gt;The Committee members and the directors of the Foundation remain deeply grateful for the opportunity to serve the Haskell community. We look forward to continuing this support with greater effectiveness and efficiency as a single unified organization.&lt;&#x2F;p&gt;
+&lt;p&gt;Sincerely,&lt;br &#x2F;&gt;
+The Haskell.org Committee and The Haskell Foundation&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
