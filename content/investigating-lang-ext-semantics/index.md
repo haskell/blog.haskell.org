@@ -52,8 +52,6 @@ This gave us the following table:
 | singletons-base-3.1.1.patch         | add TypeAbstractions as a language extension | yes           |
 | vector-space-0.16.patch             | Star is type (4)                             | yes           |
 
-|--
-
 `th-compat-0.1.4.patch` was miscounted so I left that out.
 Simplified subsumption appears a lot but 3 are for Cabal,
 so it's only 2 real occurrences.
