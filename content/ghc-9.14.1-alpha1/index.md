@@ -1,10 +1,11 @@
----
-authors: ["Ben Gamari"]
-title: "GHC 9.14.1-alpha1 is now available"
-date: 2025-08-19
-categories: ["GHC"]
-tags: ["Release"]
----
++++
+title = "GHC 9.14.1-alpha1 is now available"
+date = 2025-08-19
+[taxonomies]
+authors = ["Ben Gamari"]
+categories = ["GHC"]
+tags = ["Release"]
++++
 
 The GHC developers are very pleased to announce the availability of the
 first alpha prerelease of GHC 9.14.1. Binary distributions, source
