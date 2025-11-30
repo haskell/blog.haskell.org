@@ -210,4 +210,3 @@ and good reasons for being introduced.
 If you find this all as interesting as I do,
 please consider joining some of the stability
 working group meetings!
-
