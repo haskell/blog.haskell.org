@@ -190,7 +190,7 @@ I don't know why this happened like this, but it happened in 2023:
 +
 ```
 
-## Star is type
+## (4) Star is type
 This change was announced via a warning. 
 It tells users to write `Type` instead of `*` for kinds representing types.
 A kind is essentially the type of a type,
