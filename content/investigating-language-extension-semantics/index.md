@@ -1,6 +1,6 @@
 +++
 title = "Analyzing language extension semantics"
-date = 2025-11-26
+date = 2025-11-30
 [taxonomies]
 authors = ["Jappie Klooster"]
 categories = ["Haskell Foundation"]
@@ -8,20 +8,20 @@ tags = ["Community", "Stability"]
 +++
 
 Hi I'm [Jappie](https://jappie.me) and I volunteer for the [Haskell Foundation Stability Working Group](https://blog.haskell.org/stability-working-group/).
-Recently we analyzed the [head.hackage](https://gitlab.haskell.org/ghc/head.hackage) patches to understand 
+Recently we analyzed the [head.hackage](https://gitlab.haskell.org/ghc/head.hackage) patches to understand
 why code breaks on new GHC releases.
-"head.hackage" is a repository of patches for Hackage. 
-GHC engineers use these to test out new GHC builds on a wide range of 
-Hackage packages without having to upstream[^upstream] a patch, which can take time. 
-Instead, they can put the patch in "head.hackage" 
+"head.hackage" is a repository of patches for Hackage.
+GHC engineers use these to test out new GHC builds on a wide range of
+Hackage packages without having to upstream[^upstream] a patch, which can take time.
+Instead, they can put the patch in "head.hackage"
 and immediately test it on a wide range of packages.
-Surprisingly, most breakage wasn’t caused by 
+Surprisingly, most breakage wasn’t caused by
 [Template Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/template_haskell.html),
 it came from deeper semantic changes in language extensions.
 The meaning of (some) language extensions changed between GHC releases.
-This post walks through the main categories of breakage, 
+This post walks through the main categories of breakage,
 why they happened, and what they tell us about long-term stability.
-If you care about a smoother upgrade path for Haskell users, 
+If you care about a smoother upgrade path for Haskell users,
 we invite you to participate in the [Haskell Foundation Stability Working Group](https://blog.haskell.org/stability-working-group/).
 
 
@@ -71,15 +71,15 @@ to do this under certain existential conditions:
 ```
 
 You have to insert a lambda, which apparently has some performance impact.
-This had a big impact on [Yesod stacks](https://www.yesodweb.com/book), 
-whose code generation helpfully created 
+This had a big impact on [Yesod stacks](https://www.yesodweb.com/book),
+whose code generation helpfully created
 the database alias in the template:
 ```haskell
 type DB a = forall (m :: Type -> Type).
     (MonadUnliftIO m) => ReaderT SqlBackend m a
 ```
 
-Normally this is quite convenient, 
+Normally this is quite convenient,
 however with the simplified subsumption change,
 any code that interacts with the database now has to insert those lambdas.
 As you can imagine this would in many places for a commercial code base.
@@ -101,15 +101,15 @@ So the community is better off, despite this causing a fair bit of work.
 ```diff
 --- a/src/Ipe/Content.hs
 +++ b/src/Ipe/Content.hs
-@@ -288,6 +288,14 @@ 
- 
+@@ -288,6 +288,14 @@
+
 +instance Fractional r => IsTransformable (IpeObject r) where
 +  transformBy t (IpeGroup i)     = IpeGroup     $ i&core %~ transformBy t
 + ...
  makePrisms ''IpeObject
- 
-@@ -303,14 +311,6 @@ 
- 
+
+@@ -303,14 +311,6 @@
+
 -instance Fractional r => IsTransformable (IpeObject r) where
 -  transformBy t (IpeGroup i)     = IpeGroup     $ i&core %~ transformBy t
 - ...
@@ -118,7 +118,7 @@ So the community is better off, despite this causing a fair bit of work.
 ## (1) Parser change
 
 The parser is the component of the compiler that transforms text
-into a memory structure the compiler can work with. 
+into a memory structure the compiler can work with.
 This structure is called an abstract syntax tree.
 
 ```diff
@@ -140,7 +140,7 @@ disallowing `!` before parens.
 Here the bang `!` indicates strict fields.
 Technically this doesn't fit into the category
 because the core language isn't a language extension.
-But semantics did change! 
+But semantics did change!
 Actually I don't think we expected to find something like this at all.
 I'm not sure how relevant this is to discuss further because it appears
 quite rare for someone to do this.
@@ -170,7 +170,7 @@ is that part of the syntax for type abstractions landed in GHC 9.2,
 however 9.8 and onwards requires you to enable this language extension.
 This appeared because certain new functionality was introduced behind an
 old language extension flag, according to [this proposal](https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0448-type-variable-scoping.rst#4type-arguments-in-constructor-patterns). It says we don't want to introduce new functionality behind established extensions,
-so that's why we require TypeAbstractions now, 
+so that's why we require TypeAbstractions now,
 where previously ScopedTypeVariables and TypeApplications were enough.
 
 This extension enables you to bind type variables in pattern matches.
@@ -189,7 +189,7 @@ I don't know why this happened like this, but it happened in 2023:
 ```
 
 ## (4) Star is type
-This change was announced via a warning. 
+This change was announced via a warning.
 It tells users to write `Type` instead of `*` for kinds representing types.
 A kind is essentially the type of a type,
 and as a concept is used for type-level programming type safety.
