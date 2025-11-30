@@ -24,7 +24,6 @@ why they happened, and what they tell us about long-term stability.
 If you care about a smoother upgrade path for Haskell users, 
 we invite you to participate in the [Haskell Foundation Stability Working Group](https://blog.haskell.org/stability-working-group/).
 
-[^upstream]: Upstreaming is the process of sending a patch to the “maintainers” of an open-source project. The maintainers will then make the patch ‘official’ by merging it. In principle, the process is simple, but in practice, the burden of proof (especially for larger projects) is on the person who submitted the patch. They have to convince the maintainers that the patch is useful, which takes time in the form of communication
 
 Extending our initial [investigation](https://jappie.me/analyzing-haskell-stability.html),
 We're also interested in understanding *why* breakage occurs.
@@ -34,8 +33,6 @@ of a lot of breakage isn't Template Haskell,
 but seems to be from language extension semantics[^meaning].
 We're doing this investigation to understand better where efforts
 should be focused in improving stability.
-
-[^meaning]: The precise meaning of features enabled by language extensions. I guess parser changes also count.
 
 This gave us the following table:
 
@@ -61,6 +58,7 @@ because it was one of *the* motivating changes for a [stability working group](h
 ## Simplified subsumption
 For the blissfully ignorant reader simplified subsumption causes you
 to do this under certain existential conditions:
+
 ```diff
 --- a/Distribution/Simple/Utils.hs
 +++ b/Distribution/Simple/Utils.hs
@@ -70,8 +68,8 @@ to do this under certain existential conditions:
                               handleDoesNotExist () . removeFile $ name)
 -    (withLexicalCallStack (uncurry action))
 +    (withLexicalCallStack (\x -> uncurry action x))
- 
 ```
+
 You have to insert a lambda, which apparently has some performance impact.
 This had a big impact on [Yesod stacks](https://www.yesodweb.com/book), 
 whose code generation helpfully created 
@@ -210,3 +208,7 @@ and good reasons for being introduced.
 If you find this all as interesting as I do,
 please consider joining some of the stability
 working group meetings!
+
+[^upstream]: Upstreaming is the process of sending a patch to the “maintainers” of an open-source project. The maintainers will then make the patch ‘official’ by merging it. In principle, the process is simple, but in practice, the burden of proof (especially for larger projects) is on the person who submitted the patch. They have to convince the maintainers that the patch is useful, which takes time in the form of communication
+
+[^meaning]: The precise meaning of features enabled by language extensions. I guess parser changes also count.
