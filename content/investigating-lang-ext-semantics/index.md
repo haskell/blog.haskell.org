@@ -165,7 +165,7 @@ The issue is discussed [here](https://gitlab.haskell.org/ghc/ghc/-/issues/23719)
        (PsErrExplicitForall (isUnicode tok))
 ```
 
-## TypeAbstractions
+## (3) TypeAbstractions
 
 From what I understand from the [manual](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/type_abstractions.html#type-abstractions)
 is that part of the syntax for type abstractions landed in GHC 9.2,
