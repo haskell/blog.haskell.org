@@ -201,7 +201,6 @@ and as a concept is used for type-level programming type safety.
 +  type Basis v :: Type
 ```
 
-
 ## Conclusion
 
 Often these breakages are annoying and frustrating.
