@@ -4,8 +4,10 @@ date = 2025-12-25
 [taxonomies]
 authors = ["Léana Jiang"]
 categories = ["Cabal"]
-# tags = ["Practices"]
 +++
+
+_This article was originally posted on my blog [here](https://confusedcompiler.org/articles/2025-12-comment-preserving-cabal-parser)._
+<hr/>
 
 # Motivation
 Cabal [^1] is the standard package system for Haskell software, it is similar to Cargo from the rust
