@@ -15,7 +15,7 @@ Cabal reads cabal package manifests in the cabal format (with the extension `.ca
 However, it is currently unable to modify it loselessly: comments are lost, imports are
 fused and written in place, `elif` in a conditional will be desugared to a nested `if` in an `else`.
 
-For this reason, criticial features such as adding modules to the .cabal manifest or generating
+For this reason, critical features such as adding modules to the .cabal manifest or generating
 package dependency bounds are implemented poorly.\
 For example, cabal emits a warning when a module is not listed in the manifest, but it can't apply
 the fix the warning indicates for you.\
