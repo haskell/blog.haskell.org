@@ -133,7 +133,7 @@ Previously this type variable was `Position`; by changing it to `([ByteString], 
 able to store comments without polluting all usages of `Field ann` with the `Comment` constructor!
 Concretely we decided to give this pattern a type to disallow uses of `Data.Bifunctor.first` and
 `Data.Bifunctor.second`, as it can be less straightforward.
-The `WithComments ann` type is as follows
+The `WithComments ann` type is as follows:
 ```hs
 data WithComments ann = WithComments
   { justComments :: ![Comment ann]
