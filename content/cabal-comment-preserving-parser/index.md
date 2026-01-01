@@ -43,7 +43,7 @@ forall cabalFile.
   IsValid cabalFile =>
     exactPrint (exactParse cabalFile) == cabalFile
 ```
-This reads as "forall valid cabal manifest, the operation `exactPrint . exactParse` should output a
+This reads as "for all valid cabal manifests, the operation `exactPrint . exactParse` should output a
 file that is byte-to-byte identical to the original".
 
 Furthermore, we also aim to allow modification to the in-memory representation. Unmodified parts of
