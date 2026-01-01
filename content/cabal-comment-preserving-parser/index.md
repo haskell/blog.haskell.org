@@ -62,8 +62,7 @@ and blank lines should be preserved.
 The proposal has matured enough and was accepted by the Haskell Foundation, the current step is
 to implement it in Cabal. =D
 
-The following sections will be talking about handling comments in the parser and lexer. The current
-parser doesn't handle comments at all. In fact, the lexer drops them and the parser never sees them.
+The following sections will be talking about handling comments in the parser and lexer.
 
 # How the cabal parser works
 There are three main parts to the cabal parser, namely the lexer, the field parser, and the field
