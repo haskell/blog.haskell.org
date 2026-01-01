@@ -229,7 +229,7 @@ Namely we need to stop common stanzas from being merged in.
 Currently I am working on a prototype to retain trivia in field grammar parser, so the spaces in
 dependency bounds won't be dropped, for example.
 
-Please tell me if you have any thoughts on this work :)
+Please tell me if you have any thoughts on this work. :)
 
 I want to thank the the Haskell Foundation and Jappie for allowing this work to happen.
 I appreciate greatly the opportunity to work on cabal and solve a problem that helps Haskell
