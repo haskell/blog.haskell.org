@@ -60,7 +60,7 @@ and blank lines should be preserved.
 
 [Jappie](https://jappie.me/) started doing a prototype that works well since 2024 Zurihac.
 The proposal has matured enough and was accepted by the Haskell Foundation, the current step is
-to implement it in Cabal =D
+to implement it in Cabal. =D
 
 The following sections will be talking about handling comments in the parser and lexer. The current
 parser doesn't handle comments at all. In fact, the lexer drops them and the parser never sees them.
