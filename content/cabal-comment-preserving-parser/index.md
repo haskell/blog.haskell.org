@@ -55,7 +55,7 @@ adding dependency, export a module, or generate package bounds just to name a fe
 A tracking issue was opened in cabal's repository since 2021 [here](https://github.com/haskell/cabal/issues/7544).
 
 In order to achieve introducing an exact printer, the first step is to preserve concrete syntax information. For example,
-comments must not be altered, comma style in comma-separated fields must be preserved, blankspace
+comments must not be altered, comma style in comma-separated fields must be preserved, blank spaces
 and blank lines should be preserved.
 
 [Jappie](https://jappie.me/) started doing a prototype that works well since 2024 Zurihac.
