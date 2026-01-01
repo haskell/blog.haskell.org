@@ -127,8 +127,8 @@ comment. This was quite straightforward (exactly what we want in a prototype!) b
 introduced subtle footguns: all code that depend on the `Field` data type now has to deal with
 with `Comment`s.
 
-With help from Andrea, we changed the design to maintain the original definition of `Field ann`,
-while instantiating `ann` differently.
+With help from [Andrea Bedini](https://github.com/andreabedini), we changed the design to maintain the
+original definition of `Field ann`, while instantiating `ann` differently.
 Previously this type variable was `Position`; by changing it to `([ByteString], Position)`, we were
 able to store comments without polluting all usages of `Field ann` with the `Comment` constructor!
 Concretely we decided to give this pattern a type to disallow uses of `Data.Bifunctor.first` and
