@@ -235,7 +235,7 @@ I want to thank the the Haskell Foundation and Jappie for allowing this work to 
 I appreciate greatly the opportunity to work on cabal and solve a problem that helps Haskell
 programmers :)
 I also want to thank the people in my life who believed in me when I needed help, without you I
-wouldn't be who I am today :)
+wouldn't be who I am today. :)
 
 [^1]: Common Architecture for Building Applications and Libraries, _Cabal_
 [^2]: The printer part doesn't even work like we mentioned in the pre-amble,
