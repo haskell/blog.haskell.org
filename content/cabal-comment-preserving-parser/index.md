@@ -16,11 +16,12 @@ world, or OPAM if you come from OCaml.
 Cabal reads cabal package manifests in the cabal format (with the extension `.cabal`).
 However, it is currently unable to modify it loselessly: comments are lost, imports are
 fused and written in place, `elif` in a conditional will be desugared to a nested `if` in an `else`.
+A tracking issue was opened in cabal's repository since 2021 [here](https://github.com/haskell/cabal/issues/7544).
 
 For this reason, critical features such as adding modules to the .cabal manifest or generating
-package dependency bounds are implemented poorly.\
+package dependency bounds are implemented poorly.
 For example, cabal emits a warning when a module is not listed in the manifest, but it can't apply
-the fix the warning indicates for you.\
+the fix the warning indicates for you.
 Furthermore, `cabal gen-bounds` (which generates dependency bounds that are not specified) doesn't
 write dependency bounds information directly to the cabal file, it dumps them to the terminal.
 Frustrating!
@@ -51,8 +52,6 @@ the representation will be printed out verbatim to the original parsed cabal fil
 
 This property is crucial for tools to be able to manipulate cabal files programmatically:
 adding dependency, export a module, or generate package bounds just to name a few.
-
-A tracking issue was opened in cabal's repository since 2021 [here](https://github.com/haskell/cabal/issues/7544).
 
 In order to achieve introducing an exact printer, the first step is to preserve concrete syntax information. For example,
 comments must not be altered, comma style in comma-separated fields must be preserved, blank spaces
