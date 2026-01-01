@@ -149,7 +149,7 @@ file.
 We change the top-level field parser `readFields` as follows:
 
 ```hs
--- Old binding is kept with the same type
+-- Old definition is kept with the same type
 readFields :: B8.ByteString -> Either ParseError [Field Position]
 readFields = (fmap . map . fmap) unComments . readFieldsWithComments
 
