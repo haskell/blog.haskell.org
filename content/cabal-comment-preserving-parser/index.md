@@ -142,7 +142,7 @@ data WithComments ann = WithComments
   deriving (Show, Generic, Eq, Ord, Functor)
 ```
 
-A minor downside with comments-in-`ann` model is that a file with no field but only comments
+A minor downside with the _comments-in-`ann`_ model is that a file with no field but only comments
 can't be represented. However we don't consider this case because such a file won't be a valid cabal
 file.
 
