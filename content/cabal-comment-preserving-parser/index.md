@@ -165,6 +165,7 @@ the comments from the lexer. We don't have to worry that our modifications will 
 cabal.
 
 I traced out the automaton graph to see where comments can occur, and added them to the field parser.
+The lexer state diagram svg is generated with graphviz, the source code is available [here](./lexer_states.dot).
 ![Lexer States](./lexer_states.svg)
 
 The start state is used to handle BOM only once and for the purpose of comment parser we can ignore
