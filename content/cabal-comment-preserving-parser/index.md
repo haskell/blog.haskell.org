@@ -54,7 +54,7 @@ adding dependency, export a module, or generate package bounds just to name a fe
 
 A tracking issue was opened in cabal's repository since 2021 [here](https://github.com/haskell/cabal/issues/7544).
 
-The first step to achieve an exact printer is to preserve concrete syntax information. For example,
+In order to achieve introducing an exact printer, the first step is to preserve concrete syntax information. For example,
 comments must not be altered, comma style in comma-separated fields must be preserved, blankspace
 and blank lines should be preserved.
 
