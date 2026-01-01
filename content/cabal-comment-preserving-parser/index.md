@@ -233,7 +233,7 @@ Please tell me if you have any thoughts on this work :)
 
 I want to thank the the Haskell Foundation and Jappie for allowing this work to happen.
 I appreciate greatly the opportunity to work on cabal and solve a problem that helps Haskell
-programmers :)
+programmers. :)
 I also want to thank the people in my life who believed in me when I needed help, without you I
 wouldn't be who I am today. :)
 
