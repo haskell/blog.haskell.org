@@ -111,7 +111,7 @@ Prior to the work on comment-preserving parsing,
 comments are dropped by the lexer and no other parts down the pipeline can see any comments.
 To preserve comments, we must go against this prior design by making the lexer emit comments.
 
-We also need to store the comments somewhere in the output of `readFields` which outputs
+We also needed to store the comments somewhere in the output of `readFields` which outputs
 `[Field Position]`.
 
 The `Field ann` data type is defined as follows
@@ -146,7 +146,7 @@ A minor downside with the _comments-in-`ann`_ model is that a file with no field
 can't be represented. However we don't consider this case because such a file won't be a valid cabal
 file.
 
-We change the top-level field parser `readFields` as follows:
+We changed the top-level field parser `readFields` as follows:
 
 ```hs
 -- Old definition is kept with the same type
@@ -160,8 +160,8 @@ readFieldsWithComments = fmap fst . readFieldsWithComments'
 
 # Tracing out lexer states
 The current cabal already "handles" comments, the problem is that it drops them.
-This is good news because we only need to change the right hand side of the production rule to retain
-the comments from the lexer. We don't have to worry that our modifications will alter the syntax of
+This is good news because we only needed to change the right hand side of the production rule to retain
+the comments from the lexer. We didn't have to worry that our modifications will alter the syntax of
 cabal.
 
 I traced out the automaton graph to see where comments can occur, and added them to the field parser.
@@ -194,7 +194,7 @@ data Field ann
 ```
 
 `ann` is used everywhere, especially in `[FieldLine ann]` and `[Field ann]`.
-This means if we fmap and attach comments to a `Field`, its first and second arguments will all have
+This means if we `fmap` and attach comments to a `Field`, its first and second arguments will all have
 the same comments attached!
 
 I think there's no way to avoid this, since it's still convenient to have a functor instance.
@@ -204,11 +204,11 @@ types you're using.
 
 # Conclusion and future work
 `GenericPackageDescription` is the final representation of a parsed cabal file.
-To preserve `Eq` extensionality [^3], we wrap it with a data type which isn't an instance of `Eq`.
+To preserve `Eq` extensionality [^3], we wrapped it with a data type which isn't an instance of `Eq`.
 Otherwise, a `GenericPackageDescription` would be considered different when the comments are
 different!
 
-We duplicate the top-level parsing functions so we have one entry-point that parses
+We duplicated the top-level parsing functions so we have one entry-point that parses
 annotation (`parseAnnotatedGenericPackagedescription`), and another one that doesn't
 (`parseGenericPackageDescription`) to provide backward compatibilty.
 
@@ -220,7 +220,7 @@ data AnnotatedGenericPackageDescription = AnnotatedGenericPackageDescription
   deriving (Show, Data, Generic)
 ```
 
-Since the position of all comments should not overlap, we create a map out of the comments indexed
+Since the position of all comments should not overlap, we store the comments in a map indexed
 by their `Position` in the source file. This is necessary to reconstruct the comments in the source
 file and achieve exact print.
 
