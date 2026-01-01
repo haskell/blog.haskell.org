@@ -4,6 +4,7 @@ date = 2025-12-25
 [taxonomies]
 authors = ["Léana Jiang"]
 categories = ["Cabal"]
+tags = ["activities-report"]
 +++
 
 _This article was originally posted on my blog [here](https://confusedcompiler.org/articles/2025-12-comment-preserving-cabal-parser)._
