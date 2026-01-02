@@ -237,6 +237,8 @@ programmers. :)
 I also want to thank the people in my life who believed in me when I needed help, without you I
 wouldn't be who I am today. :)
 
+---
+
 [^1]: Common Architecture for Building Applications and Libraries, _Cabal_
 [^2]: The printer part doesn't even work like we mentioned in the pre-amble,
     Jappie told me to say to you all it's a lovecraftian horror.
