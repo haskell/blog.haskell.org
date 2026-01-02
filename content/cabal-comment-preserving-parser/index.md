@@ -1,5 +1,5 @@
 +++
-title = "Comment Preserving Cabal Parser"
+title = "Comment-Preserving Cabal Parser"
 date = 2025-12-25
 [taxonomies]
 authors = ["Léana Jiang"]
