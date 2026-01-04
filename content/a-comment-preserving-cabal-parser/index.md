@@ -11,7 +11,7 @@ _This article was originally posted on my blog [here](https://confusedcompiler.o
 <hr/>
 
 # Motivation
-Cabal [^1] is the standard package system for Haskell software, it is similar to Cargo from the rust
+Cabal [^1] is the standard package system for Haskell software, it is similar to Cargo from the Rust
 world, or OPAM if you come from OCaml.
 
 Cabal reads cabal package manifests in the cabal format (with the extension `.cabal`).
