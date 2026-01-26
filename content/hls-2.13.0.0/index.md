@@ -85,7 +85,6 @@ The tracking issue can be found in [#4605](https://github.com/haskell/haskell-la
 - 9.10.1
 - 9.8.4
 - 9.6.7
-- 9.4.8
 
 ## Thank you, Haskell Community
 
