@@ -4,9 +4,16 @@ description = "What it takes to run 2 million lines of Haskell in production at 
 date = 2026-03-30
 [taxonomies]
 authors = ["Ian Duncan"]
-categories = ["Production"]
-tags = ["Haskell in production", "Mercury"]
+categories = ["Haskellers from the trenches"]
+tags = ["Production", "Mercury"]
 +++
+
+*The editors of the Haskell Blog are happy to announce a new series of articles called "[Haskellers from the trenches]",
+where we invite experienced engineers to talk about their subjects of expertise, best practices, and production tales.*
+
+*Engineering rigour and artistic creativity are a fantastic combination, and this series aims to be the synthesis of these two aspects within the Haskell world.*
+
+---
 
 I first heard about Haskell when I was sixteen, sitting in a high school computer science class where we were writing Java and learning, among other things, that `NullPointerException` was apparently a lifestyle choice if you decided to go into software development. While looking at the `/r/programming` subreddit after school, I stumbled across a reference to a language where null pointer exceptions simply could not happen, where the type system could prevent an entire category of bugs that I had been fighting with every week. Haskell. I was immediately, hopelessly enamored with the idea.
 
@@ -335,3 +342,5 @@ If you are considering Haskell for production, I hope this has given you a reali
 ---
 
 *\*Mercury is a fintech company, not an FDIC-insured bank. Banking services provided through Choice Financial Group and Column N.A., Members FDIC. (At the time of writing.)*
+
+[Haskellers from the trenches]: /categories/haskellers-from-the-trenches/
