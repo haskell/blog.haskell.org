@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog - Ecosystem</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/categories/ecosystem/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-04-02T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/categories/ecosystem/atom.xml</id>
+    <entry xml:lang="en">
+        <title>What Would You See Changed in Haskell?</title>
+        <published>2026-04-02T00:00:00+00:00</published>
+        <updated>2026-04-02T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/what-would-you-see-changed-in-haskell/"/>
+        <id>https://blog.haskell.org/what-would-you-see-changed-in-haskell/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/what-would-you-see-changed-in-haskell/">&lt;p&gt;This report condenses the free form answers to Question 77 of the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;discourse.haskell.org&#x2F;t&#x2F;state-of-haskell-2025-results&#x2F;13755&quot;&gt;State of Haskell Survey 2025&lt;&#x2F;a&gt;.
+Due to the phrasing of the question, we have received 553 answers, with varying degrees of precision, actionability, and relevance.
+A team of two people (Sawa &amp;amp; Hécate) proceeded to quantitatively and qualitatively analyse the survey results,
+extracting trends and topics about what the community would like to see changed.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;interpreting-the-answers&quot;&gt;Interpreting The Answers&lt;&#x2F;h2&gt;
+&lt;p&gt;A qualitative analysis of survey answers entails the hard task of noticing trends and moods, as well as determining the relevance of answers.
+We needed to understand if an answer is an example of the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;XY_problem&quot;&gt;XY Problem&lt;&#x2F;a&gt;,
+and if so establish what the deeper problem is. Some answers were simply too vague to be classified either as a trending mood, or an actionable suggestion.
+Finally, one important thing to do when performing such an analysis is to have empathy for the people who spent their time responding to the survey and not outright dismiss their answers.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;major-topics&quot;&gt;Major Topics&lt;&#x2F;h2&gt;
+&lt;p&gt;The following topics are the ones that have collected the most answers from the survey participants. They are presented in no particular order.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;switching-apis-to-using-text-instead-of-string&quot;&gt;Switching APIs to using &lt;code&gt;Text&lt;&#x2F;code&gt; instead of &lt;code&gt;String&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;A laser-focused suggestion that came up is the replacement of &lt;code&gt;String&lt;&#x2F;code&gt; by &lt;code&gt;Text&lt;&#x2F;code&gt; as the canonical type for textual data. In particular, one answer explains the reasoning:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The &lt;code&gt;text&lt;&#x2F;code&gt; library must live from &lt;code&gt;base&lt;&#x2F;code&gt;,  because none of the APIs of &lt;code&gt;base&lt;&#x2F;code&gt; can use &lt;code&gt;Text&lt;&#x2F;code&gt;, and when people look
+at base for examples of well-written Haskell code, they end up using &lt;code&gt;String&lt;&#x2F;code&gt;, which is not the right choice.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;This has been a common source of frustration for beginners and advanced users alike.
+The topic was especially discussed in 2022 on the Discourse: &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;discourse.haskell.org&#x2F;t&#x2F;bringing-data-text-into-base-what-is-the-next-step&#x2F;5016&#x2F;&quot;&gt;&lt;em&gt;Bringing Data.Text into &lt;code&gt;base&lt;&#x2F;code&gt;: What is the next step?&lt;&#x2F;em&gt;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;onboarding-of-beginners&quot;&gt;Onboarding of Beginners&lt;&#x2F;h3&gt;
+&lt;p&gt;Concerns regarding the quality of resources for beginners have been expressed in large numbers. Up-to-date content, and a centralised entry point in the language are some of the most actionable suggestions that we received.
+The Haskell Wiki is especially well-referenced by search engines, but has seen a steady decrease in contributions. People are encouraged to apply for an account and contribute to the articles.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;documentation&quot;&gt;Documentation&lt;&#x2F;h3&gt;
+&lt;p&gt;This one will not be a surprise to anyone, but thankfully some of the insights that were received pointed to concrete improvements that could be made. Library authors are encouraged to provide more &lt;em&gt;working&lt;&#x2F;em&gt; examples, as well as documentation that goes beyond the scope of a simple API reference.&lt;&#x2F;p&gt;
+&lt;p&gt;Community gatherings lend themselves especially well to documentation contributions, as people needing the documentation can meet with people who are best positioned to write it.&lt;&#x2F;p&gt;
+&lt;p&gt;For more information about what types of documentation exist and when to use particular ones, you can read &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;documentation-best-practices-in-2024&#x2F;&quot;&gt;Documentation Best Practices in 2024&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;complexity-of-the-haskell-language&quot;&gt;Complexity of the Haskell Language&lt;&#x2F;h3&gt;
+&lt;p&gt;We have noticed a trend amongst participants that the Haskell Language is perceived as too complex, riddled with historical cruft, and that there is a lack of consistency in how the language and its libraries have evolved over the decade.&lt;&#x2F;p&gt;
+&lt;p&gt;Avoiding partial functions in the Prelude and more generally sane &#x2F; safe defaults are a recurring suggestion. People want to feel proud of the &lt;code&gt;base&lt;&#x2F;code&gt; library, where the strengths of Haskell can shine, and not be just a hodgepodge of convenient functions.&lt;&#x2F;p&gt;
+&lt;p&gt;There have been requests to stop adding language extensions to GHC or even re-design the existing ones with a holistic approach. This feedback is in line with answers asking for a new Haskell Language Report, which could take advantage of the extensions that GHC has introduced over the years&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;the-record-system&quot;&gt;The Record System&lt;&#x2F;h3&gt;
+&lt;p&gt;A certain proportion of survey participants have expressed their dissatisfaction at the state of records in Haskell. Answers remained vague, which gives us a mood indicator more than an action plan, but there are notable requests for &lt;code&gt;OverloadedRecordDot&lt;&#x2F;code&gt; and &lt;code&gt;NoFieldSelectors&lt;&#x2F;code&gt; to be enabled by default.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;tooling&quot;&gt;Tooling&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;compilation-times&quot;&gt;Compilation times&lt;&#x2F;h4&gt;
+&lt;p&gt;“Make GHC 10x faster” is one of the prevalent moods amongst participants. Coming from end-users, these suggestions do not come with actionable advice or specific pain points in the compilation pipeline. Specific situations like underpowered laptops have been mentioned.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;ecosystem-consolidation-developer-experience&quot;&gt;Ecosystem consolidation, Developer Experience&lt;&#x2F;h4&gt;
+&lt;p&gt;As the Haskell language and its ecosystem are more than thirty years old, it’s normal that we see a certain degree of fragmentation in the tooling, as new people and ideas enter the community. However, they tend to also confuse newcomers, who do not wish to navigate the intricacies of the technical and political disagreements that produced the existing tooling ecosystem. Survey participants very helpfully directed our attention to projects like &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.astral.sh&#x2F;uv&#x2F;&quot;&gt;&lt;code&gt;uv&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;  for an example of a fully-integrated toolchain (tooling management and project management).&lt;&#x2F;p&gt;
+&lt;p&gt;Compilation error messages are also called confusing. This might be explained by a mismatch between the intended audience of those messages and the actual audience. Error messages may feel more intended for implementers than for end-users. Recent versions of GHC have started to direct users to the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;errors.haskell.org&#x2F;&quot;&gt;Haskell error index&lt;&#x2F;a&gt;, so we can expect some positive development in the coming years. However, we should keep improving error messages for end-users who are not in the know about implementation details.&lt;&#x2F;p&gt;
+&lt;p&gt;Lastly, the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;haskell-language-server.readthedocs.io&#x2F;en&#x2F;latest&#x2F;what-is-hls.html#what-is-the-haskell-language-server&quot;&gt;Haskell Language Server&lt;&#x2F;a&gt; is often mentioned when participants complain about development experience, mostly due to the fact that they have to directly interact with it. Memory usage and reliability are thus felt by most people.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;program-performance&quot;&gt;Program Performance&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;pervasive-laziness&quot;&gt;Pervasive Laziness&lt;&#x2F;h4&gt;
+&lt;p&gt;Anxiety about laziness is a recurring theme, indicating lasting difficulties developers have in reasoning about lazy evaluation. Resource blow-up due to misunderstood runtime behaviours make people anxious when it comes to deploying or distributing Haskell software. Actionable advice like eliminating lazy I&#x2F;O was given, which is indeed known for tripping people up, when they may expect it to happen only when they use a streaming library.&lt;&#x2F;p&gt;
+&lt;p&gt;Some suggestions are more targeted, like having data structures strict by default, and only explicitly lazy when the developer wishes so, by means of the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;ghc&#x2F;doc&#x2F;users_guide&#x2F;exts&#x2F;strict.html#strict-by-default-data-types&quot;&gt;StrictData extension&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;minor-topics&quot;&gt;Minor Topics&lt;&#x2F;h2&gt;
+&lt;p&gt;These topics have been mentioned in lesser but still substantial amounts. This does not mean that they are worthless, just that other concerns seemed more pressing to most participants.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;dependent-haskell&quot;&gt;Dependent Haskell&lt;&#x2F;h3&gt;
+&lt;p&gt;When people are not thinking about what is bad, they start thinking about what could be better. The subject of Dependent Types has come up enough times to attract our attention. Dependent Haskell is viewed as a unified solution that can replace otherwise loosely related language extensions. You can see the progress of the implementation on the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.serokell.io&#x2F;dh&quot;&gt;Dependent Haskell Roadmap&lt;&#x2F;a&gt; page.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;community&quot;&gt;Community&lt;&#x2F;h3&gt;
+&lt;p&gt;The desire for community is ever present in human beings, and Haskellers are no exception. They want to see their community thrive, meet more people, and see higher regard for non-technical contributions.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;effect-systems&quot;&gt;Effect Systems&lt;&#x2F;h3&gt;
+&lt;p&gt;The past few years have seen an increase in the research and development of algebraic effect systems, meant to replace the shortcomings of the existing Transformers&#x2F;MTL approaches. We are beginning to see an interest for &lt;code&gt;base&lt;&#x2F;code&gt; to provide such a thing out of the box. Participants wishing for more interoperability also expressed the desire to change most functions operating in the &lt;code&gt;IO&lt;&#x2F;code&gt; monad to instead make use of &lt;code&gt;MonadIO&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Participants expressed interest in having a coherent story when it comes to the architecture of Haskell programs, the choice of libraries, and the fragmentation of the ecosystem.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;debugging&quot;&gt;Debugging&lt;&#x2F;h3&gt;
+&lt;p&gt;Debugging is still a sore point for participants, but the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;well-typed.github.io&#x2F;haskell-debugger&#x2F;&quot;&gt;Haskell Debugger&lt;&#x2F;a&gt; is mentioned and seems to address most of the pain points. “&lt;code&gt;HasCallStack&lt;&#x2F;code&gt; everywhere&quot; is also mentioned, which we consider to be a symptom of the perception of the existing debugging tools and backtrace mechanisms.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;academia-industry-hobbyists&quot;&gt;Academia, Industry, Hobbyists&lt;&#x2F;h2&gt;
+&lt;p&gt;An underlying theme of many of the previously mentioned answers is the question of “To whom does Haskell cater?”. Historically an academic project to study non-strict evaluation and pure functional programming, Haskell has grown to be adopted by software engineers in industry, leading to different ways of learning and socialising. A certain proportion of industrial programmers feel disenfranchised by the academic focus of the ecosystem, especially those that do not have an academic background or formal education.&lt;&#x2F;p&gt;
+&lt;p&gt;One answer in particular elaborates on the subject:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There needs to be a recognition that there is documentation produced for&#x2F;by the type theory &#x2F; heavy mathematics enthusiasts which doesn&#x27;t translate well as developer documentation. When new developers are looking for best practices they are often pointed into the direction of blogs written by clever, well-meaning people who write in a verbose style, often from the vantage point of mathematical abstractions. Any documentation that is software engineering oriented is always welcomed, but surprisingly rare.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;special-mentions&quot;&gt;Special Mentions&lt;&#x2F;h2&gt;
+&lt;p&gt;Some answers had to be categorised in a way that had to reflect how incredible they were. Here are our favourites:&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;a-whole-other-language&quot;&gt;&quot;A whole other language&quot;&lt;&#x2F;h4&gt;
+&lt;p&gt;Some survey participants just want another language, going beyond taking inspiration from others, with suggestions such as swapping the meanings of &lt;code&gt;::&lt;&#x2F;code&gt; and &lt;code&gt;:&lt;&#x2F;code&gt;, removing laziness, or a total language and tooling cleanup, scorched-earth style. &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;lean-lang.org&#x2F;&quot;&gt;Lean&lt;&#x2F;a&gt; and &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.idris-lang.org&#x2F;&quot;&gt;Idris&lt;&#x2F;a&gt; might be more up your alley.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;i-don-t-know-how-but-make-it-better&quot;&gt;&quot;I don’t know how, but make it better&quot;&lt;&#x2F;h4&gt;
+&lt;p&gt;The vague rants and self-admitted impossible ideas hold a special place in our heart. “Replace base”, “tooling like TypeScript”, and “fix the weird syntax” were pretty good. It&#x27;s hard to imagine these changes being possible without the level of support given to large corporate projects, such as VS Code, TypeScript or Go.&lt;&#x2F;p&gt;
+&lt;p&gt;Special mention for “weird syntax”, which we can &lt;strong&gt;absolutely&lt;&#x2F;strong&gt; &lt;strong&gt;do&lt;&#x2F;strong&gt; something about, we just forgot to press the big red button that says “fix syntax”. Thanks for the reminder!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;to-conclude&quot;&gt;To conclude&lt;&#x2F;h2&gt;
+&lt;p&gt;This year’s survey has brought us a very valuable insight into the preoccupations of a certain proportion of Haskellers. Of course, the results are to be handled with care, as surveys are a self-selecting tool in the first place. We cannot possibly know what exactly the community thinks, only what the subset that answers the survey thinks.
+We had a variety of answers, ranging from one word (“base”) to several paragraphs that could be the start of a &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ghc-proposals&#x2F;ghc-proposals&#x2F;?tab=readme-ov-file#ghc-proposals&quot;&gt;GHC Proposal&lt;&#x2F;a&gt; or a &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;core-libraries-committee?tab=readme-ov-file#core-libraries-committee&quot;&gt;Core Libraries Proposal&lt;&#x2F;a&gt;. Anyone can open one, and we encourage you to do so!&lt;&#x2F;p&gt;
+&lt;p&gt;Tooling is a common thread to many topics, from beginner onboarding to consolidation of the developer experience. There is a tension between a fully integrated development ecosystem and having a language with multiple implementations that are free to explore different paths.&lt;&#x2F;p&gt;
+&lt;p&gt;Thank you again for participating in this year’s survey. Each new edition gives us more data points to measure the community trends, and they help the various groups with crafting the best experience for Haskell developers.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

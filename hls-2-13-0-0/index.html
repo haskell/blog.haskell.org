@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=d58d95c5efe846728d7b" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Haskell Language Server 2.13.0.0 release | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="" />
+  <link rel="canonical" href="https://blog.haskell.org/hls-2-13-0-0/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/hls-2-13-0-0/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/hls-2-13-0-0/" />
+  <meta property="og:description" content="" />
+  <meta name="twitter:description" content="" />
+  <meta property="og:title" content="Haskell Language Server 2.13.0.0 release | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="Haskell Language Server 2.13.0.0 release | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2026-01-26" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/hls-2-13-0-0/">Haskell Language Server 2.13.0.0 release</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/verymilkyjoe/">VeryMilkyJoe</a> <span class="rpad"></span> January 26, 2026 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/hls/">HLS</a>] #<a href="https://blog.haskell.org/tags/release/">Release</a> </span>
+
+    
+
+
+<p>The HLS team is happy to announce the 2.13.0.0 Haskell Language Server release which introduces two new exciting features!</p>
+<span id="continue-reading"></span><h2 id="2-13-0-0-features">2.13.0.0 features</h2>
+<h4 id="go-to-type-via-hover-message">Go-to type via hover message</h4>
+<p>This is a neat new feature, which adds clickable links to the different types in a type signature when hovering over it.
+You can then jump directly to the type you want to explore further by directly clicking the link in the hover pop up.</p>
+<p>Thank you very much to @dnikolovv for this contribution in <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4691">#4691</a>!
+<img src="go-to-type.gif" alt="A demonstration of the go-to action jumping to the different possible types in a simple example." width=70%></p>
+<h4 id="numericunderscores-support-for-literals">NumericUnderscores support for literals</h4>
+<p>We introduce additional code actions for better support of number literals, which offers to split the literal with underscores for better readability.</p>
+<p>The split is sensitive to the number system of the selected literal and to make life even more comfortable the code action also offers to add the <a rel="noopener" target="_blank" href="https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/numeric_underscores.html">NumericUnderscores</a> pragma for you if it is not already enabled!</p>
+<p>We want to thank @crtschin for implementing this feature in <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4716">#4716</a></p>
+<img src="number-literal-ca.png" alt="An example showing a binary number literally and the potential code actions that can be requested." width=70%>
+<h2 id="2-12-0-0-changes">2.12.0.0 changes</h2>
+<p>Since we did not post about the rather chunky 2.12.0.0 HLS release, we also want to highlight some of the changes, bug fixes and even refactors that some haskellers might have missed.</p>
+<h3 id="features">Features</h3>
+<h4 id="signature-help">Signature help</h4>
+<p>Another very cool new feature, implemented during 2025's Google Summer of Code by @jian-lin, is signature help.</p>
+<p>When viewing an applied function, users can now request information on the type of the respective argument on hover.
+This will also show users the comments related to the respective arguments if the function is sufficiently documented.
+Even better, this feature also works on infix functions!</p>
+<p>This feature was implemented in <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4626">#4626</a>.</p>
+<video controls width=70%>
+  <source
+    src="signature-help.webm"
+    type="video/webm"
+    alt="A simple 'Demo' type illustrating that the different parameters of a called function are highlighted in the function's type signature on hovering the respective passed arguments." />
+</video>
+<p>Signature help is unfortunately currently buggy in do-notation statements and ready to be picked up by any interested Haskellers who want to help make HLS even better 🙃.</p>
+<h4 id="go-to-references-for-notes">Go-to references for notes</h4>
+<p>Not all Haskell programmers may make use of them when coding but someday you might try to understand a large codebase such as GHC and encounter references to notes in the documentation.</p>
+<p>Notes are big chunks of documentation which are often explanations about some concepts or design decisions in a whole module instead of just explanations on a singular function and can be referenced in any comments.</p>
+<p>HLS can now help in making the encounters with such references more efficient by allowing users to jump to the referenced notes via a go-to reference request.</p>
+<p>We are very grateful to @jvanbruegge for introducing this feature in <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4624">#4624</a>.</p>
+<h3 id="some-notable-bug-fixes">Some notable bug fixes</h3>
+<ul>
+<li>When renaming constructors of a data structure, the data structures fields will no longer be renamed to all have that new name (<a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4635">#4635</a>).</li>
+<li>HLS now recompiles faster by consistently adding the <code>-haddock</code> flag which avoids unnecessary recompilation (<a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/pull/4596">#4596</a>).</li>
+</ul>
+<h3 id="refactoring">Refactoring</h3>
+<p>In 2.12.0.0 there was a big community effort, also due to the effort of a lot of ZuriHac participants, to use structured diagnostics wherever possible in the HLS codebase.</p>
+<p>We want to thank all of the contributors who helped make the HLS codebase more unified and easier to understand!
+The tracking issue can be found in <a rel="noopener" target="_blank" href="https://github.com/haskell/haskell-language-server/issues/4605">#4605</a>.</p>
+<h3 id="supported-ghc-versions-in-2-12-0-0-and-2-13-0-0">Supported GHC versions in 2.12.0.0 and 2.13.0.0</h3>
+<ul>
+<li>9.12.2</li>
+<li>9.10.1</li>
+<li>9.8.4</li>
+<li>9.6.7</li>
+</ul>
+<h2 id="thank-you-haskell-community">Thank you, Haskell Community</h2>
+<p>We wish all Haskellers happy hacking while using the latest releases of the Haskell Language Server, and hope to see you in the issue tracker or even in some pull requests!</p>
+<p>Again, a big thank you to all contributors and last year's Google Summer of Code participants for helping improve HLS in any way, be it documentation, bug fixes or new features.</p>
+<p>Finally, a reminder that you can donate to the development of HLS via <a rel="noopener" target="_blank" href="https://opencollective.com/haskell-language-server">OpenCollective</a>. The OpenCollective money pays for tedious, but important maintenance work and, sometimes, for getting new features over the finish line.</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.haskell.org/a-couple-million-lines-of-haskell/">&#8249; A Couple Million Lines of Haskell: Production Engineering at Mercury</a>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/a-comment-preserving-cabal-parser/"> A Comment-Preserving Cabal Parser &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2026</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>
