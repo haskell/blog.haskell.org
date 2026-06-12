@@ -7,7 +7,7 @@ categories = ["GHC"]
 tags = ["hackage", "cabal"]
 +++
 
-### **What this post is about**
+# **What this post is about**
 
 When a shiny new version of GHC comes out, it should be easy to upgrade.  After all, the new compiler should be more capable than the previous version\!
 
@@ -19,7 +19,7 @@ But in practice that isn't even nearly true.  The upgrade path is so hard that m
 
 The GHC team has been working hard on this issue, and has made lots of progress.  This post summarises what we have done, what remains to be done, and invites your help.
 
-## **1\. Goals**
+# **1\. Goals**
 
 We have two big goals.  The most important is this one::
 
@@ -42,7 +42,7 @@ We are now getting very close to achieving these goals.  This post explains why 
 
 The two goals look independent, but in fact overcoming one set of obstacles will unlock both goals, which is why I am treating them together here.  Section 2 describes the problem.
 
-## **2\. Background: the problem**
+# **2\. Background: the problem**
 
 In the past, each version of GHC came with a new version of the `base` package.  For example:
 
@@ -192,7 +192,7 @@ Ultimately we can move to the situation where *`base` is a separate package like
 
 Moreover, because known entities can now be defined in `base` (not just in `ghc-internal`) lots of code can move from `ghc-internal` into `base`, so that `base` is no longer just a shim.  This process has started but there is plenty more to do.
 
-## **4\. What is now possible**
+# **4\. What is now possible**
 
 Because \`base\` is now reinstallable, it becomes possible to do the following.
 
@@ -240,7 +240,7 @@ The good news is that
 * This work can be done entirely decoupled from the GHC release cycle.   `base-4.22.0.1` can, for example, be released after GHC 10.0.
 * It does not require any detailed knowledge of GHC.
 
-## **5\.  How you can help**
+# **5\.  How you can help**
 
 GHC is an open source project.  It relies utterly on the contributions of volunteers.  There are a few people whose day job involves working on GHC, but most of them are working on specific projects for specific customers.  Cycles are scarce.
 
@@ -258,7 +258,7 @@ You would not be on your own.  There is a small community of people to consult a
 
 If you are willing to help, please write to Rodrigo: rodrigo@well-typed.com.
 
-## **6\. Credits**
+# **6\. Credits**
 
 I hope it has become clear that although the goals are very simple and clear, the path to achieving them has been far from simple.  It has taken several years, involved interactions across the ecosystem (not just GHC internals), needed lots of discussion and communication, and is still on-going.
 
@@ -276,3 +276,5 @@ You can find some more background [here](https://github.com/well-typed/reinstall
 
 Although many people have contributed, often supported by their employers, the above list makes it clear that the direct support of Well-Typed has been particularly critical to success.  Thank you Well-Typed\!
 
+I'm very grateful to many people who reviewed drafts of this post and helped me to improve it, including
+Moritz Angermann, Manuel Barnez, Teo Camarasu, Tobias Dammers, Trevis Esper, Adam Gundry, Wolfgang Jeltsch, Andreas Klebinger, Andrew Lelechenko, and Rodrigo Mesquita.
