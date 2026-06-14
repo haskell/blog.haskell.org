@@ -4,8 +4,8 @@ date = 2026-05-31
 
 [taxonomies]
 authors = ["Vidit Odedra"]
-categories = ["Guide"]
-tags = ["Contribution", "Open Source", "Summer of Code", "Haskell", "Personal Experience"]
+categories = ["HLS"]
+tags = ["GSoC", "activities-report"]
 +++
 
 October 2025 was when I wrote my first line of Haskell. Fast forward to May 2026, I am consistently contributing to the Haskell Language Server (HLS) and my Google Summer of Code proposal also got accepted. This blog is a mix of my personal experiences along with general learnings that could help beginners to start contributing to Haskell repositories.
