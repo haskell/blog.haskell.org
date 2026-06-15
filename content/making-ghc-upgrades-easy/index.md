@@ -223,7 +223,7 @@ There are caveats, of course
 
   A less extreme, and hence more troubling case is where `ghc-internal` changes the behaviour of a method in some class *instance*.  (Here's [an example that happened between 9.14 and 10.0](https://gitlab.haskell.org/ghc/ghc/-/merge_requests/14413/diffs).)  A shortcoming of instances is that you can't shim over them.
 
-* `P` might depend transitively on the `ghc` package, the so-called "GHC API" that lets you use GHC itself as a library.  Unfortunately, no one has written down a stable API for `ghc`, so in practice it exposes practically all of GHC, and its version necessarily increases with each release.
+* `P` might depend transitively on the `ghc` package, the so-called "GHC API" that lets you use GHC itself as a library.  Unfortunately, no one has written down a stable API for `ghc`, so in practice it exposes almost all of GHC, and its version necessarily increases with each release.
 
 * Package collections like Stackage can only have a single version of `base`; but each Stackage release will be free to choose which version of `base` to incorporate. (There are some tricky corners to do with the fact that Stackage includes the `ghc` package itself, which may depend on a particular `base` version.)
 
