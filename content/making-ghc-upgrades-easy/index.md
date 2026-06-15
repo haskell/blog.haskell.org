@@ -19,7 +19,7 @@ But in practice that isn't even nearly true.  The upgrade path is so hard that m
 
 The GHC team has been working hard on this issue, and has made lots of progress.  This post summarises what we have done, what remains to be done, and invites your help.
 
-# **1\. Goals**
+# **1. Goals**
 
 We have two big goals.  The most important is this one::
 
@@ -42,7 +42,7 @@ We are now getting very close to achieving these goals.  This post explains why 
 
 The two goals look independent, but in fact overcoming one set of obstacles will unlock both goals, which is why I am treating them together here.  Section 2 describes the problem.
 
-# **2\. Background: the problem**
+# **2. Background: the problem**
 
 In the past, each version of GHC came with a new version of the `base` package.  For example:
 
@@ -51,7 +51,7 @@ In the past, each version of GHC came with a new version of the `base` package. 
 * GHC 9.12 came with base-4.21.1
 * GHC 9.14 came with base-4.22.0
 
-**Moreover, each version of GHC was indissolubly tied to one, and only one, version of \`base\`.**  For example, every program compiled with (say) GHC 9.10, say, must be compiled against `base-4.20.2`.  No other version of `base` will do.
+**Moreover, each version of GHC was indissolubly tied to one, and only one, version of `base`.**  For example, every program compiled with (say) GHC 9.10, say, must be compiled against `base-4.20.2`.  No other version of `base` will do.
 
 ### **2.1 Why tight coupling is a problem**
 
@@ -76,7 +76,7 @@ There are many, many other examples: desugaring list comprehensions, or arrow no
 
 This tight coupling between `base` and GHC directly contradicts (BASE goal).
 
-## **3\.  The Glorious Plan, and progress so far**
+## **3.  The Glorious Plan, and progress so far**
 
 We have made a lot of progress towards meeting (STABILITY goal) and (BASE goal).  This section lays out the steps we either have taken or propose to take.
 
@@ -192,7 +192,7 @@ Ultimately we can move to the situation where *`base` is a separate package like
 
 Moreover, because known entities can now be defined in `base` (not just in `ghc-internal`) lots of code can move from `ghc-internal` into `base`, so that `base` is no longer just a shim.  This process has started but there is plenty more to do.
 
-# **4\. What is now possible**
+# **4. What is now possible**
 
 Because \`base\` is now reinstallable, it becomes possible to do the following.
 
@@ -223,7 +223,7 @@ There are caveats, of course
 
   A less extreme, and hence more troubling case is where `ghc-internal` changes the behaviour of a method in some class *instance*.  (Here's [an example that happened between 9.14 and 10.0](https://gitlab.haskell.org/ghc/ghc/-/merge_requests/14413/diffs).)  A shortcoming of instances is that you can't shim over them.
 
-* `P` might depend transitively on the `ghc` package, the so-called "GHC API" that lets you use GHC itself as a library.  Unfortunately, no one has written down a stable API for `ghc` so in practice it exposes practically of GHC, and its version necessarily increases with each release.
+* `P` might depend transitively on the `ghc` package, the so-called "GHC API" that lets you use GHC itself as a library.  Unfortunately, no one has written down a stable API for `ghc`, so in practice it exposes practically all of GHC, and its version necessarily increases with each release.
 
 * Package collections like Stackage can only have a single version of `base`; but each Stackage release will be free to choose which version of `base` to incorporate. (There are some tricky corners to do with the fact that Stackage includes the `ghc` package itself, which may depend on a particular `base` version.)
 
@@ -240,7 +240,7 @@ The good news is that
 * This work can be done entirely decoupled from the GHC release cycle.   `base-4.22.0.1` can, for example, be released after GHC 10.0.
 * It does not require any detailed knowledge of GHC.
 
-# **5\.  How you can help**
+# **5.  How you can help**
 
 GHC is an open source project.  It relies utterly on the contributions of volunteers.  There are a few people whose day job involves working on GHC, but most of them are working on specific projects for specific customers.  Cycles are scarce.
 
@@ -258,7 +258,7 @@ You would not be on your own.  There is a small community of people to consult a
 
 If you are willing to help, please write to Rodrigo: rodrigo@well-typed.com.
 
-# **6\. Credits**
+# **6. Credits**
 
 I hope it has become clear that although the goals are very simple and clear, the path to achieving them has been far from simple.  It has taken several years, involved interactions across the ecosystem (not just GHC internals), needed lots of discussion and communication, and is still on-going.
 
@@ -266,7 +266,7 @@ I am hugely grateful to those who have made it all possible.  Specifically:
 
 * **2022 onwards**.  **John Ericson** was a tireless advocate for the "split-base" plan, [articulated in HF proposal \#47](https://github.com/Ericson2314/tech-proposals/blob/standard-library-reform/proposals/accepted/047-standard-library-reform.rst).
 * **2023 onwards**.   **John Ericson, Ben Gamari, Adam Gundry, Andrew Lelechenko, Julian Ospald,** and myself co-authored the subsequent [HF proposal \#51](https://github.com/haskellfoundation/tech-proposals/blob/main/proposals/accepted/051-ghc-base-libraries.rst) which described the `base`/ `ghc-internal` split.
-* **2023\.**  Executing on that proposal, by splitting `base` into `base` and `ghc-internal` was done mainly by **Ben Gamari**, funded by Well-Typed  (Section 3.1).   The split first appeared in GHC 9.10.
+* **2023.**  Executing on that proposal, by splitting `base` into `base` and `ghc-internal` was done mainly by **Ben Gamari**, funded by Well-Typed  (Section 3.1).   The split first appeared in GHC 9.10.
 * **2024-25.** The next step was to make `base` and `template-haskell` into fully-reinstallable packages (Section 3.1).  This involved changes to both GHC and [Cabal](https://www.google.com/url?q=https://github.com/haskell/cabal/pull/10982&sa=D&source=docs&ust=1781006171722758&usg=AOvVaw3n-ePBoBHfwf7CmjVpolJQ), and was a collaboration between **Matthew Pickering** (funded by Well-Typed) and **Teo Camarasu**.  It happened in GHC 9.14.
 * **2026**.   Refactoring the `template-haskell` library into libraries with much more stable interfaces (Section 3.2) has been almost entirely driven by **Teo Camarasu** with support from CircuitHub.
 * **2026**.  Making it possible for known entities to be defined in any module (Section 3.3) was a project initiated by **Matthew Pickering,** and initially executed by me.  Then **Rodrigo Mesquita and Wolfgang Jeltsch** took it over and pushed it to completion, funded by Well-Typed.
