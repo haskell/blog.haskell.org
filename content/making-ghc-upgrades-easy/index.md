@@ -277,4 +277,4 @@ You can find some more background [here](https://github.com/well-typed/reinstall
 Although many people have contributed, often supported by their employers, the above list makes it clear that the direct support of Well-Typed has been particularly critical to success.  Thank you Well-Typed\!
 
 I'm very grateful to many people who reviewed drafts of this post and helped me to improve it, including
-Moritz Angermann, Manuel Barnez, Teo Camarasu, Tobias Dammers, Trevis Esper, Adam Gundry, Wolfgang Jeltsch, Andreas Klebinger, Andrew Lelechenko, and Rodrigo Mesquita.
+Moritz Angermann, Manuel Bärenz, Teo Camarasu, Tobias Dammers, Trevis Elser, Adam Gundry, Wolfgang Jeltsch, Andreas Klebinger, Andrew Lelechenko, and Rodrigo Mesquita.
