@@ -7,9 +7,11 @@ categories = ["GHC"]
 tags = ["hackage", "cabal"]
 +++
 
-# **What this post is about**
+## What this post is about
 
-When a shiny new version of GHC comes out, it should be easy to upgrade.  After all, the new compiler should be more capable than the previous version\!
+When a shiny new version of GHC comes out, it should be easy to upgrade.  After all, the new compiler should be more capable than the previous version!
+
+<!-- more -->
 
 But in practice that isn't even nearly true.  The upgrade path is so hard that many companies are using versions of GHC from many years back; it's just too much work for them to upgrade.  This is bad in many ways:
 
@@ -19,17 +21,21 @@ But in practice that isn't even nearly true.  The upgrade path is so hard that m
 
 The GHC team has been working hard on this issue, and has made lots of progress.  This post summarises what we have done, what remains to be done, and invites your help.
 
-# **1. Goals**
+## 1. Goals
 
 We have two big goals.  The most important is this one::
 
-**(STABILITY goal) The Big Stability Goal.** Suppose a package P compiles successfully with GHC 10.0.  When GHC 10.2 is released, it should be possible to use GHC 10.2 to compile package P, and all its dependencies, *without modification.*
+### (STABILITY goal) The Big Stability Goal.
 
-It is impossible to provide a 100.0% promise of (STABILITY goal): see Section 4.1 below.  But we can get very close.
+Suppose a package P compiles successfully with GHC 10.0.  When GHC 10.2 is released, it should be possible to use GHC 10.2 to compile package P, and all its dependencies, *without modification.*
+
+It is impossible to provide a 100.0% promise of (STABILITY goal): see [Section 4.1](#4-1-caveats) below.  But we can get very close.
 
 There is a complementary goal, which relates to the `base` package.  The `base` package provides core functionality to every Haskell program, including all the modules specified in the Haskell Report, especially the `Prelude` module. Almost every Haskell package in existence depends, directly or indirectly, on `base`.  (Hence its name.)
 
-**(BASE goal) The Base Package Goal.** The `base` package should be a package like any other:
+### (BASE goal) The Base Package Goal.
+
+The `base` package should be a package like any other:
 
 * In its own repository
 * With its own maintainers
@@ -40,9 +46,9 @@ There is a complementary goal, which relates to the `base` package.  The `base` 
 
 We are now getting very close to achieving these goals.  This post explains why it is harder than it looks, what we have done recently, and what we mean by "very close".
 
-The two goals look independent, but in fact overcoming one set of obstacles will unlock both goals, which is why I am treating them together here.  Section 2 describes the problem.
+The two goals look independent, but in fact overcoming one set of obstacles will unlock both goals, which is why I am treating them together here.  [Section 2](#2-background-the-problem) describes the problem.
 
-# **2. Background: the problem**
+## 2. Background: the problem
 
 In the past, each version of GHC came with a new version of the `base` package.  For example:
 
@@ -53,7 +59,7 @@ In the past, each version of GHC came with a new version of the `base` package. 
 
 **Moreover, each version of GHC was indissolubly tied to one, and only one, version of `base`.**  For example, every program compiled with (say) GHC 9.10, say, must be compiled against `base-4.20.2`.  No other version of `base` will do.
 
-### **2.1 Why tight coupling is a problem**
+### 2.1 Why tight coupling is a problem
 
 This tight coupling was convenient for the implementers of early versions of GHC, well before we were thinking about stability, even before Cabal and Hackage even existed. But with the benefit of hindsight, the tight coupling is highly undesirable:
 
@@ -66,7 +72,7 @@ This tight coupling was convenient for the implementers of early versions of GHC
 
 This is very, very bad.  It may take months for a wave of version bumps and to sweep through Hackage.   It directly contradicts (STABILITY goal).
 
-### **2.2 The problem of known entities**
+### 2.2 The problem of known entities
 
 But *why* does GHC 9.10, say, insist on `base-4.20.2` and nothing else?
 
@@ -76,13 +82,13 @@ There are many, many other examples: desugaring list comprehensions, or arrow no
 
 This tight coupling between `base` and GHC directly contradicts (BASE goal).
 
-## **3.  The Glorious Plan, and progress so far**
+## 3.  The Glorious Plan, and progress so far
 
 We have made a lot of progress towards meeting (STABILITY goal) and (BASE goal).  This section lays out the steps we either have taken or propose to take.
 
-This is a multi-year project involving contributions from many people; see Section 6 for a timeline and credits.
+This is a multi-year project involving contributions from many people; see [Section 6](#6-credits) for a timeline and credits.
 
-### **3.1 Splitting `base` and `ghc-internal`**
+### 3.1 Splitting `base` and `ghc-internal`
 
 The first step was to split the old `base` library into two libraries, `ghc-internal` and `base`:
 
@@ -105,11 +111,11 @@ This architecture has a major advantages, in principle anyway:
   Moreover, like any other package, the maintainers of `base` may be able to make it compilable with multiple versions of GHC, so that the user can upgrade or choose its version regardless of compiler version.     That is, `base` becomes "re-installable".
 
 
-This separation was achieved in GHC 9.14.  Doing it was trickier than it seemed; first `ghc-internal` and `base` had to be separated, and then `base` had to be made reinstallable.   (Timeline in Section 6 below.)
+This separation was achieved in GHC 9.14.  Doing it was trickier than it seemed; first `ghc-internal` and `base` had to be separated, and then `base` had to be made reinstallable.   (Timeline in [Section 6](#6-credits) below.)
 
-Even after this all "known entities" (see Section 2\) had to be defined in `ghc-internal`.   In practice that pins a lot of library code in `ghc-internal` and means that `base` is largely just a shim.  (Still useful\!  But without much functionality of its own.).  See Section 3.3 for the next step.
+Even after this all "known entities" (see [Section 2](#2-background-the-problem)) had to be defined in `ghc-internal`.   In practice that pins a lot of library code in `ghc-internal` and means that `base` is largely just a shim.  (Still useful!  But without much functionality of its own.).  See [Section 3.3](#3-3-known-entities) for the next step.
 
-### **3.2  Template Haskell**
+### 3.2  Template Haskell
 
 Template Haskell allows you to create a source Haskell AST (Abstract Syntax Tree), and then to pattern match on it.  Since every release of GHC has changes to its Haskell AST, any package that does pattern-matching on a Template Haskell AST cannot possibly compile with a new version of GHC.
 
@@ -120,7 +126,7 @@ This directly threatens (STABILITY goal).   More concretely:
 * Many many libraries depend transitively on some library L  that uses Template Haskell.
 * So those libraries cannot work with a new version of GHC until the author of L has at least updated the version bound for their `template-haskell` dependency.
 
-This results in a lot of breakage when a new version of GHC comes out.  And most of that breakage is unnecessary\!  Most use only quotations and splices (which are perfectly portable), rather than using the AST directly (which is not).    For more detail on different classes of Template Haskell usage, with different stability properties, see [Teo's blog post](https://informal.codes/posts/stabilising-th/), or [their talk at the 2025 Haskell Ecosystem Workshop](https://informal.codes/talks/hew25/).
+This results in a lot of breakage when a new version of GHC comes out.  And most of that breakage is unnecessary!  Most use only quotations and splices (which are perfectly portable), rather than using the AST directly (which is not).    For more detail on different classes of Template Haskell usage, with different stability properties, see [Teo's blog post](https://informal.codes/posts/stabilising-th/), or [their talk at the 2025 Haskell Ecosystem Workshop](https://informal.codes/talks/hew25/).
 
 Thus motivated, Teo has been busy splitting up the previously-monolithic `template-haskell` package, whose API necessarily changed with each version of GHC, into several packages:
 
@@ -141,13 +147,13 @@ and remove dependencies on `template-haskell`.
 More background in :
 
 * [Stabilising Template Haskell](https://informal.codes/posts/stabilising-th) (blog post 2024).
-* [Announcing template-haskell-lift and template-haskell-quasiquoter](https://informal.codes/posts/ann-th-lift-and-quasi/) (blog post 2025\)
+* [Announcing template-haskell-lift and template-haskell-quasiquoter](https://informal.codes/posts/ann-th-lift-and-quasi/) (blog post 2025)
 * [Template Haskell: a base study in (in)-stability](https://informal.codes/talks/hew25/), Haskell Ecosystem Workshop 2025
 * [The abstract Q proposal](https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0700-abstract-q.rst) (will land in GHC 10.2, not user facing but opens up new opportunities)
 
-### **3.3 Known entities**
+### 3.3 Known entities
 
-Up to and including GHC 10.0, for every "known entity" E (function, type, or class; see Section 2.2), GHC insists that
+Up to and including GHC 10.0, for every "known entity" E (function, type, or class; see [Section 2.2](#2-2-the-problem-of-known-entities)), GHC insists that
 
 * E is defined in `ghc-internal`
 * GHC knows, baked into GHC's source code, the module in which E is defined.
@@ -158,11 +164,11 @@ Moreover, changes in `base` can move E from one module to another, without chang
 
 This architecture properly supports (BASE goal) because it allows the maintainer of `base` to refactor code freely, *including* moving known entities from one module to another.
 
-Better still, it *also* allows us to move code from `ghc-internal` to `base`.   That is good because bug fixes to code in `ghc-internal` can only come coupled to a new GHC release, whereas bug fixes to code in `base` can be made and released independently of the compiler.  The more code we can remove from `ghc-internal` and put in `base`, the better\!
+Better still, it *also* allows us to move code from `ghc-internal` to `base`.   That is good because bug fixes to code in `ghc-internal` can only come coupled to a new GHC release, whereas bug fixes to code in `base` can be made and released independently of the compiler.  The more code we can remove from `ghc-internal` and put in `base`, the better!
 
-### **3.4 Cleaning up the `base` API.**
+### 3.4 Cleaning up the `base` API.
 
-For historical reasons, `base` exports quite a few functions that should properly be considered internal to GHC \-- they have been "grandfathered" into `base`.   For example `base:GHC.Base` exports `mapFB`, a function that is used only inside GHC's implementation of fusion for lists. Another more foundational example: `base:GHC.IO` exposes the *representation* of `IO`, not just the API of `IO`.   [Here is a list of all base modules with an indication of their stability and status](https://docs.google.com/spreadsheets/d/1WmyYLbJIMk9Q-vK4No5qvKIIdIZwhhFFlw6iVWd1xNQ/edit?gid=1315971213#gid=1315971213).
+For historical reasons, `base` exports quite a few functions that should properly be considered internal to GHC -- they have been "grandfathered" into `base`.   For example `base:GHC.Base` exports `mapFB`, a function that is used only inside GHC's implementation of fusion for lists. Another more foundational example: `base:GHC.IO` exposes the *representation* of `IO`, not just the API of `IO`.   [Here is a list of all base modules with an indication of their stability and status](https://docs.google.com/spreadsheets/d/1WmyYLbJIMk9Q-vK4No5qvKIIdIZwhhFFlw6iVWd1xNQ/edit?gid=1315971213#gid=1315971213).
 
 Even though those exports may be historical and somewhat accidental, packages may nevertheless depend on them.   That is bad all round:
 
@@ -184,28 +190,28 @@ So there is a task here, on which we have not made much progress.  We need to
 * Decide whether to remove them, keep them, or design a new, stable API to provide that functionality.
 * Make a CLC proposal or proposals that embodies the changes.
 
-A topical example is [the discussion in CLC ticket \#405](https://github.com/haskell/core-libraries-committee/issues/405).  One comment explains that `GHC.IO.Encoding` and `GHC.IO.Exception` both say "The API of this module is unstable and not meant to be consumed by the general public", and yet these modules are imported by 132 and 287 packages respectively.  So it's not easy just to remove them\!
+A topical example is [the discussion in CLC ticket #405](https://github.com/haskell/core-libraries-committee/issues/405).  One comment explains that `GHC.IO.Encoding` and `GHC.IO.Exception` both say "The API of this module is unstable and not meant to be consumed by the general public", and yet these modules are imported by 132 and 287 packages respectively.  So it's not easy just to remove them!
 
-### **3.5 Decoupling \`base\` from GHC**
+### 3.5 Decoupling `base` from GHC
 
 Ultimately we can move to the situation where *`base` is a separate package like any other, with its own maintainer, repository, and release cycle*.   In particular, the release cycle of `base` no longer needs to be coupled to that of GHC.
 
 Moreover, because known entities can now be defined in `base` (not just in `ghc-internal`) lots of code can move from `ghc-internal` into `base`, so that `base` is no longer just a shim.  This process has started but there is plenty more to do.
 
-# **4. What is now possible**
+## 4. What is now possible
 
-Because \`base\` is now reinstallable, it becomes possible to do the following.
+Because `base` is now reinstallable, it becomes possible to do the following.
 
 * GHC 9.14 came with `base-4.22.0.0`
 * GHC 10.0 comes with `base-4.23.0.0`.  There is a major version bump from 4.22 to 4.23 because the CLC has agreed to changes in the `base` API in the time between GHC 9.14 and GHC 10.0.
 * After releasing GHC 10.0, it would be possible to also release `base-4.22.0.1`, whose API is identical to `base-4.22.0.0`
 * This new `base-4.22.0.1` uses CPP magic to allow it to be compiled with *either* GHC 9.14 *or* GHC 10.0.
 
-Now any package P that compiles with GHC 9.14 against `base-4.22.0.0` can *also* be compiled with the shiny new GHC 10.0, against `base-4.22.0.1`.  That is: we can meet (STABILITY goal).  Victory\!  (NB: provided the user bounds are `base-4.22.0.*`, P can also be compiled by ghc 9.14 against the self-same `base-4.22.0.1`.)
+Now any package P that compiles with GHC 9.14 against `base-4.22.0.0` can *also* be compiled with the shiny new GHC 10.0, against `base-4.22.0.1`.  That is: we can meet (STABILITY goal).  Victory!  (NB: provided the user bounds are `base-4.22.0.*`, P can also be compiled by ghc 9.14 against the self-same `base-4.22.0.1`.)
 
 Moreover, this same pattern can be repeated when GHC 10.2 is released.  Then, again in principle, one could release `base-4.22.0.2` which can be compiled with GHC 9.14, or 10.0, or 10.2.  Then package P can be compiled with GHC 10.2.
 
-### **4.1 Caveats**
+### 4.1 Caveats
 
 There are caveats, of course
 
@@ -213,13 +219,13 @@ There are caveats, of course
 
 * For historical reasons, the `base` API includes many functions that should properly be considered as GHC internal functions that have no business being in the `base` API.  The stability of these functions are more vulnerable to changes in GHC internals, of course; in consultation with the CLC we should try to remove them from the `base` API.
 
-* Packages that do pattern matching on Template Haskell syntax trees are always going to need updating when moving to a new GHC (see Section 3.2).  Happily, such packages are only a tiny proportion of the packages that use TH.
+* Packages that do pattern matching on Template Haskell syntax trees are always going to need updating when moving to a new GHC (see [Section 3.2](#3-2-template-haskell)).  Happily, such packages are only a tiny proportion of the packages that use TH.
 
 * A new release of GHC could outright change some behaviour.  GHC's developers make strenuous efforts to avoid changes in existing behaviour, but it can happen.   For example, suppose a bug meant that 1+3 evaluated to 5, and we fix the bug; a package relying on that behaviour might break, and everyone would probably agree that's fine.
 
   Sometimes there are compelling reasons for a behaviour change, but we try hard to offer a deprecation period, so that package authors have a release or two to adapt.
 
-* GHC 10.0 could make changes in `ghc-internal` that make it impossible to implement the same API as `base-4.22.0.0`.   As an extreme case, suppose GHC 10.0 changed the definition of the class `Num`.  We couldn't shim over that\!   Happily, fundamental changes like this are now vanishingly rare.
+* GHC 10.0 could make changes in `ghc-internal` that make it impossible to implement the same API as `base-4.22.0.0`.   As an extreme case, suppose GHC 10.0 changed the definition of the class `Num`.  We couldn't shim over that!   Happily, fundamental changes like this are now vanishingly rare.
 
   A less extreme, and hence more troubling case is where `ghc-internal` changes the behaviour of a method in some class *instance*.  (Here's [an example that happened between 9.14 and 10.0](https://gitlab.haskell.org/ghc/ghc/-/merge_requests/14413/diffs).)  A shortcoming of instances is that you can't shim over them.
 
@@ -240,17 +246,17 @@ The good news is that
 * This work can be done entirely decoupled from the GHC release cycle.   `base-4.22.0.1` can, for example, be released after GHC 10.0.
 * It does not require any detailed knowledge of GHC.
 
-# **5.  How you can help**
+## 5.  How you can help
 
 GHC is an open source project.  It relies utterly on the contributions of volunteers.  There are a few people whose day job involves working on GHC, but most of them are working on specific projects for specific customers.  Cycles are scarce.
 
 We want to deliver on our goals: (STABILITY goal) and (BASE goal).  The groundwork, which can only really be done by people deeply familiar with GHC, has now been completed.  We are now in a phase where you can help; and indeed further progress relies on your help.  Specifically
 
-* **We need someone (or a small group) to become an active maintainer of `base`; and in particular to implement the `base` releases that can be compiled with multiple versions of GHC (see Section 4).**
-  * An example of this work in practice: [\!16070.](https://gitlab.haskell.org/ghc/ghc/-/merge_requests/16070/commits)
+* **We need someone (or a small group) to become an active maintainer of `base`; and in particular to implement the `base` releases that can be compiled with multiple versions of GHC (see [Section 4](#4-what-is-now-possible)).**
+  * An example of this work in practice: [!16070.](https://gitlab.haskell.org/ghc/ghc/-/merge_requests/16070/commits)
   * A very helpful document is the [changelog for base](https://gitlab.haskell.org/ghc/ghc/-/blob/master/libraries/base/changelog.md).
 
-* **We need people to make CLC proposals to remove GHC-internal APIs from `base` (Section 3.4).   Doing so will require some kind of impact analysis; and perhaps the design of stable APIs to replace them.**
+* **We need people to make CLC proposals to remove GHC-internal APIs from `base` ([Section 3.4](#3-4-cleaning-up-the-base-api)).   Doing so will require some kind of impact analysis; and perhaps the design of stable APIs to replace them.**
 
 None of this is rocket science. It does not require intimate knowledge of GHC.  But it does require care, judgement, discussion, and negotiation.
 
@@ -258,23 +264,23 @@ You would not be on your own.  There is a small community of people to consult a
 
 If you are willing to help, please write to Rodrigo: rodrigo@well-typed.com.
 
-# **6. Credits**
+## 6. Credits
 
 I hope it has become clear that although the goals are very simple and clear, the path to achieving them has been far from simple.  It has taken several years, involved interactions across the ecosystem (not just GHC internals), needed lots of discussion and communication, and is still on-going.
 
 I am hugely grateful to those who have made it all possible.  Specifically:
 
-* **2022 onwards**.  **John Ericson** was a tireless advocate for the "split-base" plan, [articulated in HF proposal \#47](https://github.com/Ericson2314/tech-proposals/blob/standard-library-reform/proposals/accepted/047-standard-library-reform.rst).
-* **2023 onwards**.   **John Ericson, Ben Gamari, Adam Gundry, Andrew Lelechenko, Julian Ospald,** and myself co-authored the subsequent [HF proposal \#51](https://github.com/haskellfoundation/tech-proposals/blob/main/proposals/accepted/051-ghc-base-libraries.rst) which described the `base`/ `ghc-internal` split.
-* **2023.**  Executing on that proposal, by splitting `base` into `base` and `ghc-internal` was done mainly by **Ben Gamari**, funded by Well-Typed  (Section 3.1).   The split first appeared in GHC 9.10.
-* **2024-25.** The next step was to make `base` and `template-haskell` into fully-reinstallable packages (Section 3.1).  This involved changes to both GHC and [Cabal](https://www.google.com/url?q=https://github.com/haskell/cabal/pull/10982&sa=D&source=docs&ust=1781006171722758&usg=AOvVaw3n-ePBoBHfwf7CmjVpolJQ), and was a collaboration between **Matthew Pickering** (funded by Well-Typed) and **Teo Camarasu**.  It happened in GHC 9.14.
-* **2026**.   Refactoring the `template-haskell` library into libraries with much more stable interfaces (Section 3.2) has been almost entirely driven by **Teo Camarasu** with support from CircuitHub.
-* **2026**.  Making it possible for known entities to be defined in any module (Section 3.3) was a project initiated by **Matthew Pickering,** and initially executed by me.  Then **Rodrigo Mesquita and Wolfgang Jeltsch** took it over and pushed it to completion, funded by Well-Typed.
-* **2026**.  **Wolfgang Jeltsch** has done quite a bit of work, in negotiation with the CLC and supported by Well-Typed, to clean up the interface of `base` (Section 3.4).  This is very much on-going work, and needs help (Section 5).
+* **2022 onwards**.  **John Ericson** was a tireless advocate for the "split-base" plan, [articulated in HF proposal #47](https://github.com/Ericson2314/tech-proposals/blob/standard-library-reform/proposals/accepted/047-standard-library-reform.rst).
+* **2023 onwards**.   **John Ericson, Ben Gamari, Adam Gundry, Andrew Lelechenko, Julian Ospald,** and myself co-authored the subsequent [HF proposal #51](https://github.com/haskellfoundation/tech-proposals/blob/main/proposals/accepted/051-ghc-base-libraries.rst) which described the `base`/ `ghc-internal` split.
+* **2023.**  Executing on that proposal, by splitting `base` into `base` and `ghc-internal` was done mainly by **Ben Gamari**, funded by Well-Typed  ([Section 3.1](#3-1-splitting-base-and-ghc-internal)).   The split first appeared in GHC 9.10.
+* **2024-25.** The next step was to make `base` and `template-haskell` into fully-reinstallable packages ([Section 3.1](#3-1-splitting-base-and-ghc-internal)).  This involved changes to both GHC and [Cabal](https://www.google.com/url?q=https://github.com/haskell/cabal/pull/10982&sa=D&source=docs&ust=1781006171722758&usg=AOvVaw3n-ePBoBHfwf7CmjVpolJQ), and was a collaboration between **Matthew Pickering** (funded by Well-Typed) and **Teo Camarasu**.  It happened in GHC 9.14.
+* **2026**.   Refactoring the `template-haskell` library into libraries with much more stable interfaces ([Section 3.2](#3-2-template-haskell)) has been almost entirely driven by **Teo Camarasu** with support from CircuitHub.
+* **2026**.  Making it possible for known entities to be defined in any module ([Section 3.3](#3-3-known-entities)) was a project initiated by **Matthew Pickering,** and initially executed by me.  Then **Rodrigo Mesquita and Wolfgang Jeltsch** took it over and pushed it to completion, funded by Well-Typed.
+* **2026**.  **Wolfgang Jeltsch** has done quite a bit of work, in negotiation with the CLC and supported by Well-Typed, to clean up the interface of `base` ([Section 3.4](#3-4-cleaning-up-the-base-api)).  This is very much on-going work, and needs help ([Section 5](#5-how-you-can-help)).
 
 You can find some more background [here](https://github.com/well-typed/reinstallable-base) and [here](https://discourse.haskell.org/t/what-are-the-next-steps-for-reinstallable-base/13319).
 
-Although many people have contributed, often supported by their employers, the above list makes it clear that the direct support of Well-Typed has been particularly critical to success.  Thank you Well-Typed\!
+Although many people have contributed, often supported by their employers, the above list makes it clear that the direct support of Well-Typed has been particularly critical to success.  Thank you Well-Typed!
 
 I'm very grateful to many people who reviewed drafts of this post and helped me to improve it, including
 Moritz Angermann, Manuel Bärenz, Teo Camarasu, Tobias Dammers, Trevis Elser, Adam Gundry, Wolfgang Jeltsch, Andreas Klebinger, Andrew Lelechenko, and Rodrigo Mesquita.
