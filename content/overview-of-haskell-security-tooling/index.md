@@ -43,7 +43,11 @@ Several downstream tools utilize this security data to protect Haskell applicati
 
 ## Tutorial: Synchronizing and Querying
 
-The tools above are built on the same libraries you can use yourself. If you want to query the advisory database directly, without going through a wrapper, the `hsec-tools` and `hsec-sync` executables let you do so from the command line.
+We are going to see how to fetch the HSEC database and query it locally for packages with known vulnerabilities.
+
+Note: The tools above are built on the same libraries you can use yourself.
+
+If you want to query the advisory database directly, the `hsec-tools` and `hsec-sync` executables let you do so from the command line.
 
 First, initialize/synchronize the local cache with the remote advisory database:
 
