@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=d58d95c5efe846728d7b" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>A Comment-Preserving Cabal Parser | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="" />
+  <link rel="canonical" href="https://blog.haskell.org/a-comment-preserving-cabal-parser/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/a-comment-preserving-cabal-parser/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/a-comment-preserving-cabal-parser/" />
+  <meta property="og:description" content="" />
+  <meta name="twitter:description" content="" />
+  <meta property="og:title" content="A Comment-Preserving Cabal Parser | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="A Comment-Preserving Cabal Parser | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2025-12-25" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/a-comment-preserving-cabal-parser/">A Comment-Preserving Cabal Parser</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/leana-jiang/">Léana Jiang</a> <span class="rpad"></span> December 25, 2025 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/cabal/">Cabal</a>] #<a href="https://blog.haskell.org/tags/activities-report/">activities-report</a> </span>
+
+    
+
+
+<p><em>This article was originally posted on my blog <a rel="noopener" target="_blank" href="https://confusedcompiler.org/articles/2025-12-comment-preserving-cabal-parser">here</a>.</em></p>
+<hr/>
+<h1 id="motivation">Motivation</h1>
+<p>Cabal <sup class="footnote-reference"><a href="#1">1</a></sup> is the standard package system for Haskell software, it is similar to Cargo from the Rust
+world, or OPAM if you come from OCaml.</p>
+<p>Cabal reads cabal package manifests in the cabal format (with the extension <code>.cabal</code>).
+However, it is currently unable to modify it loselessly: comments are lost, imports are
+fused and written in place, <code>elif</code> in a conditional will be desugared to a nested <code>if</code> in an <code>else</code>.
+A tracking issue was opened in cabal's repository since 2021 <a rel="noopener" target="_blank" href="https://github.com/haskell/cabal/issues/7544">here</a>.</p>
+<p>For this reason, critical features such as adding modules to the .cabal manifest or generating
+package dependency bounds are implemented poorly.
+For example, cabal emits a warning when a module is not listed in the manifest, but it can't apply
+the fix the warning indicates for you.
+Furthermore, <code>cabal gen-bounds</code> (which generates dependency bounds that are not specified) doesn't
+write dependency bounds information directly to the cabal file, it dumps them to the terminal.
+Frustrating!</p>
+<p>If we use the current pretty printer in cabal to try to implement these features, the resulting
+cabal manifest will be mangled.
+This is because cabal can't do <em>exact printing</em> yet.
+Concretely this means the spaces and empty lines, comments, common stanzas, and if conditions that
+you add will be lost.
+Adding an exact printer will allow cabal to modify the cabal files automatically and loselessly!</p>
+<p>An exact printer is a special kind of pretty printer.
+It uses concrete syntax information in the in-memory representation to output a file that is
+byte-to-byte identical to the file originally parsed.
+To do that, its corresponding parser must store enough information in the in-memory
+representation.
+Formally, the exact parser/printer combination obeys the law presented below.</p>
+<pre data-lang="hs" class="language-hs z-code"><code class="language-hs" data-lang="hs"><span class="z-source z-haskell">forall cabalFile<span class="z-keyword z-operator z-haskell">.</span>
+</span><span class="z-source z-haskell">  <span class="z-constant z-other z-haskell">IsValid</span> cabalFile <span class="z-keyword z-operator z-haskell">=&gt;</span>
+</span><span class="z-source z-haskell">    exactPrint (exactParse cabalFile) <span class="z-keyword z-operator z-haskell">==</span> cabalFile
+</span></code></pre>
+<p>This reads as "for all valid cabal manifests, the operation <code>exactPrint . exactParse</code> should output a
+file that is byte-to-byte identical to the original".</p>
+<p>Furthermore, we also aim to allow modification to the in-memory representation. Unmodified parts of
+the representation will be printed out verbatim to the original parsed cabal file.</p>
+<p>This property is crucial for tools to be able to manipulate cabal files programmatically:
+adding dependency, export a module, or generate package bounds just to name a few.</p>
+<p>In order to achieve introducing an exact printer, the first step is to preserve concrete syntax information. For example,
+comments must not be altered, comma style in comma-separated fields must be preserved, blank spaces
+and blank lines should be preserved.</p>
+<p><a rel="noopener" target="_blank" href="https://jappie.me/">Jappie</a> started doing a prototype that works well since 2024 Zurihac.
+The proposal has matured enough and was accepted by the Haskell Foundation, the current step is
+to implement it in Cabal. =D</p>
+<p>The following sections will be talking about handling comments in the parser and lexer.</p>
+<h1 id="how-the-cabal-parser-works">How the cabal parser works</h1>
+<p>There are three main parts to the cabal parser, namely the lexer, the field parser, and the field
+grammar parser.</p>
+<p>The lexer is written in <a rel="noopener" target="_blank" href="https://haskell-alex.readthedocs.io/">Alex</a>, a lexer generator for Haskell.
+Using a lexer generator has the advantage to write a set of production rules without thinking
+about their ordering or ambiguity, Alex will detect inconsistencies during the generation of the
+lexer. The lexer produces a stream of <code>Token</code>s.</p>
+<p>The field parser is written in plain Haskell. It calls the code generated by Alex, consuming the
+produced <code>Token</code>s. The top-level (entry point) of field parsers is <code>readFields</code>. It produces a
+stream of <code>Field ann</code> where <code>ann</code> holds some annotation related to the field. Before this work on comment
+preservation, <code>ann</code> is instantiated as <code>Position</code> which represents the row and column of the source
+code where the field is seen.</p>
+<p>The field parser not only interacts with the lexer by consuming <code>Token</code>s, but also by changing its
+state.
+Modeled as an automaton, Alex allows users to set "state", or "start codes". Each production rule in
+Alex can switch state and either produce a <code>Token</code> or nothing (drop the token for the parser to
+never see it). The field parser sets the state of the lexer upon seeing certain <code>Token</code>s that give
+hint to the following context.
+This has the benefit of producing better lexical error messages because the lexer "is more
+knowledgable" thanks to the parser, but also makes the logic a bit intertwined and less
+straightforward. In cabal's case, certain states are inaccessible without the parser deciding to
+transition to it.</p>
+<p>The lexer and the field parser together handles the cabal envelope format. Imagine if today cabal
+were to not use its own format and uses something like TOML like Cargo from Rust does, this format
+is the equivalent of TOML.</p>
+<p>The inner format is founded on the "field grammar", it handles things like "which field should be
+defined for a cabal file to be a package description", "which field can be defined multiple times
+with its values merged together", "which fields contains comma separated values or dependency bound
+description", and so on.</p>
+<p>This inner format is handled by the field grammar parser.
+It is a lot less straightforward than the two aforementioned parts and is primarily defined with
+type classes. The <code>FieldGrammar</code> type class describes how the pretty printer and parser should
+behave, two birds one stone! <sup class="footnote-reference"><a href="#2">2</a></sup></p>
+<h1 id="how-we-achieved-comment-preserving-parsing">How we achieved comment-preserving parsing</h1>
+<p>Prior to the work on comment-preserving parsing,
+comments are dropped by the lexer and no other parts down the pipeline can see any comments.
+To preserve comments, we must go against this prior design by making the lexer emit comments.</p>
+<p>We also needed to store the comments somewhere in the output of <code>readFields</code> which outputs
+<code>[Field Position]</code>.</p>
+<p>The <code>Field ann</code> data type is defined as follows</p>
+<pre data-lang="hs" class="language-hs z-code"><code class="language-hs" data-lang="hs"><span class="z-source z-haskell"><span class="z-keyword z-other z-haskell">data</span> <span class="z-constant z-other z-haskell">Field</span> ann
+</span><span class="z-source z-haskell">  <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">Field</span> <span class="z-keyword z-operator z-haskell">!</span>(<span class="z-constant z-other z-haskell">Name</span> ann) [<span class="z-constant z-other z-haskell">FieldLine</span> ann]
+</span><span class="z-source z-haskell">  <span class="z-keyword z-operator z-haskell">|</span> <span class="z-constant z-other z-haskell">Section</span> <span class="z-keyword z-operator z-haskell">!</span>(<span class="z-constant z-other z-haskell">Name</span> ann) [<span class="z-constant z-other z-haskell">SectionArg</span> ann] [<span class="z-constant z-other z-haskell">Field</span> ann]
+</span><span class="z-source z-haskell">  <span class="z-meta z-deriving z-haskell"><span class="z-keyword z-other z-haskell">deriving</span> (<span class="z-entity z-other z-inherited-class z-haskell">Eq</span>, <span class="z-entity z-other z-inherited-class z-haskell">Show</span>, <span class="z-entity z-other z-inherited-class z-haskell">Functor</span>, <span class="z-entity z-other z-inherited-class z-haskell">Foldable</span>, <span class="z-entity z-other z-inherited-class z-haskell">Traversable</span>, <span class="z-entity z-other z-inherited-class z-haskell">Generic</span>)</span>
+</span></code></pre>
+<p>Originally, Jappie's prototype adds another constructor <code>Comment !ByteString</code> to hold a
+comment. This was quite straightforward (exactly what we want in a prototype!) but it also
+introduced subtle footguns: all code that depend on the <code>Field</code> data type now has to deal with
+with <code>Comment</code>s.</p>
+<p>With help from <a rel="noopener" target="_blank" href="https://github.com/andreabedini">Andrea Bedini</a>, we changed the design to maintain the
+original definition of <code>Field ann</code>, while instantiating <code>ann</code> differently.
+Previously this type variable was <code>Position</code>; by changing it to <code>([ByteString], Position)</code>, we were
+able to store comments without polluting all usages of <code>Field ann</code> with the <code>Comment</code> constructor!
+Concretely we decided to give this pattern a type to disallow uses of <code>Data.Bifunctor.first</code> and
+<code>Data.Bifunctor.second</code>, as it can be less straightforward.
+The <code>WithComments ann</code> type is as follows:</p>
+<pre data-lang="hs" class="language-hs z-code"><code class="language-hs" data-lang="hs"><span class="z-source z-haskell"><span class="z-keyword z-other z-haskell">data</span> <span class="z-constant z-other z-haskell">WithComments</span> ann <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">WithComments</span>
+</span><span class="z-source z-haskell">  { justComments <span class="z-keyword z-operator z-haskell">::</span> <span class="z-keyword z-operator z-haskell">!</span>[<span class="z-constant z-other z-haskell">Comment</span> ann]
+</span><span class="z-source z-haskell">  <span class="z-punctuation z-separator z-comma z-haskell">,</span> unComments <span class="z-keyword z-operator z-haskell">::</span> <span class="z-keyword z-operator z-haskell">!</span>ann
+</span><span class="z-source z-haskell">  }
+</span><span class="z-source z-haskell">  <span class="z-meta z-deriving z-haskell"><span class="z-keyword z-other z-haskell">deriving</span> (<span class="z-entity z-other z-inherited-class z-haskell">Show</span>, <span class="z-entity z-other z-inherited-class z-haskell">Generic</span>, <span class="z-entity z-other z-inherited-class z-haskell">Eq</span>, <span class="z-entity z-other z-inherited-class z-haskell">Ord</span>, <span class="z-entity z-other z-inherited-class z-haskell">Functor</span>)</span>
+</span></code></pre>
+<p>A minor downside with the <em>comments-in-<code>ann</code></em> model is that a file with no field but only comments
+can't be represented. However we don't consider this case because such a file won't be a valid cabal
+file.</p>
+<p>We changed the top-level field parser <code>readFields</code> as follows:</p>
+<pre data-lang="hs" class="language-hs z-code"><code class="language-hs" data-lang="hs"><span class="z-source z-haskell"><span class="z-comment z-line z-double-dash z-haskell"><span class="z-punctuation z-definition z-comment z-haskell">--</span> Old definition is kept with the same type
+</span></span><span class="z-source z-haskell"><span class="z-meta z-function z-type-declaration z-haskell"><span class="z-entity z-name z-function z-haskell">readFields</span> <span class="z-keyword z-other z-double-colon z-haskell">::</span> <span class="z-storage z-type z-haskell">B8</span>.<span class="z-storage z-type z-haskell">ByteString</span> <span class="z-keyword z-other z-arrow z-haskell">-&gt;</span> <span class="z-storage z-type z-haskell">Either</span> <span class="z-storage z-type z-haskell">ParseError</span> [<span class="z-storage z-type z-haskell">Field</span> <span class="z-storage z-type z-haskell">Position</span>]
+</span></span><span class="z-source z-haskell"><span class="z-meta z-function z-type-declaration z-haskell"></span>readFields <span class="z-keyword z-operator z-haskell">=</span> (fmap <span class="z-keyword z-operator z-haskell">.</span> map <span class="z-keyword z-operator z-haskell">.</span> fmap) unComments <span class="z-keyword z-operator z-haskell">.</span> readFieldsWithComments
+</span><span class="z-source z-haskell">
+</span><span class="z-source z-haskell"><span class="z-comment z-line z-double-dash z-haskell"><span class="z-punctuation z-definition z-comment z-haskell">--</span> New comment-preserving alternative for the exact printer (and/or other future tooling interested in comments)
+</span></span><span class="z-source z-haskell"><span class="z-meta z-function z-type-declaration z-haskell"><span class="z-entity z-name z-function z-haskell">readFieldsWithComments</span> <span class="z-keyword z-other z-double-colon z-haskell">::</span> <span class="z-storage z-type z-haskell">B8</span>.<span class="z-storage z-type z-haskell">ByteString</span> <span class="z-keyword z-other z-arrow z-haskell">-&gt;</span> <span class="z-storage z-type z-haskell">Either</span> <span class="z-storage z-type z-haskell">ParseError</span> [<span class="z-storage z-type z-haskell">Field</span> (<span class="z-storage z-type z-haskell">WithComments</span> <span class="z-storage z-type z-haskell">Position</span>)]
+</span></span><span class="z-source z-haskell"><span class="z-meta z-function z-type-declaration z-haskell"></span>readFieldsWithComments <span class="z-keyword z-operator z-haskell">=</span> fmap fst <span class="z-keyword z-operator z-haskell">.</span> readFieldsWithComments&#39;
+</span></code></pre>
+<h1 id="tracing-out-lexer-states">Tracing out lexer states</h1>
+<p>The current cabal already "handles" comments, the problem is that it drops them.
+This is good news because we only needed to change the right hand side of the production rule to retain
+the comments from the lexer. We didn't have to worry that our modifications will alter the syntax of
+cabal.</p>
+<p>I traced out the automaton graph to see where comments can occur, and added them to the field parser.
+The lexer state diagram svg is generated with graphviz, the source code is available <a href="https://blog.haskell.org/a-comment-preserving-cabal-parser/./lexer_states.dot">here</a>.
+<img src="https://blog.haskell.org/a-comment-preserving-cabal-parser/./lexer_states.svg" alt="Lexer States" /></p>
+<p>The start state is used to handle BOM only once and for the purpose of comment parser we can ignore
+it.
+In the graph, edges with red labels are transitions made by the lexer with its own information; on
+the other hand, edges with blue labels are transitions made by the field parser knowing what token
+it just saw. The states colored in yellow can emit comments.</p>
+<p>Having this diagram is very useful as it tells us how the different contexts relate to each other,
+and clarifies which locations can contain comments in a Cabal file.</p>
+<p><code>FieldLayoutOrBraces</code> and <code>FieldInlineOrBraces</code> would start in <code>in_section</code> state, switch to
+<code>in_field_layout</code> or <code>in_field_braces</code> depending on the context and run a parser, and finally switch
+back to <code>in_section</code>. To annotate this we use a double ended edge because the transition condition
+isn't visible from the lexer context.</p>
+<h1 id="functor-multiplicity-is-a-footgun">Functor multiplicity is a footgun</h1>
+<p><code>Field ann</code> is a functor, so doing <code>fmap</code> on <code>Field (WithComments Position)</code> we can alter the
+annotation on a field, right? Hold on! Let's look at the <code>Field ann</code> type again.</p>
+<pre data-lang="hs" class="language-hs z-code"><code class="language-hs" data-lang="hs"><span class="z-source z-haskell"><span class="z-keyword z-other z-haskell">data</span> <span class="z-constant z-other z-haskell">Field</span> ann
+</span><span class="z-source z-haskell">  <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">Field</span> <span class="z-keyword z-operator z-haskell">!</span>(<span class="z-constant z-other z-haskell">Name</span> ann) [<span class="z-constant z-other z-haskell">FieldLine</span> ann]
+</span><span class="z-source z-haskell">  <span class="z-keyword z-operator z-haskell">|</span> <span class="z-constant z-other z-haskell">Section</span> <span class="z-keyword z-operator z-haskell">!</span>(<span class="z-constant z-other z-haskell">Name</span> ann) [<span class="z-constant z-other z-haskell">SectionArg</span> ann] [<span class="z-constant z-other z-haskell">Field</span> ann]
+</span><span class="z-source z-haskell">  <span class="z-meta z-deriving z-haskell"><span class="z-keyword z-other z-haskell">deriving</span> (<span class="z-entity z-other z-inherited-class z-haskell">Eq</span>, <span class="z-entity z-other z-inherited-class z-haskell">Show</span>, <span class="z-entity z-other z-inherited-class z-haskell">Functor</span>, <span class="z-entity z-other z-inherited-class z-haskell">Foldable</span>, <span class="z-entity z-other z-inherited-class z-haskell">Traversable</span>, <span class="z-entity z-other z-inherited-class z-haskell">Generic</span>)</span>
+</span></code></pre>
+<p><code>ann</code> is used everywhere, especially in <code>[FieldLine ann]</code> and <code>[Field ann]</code>.
+This means if we <code>fmap</code> and attach comments to a <code>Field</code>, its first and second arguments will all have
+the same comments attached!</p>
+<p>I think there's no way to avoid this, since it's still convenient to have a functor instance.
+The moral of the story is that you must have a clear understanding of the instances of the data
+types you're using.</p>
+<h1 id="conclusion-and-future-work">Conclusion and future work</h1>
+<p><code>GenericPackageDescription</code> is the final representation of a parsed cabal file.
+To preserve <code>Eq</code> extensionality <sup class="footnote-reference"><a href="#3">3</a></sup>, we wrapped it with a data type which isn't an instance of <code>Eq</code>.
+Otherwise, a <code>GenericPackageDescription</code> would be considered different when the comments are
+different!</p>
+<p>We duplicated the top-level parsing functions so we have one entry-point that parses
+annotation (<code>parseAnnotatedGenericPackagedescription</code>), and another one that doesn't
+(<code>parseGenericPackageDescription</code>) to provide backward compatibilty.</p>
+<pre data-lang="hs" class="language-hs z-code"><code class="language-hs" data-lang="hs"><span class="z-source z-haskell"><span class="z-keyword z-other z-haskell">data</span> <span class="z-constant z-other z-haskell">AnnotatedGenericPackageDescription</span> <span class="z-keyword z-operator z-haskell">=</span> <span class="z-constant z-other z-haskell">AnnotatedGenericPackageDescription</span>
+</span><span class="z-source z-haskell">  { exactComments <span class="z-keyword z-operator z-haskell">::</span> <span class="z-constant z-other z-haskell">Map</span> <span class="z-constant z-other z-haskell">Position</span> <span class="z-constant z-other z-haskell">ByteString</span>
+</span><span class="z-source z-haskell">  <span class="z-punctuation z-separator z-comma z-haskell">,</span> unannotatedGpd <span class="z-keyword z-operator z-haskell">::</span> <span class="z-constant z-other z-haskell">GenericPackageDescription</span>
+</span><span class="z-source z-haskell">  }
+</span><span class="z-source z-haskell">  <span class="z-meta z-deriving z-haskell"><span class="z-keyword z-other z-haskell">deriving</span> (<span class="z-entity z-other z-inherited-class z-haskell">Show</span>, <span class="z-entity z-other z-inherited-class z-haskell">Data</span>, <span class="z-entity z-other z-inherited-class z-haskell">Generic</span>)</span>
+</span></code></pre>
+<p>Since the position of all comments should not overlap, we store the comments in a map indexed
+by their <code>Position</code> in the source file. This is necessary to reconstruct the comments in the source
+file and achieve exact print.</p>
+<p>This change to the lexer and parser is isolated, meaning you can already use the comments when this is
+merged. However more work needs to be done for a complete exact print feature!
+Namely we need to stop common stanzas from being merged in.
+Currently I am working on a prototype to retain trivia in field grammar parser, so the spaces in
+dependency bounds won't be dropped, for example.</p>
+<p>Please tell me if you have any thoughts on this work. :)</p>
+<p>I want to thank the the Haskell Foundation and Jappie for allowing this work to happen.
+I appreciate greatly the opportunity to work on cabal and solve a problem that helps Haskell
+programmers. :)
+I also want to thank the people in my life who believed in me when I needed help, without you I
+wouldn't be who I am today. :)</p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Common Architecture for Building Applications and Libraries, <em>Cabal</em></p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>The printer part doesn't even work like we mentioned in the pre-amble,
+Jappie told me to say to you all it's a lovecraftian horror.
+It's Gods justice for our collective sin.
+If you wonder what an abyss of despair looks like, Jappie invites
+you to open <a rel="noopener" target="_blank" href="https://hackage-content.haskell.org/package/Cabal-syntax-3.16.0.0/docs/Distribution-FieldGrammar-Class.html">pandora's box</a>.
+This is your humanity. The face of God. To know it is to know madness.</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p><a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Extensionality">https://en.wikipedia.org/wiki/Extensionality</a></p>
+</div>
+
+      <nav>
+        <div>
+          <a href="https://blog.haskell.org/hls-2-13-0-0/">&#8249; Haskell Language Server 2.13.0.0 release</a>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/investigating-language-extension-semantics/"> Analyzing language extension semantics &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2026</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

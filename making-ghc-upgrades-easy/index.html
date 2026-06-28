@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=d58d95c5efe846728d7b" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Making GHC upgrades easy | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="" />
+  <link rel="canonical" href="https://blog.haskell.org/making-ghc-upgrades-easy/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/making-ghc-upgrades-easy/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/making-ghc-upgrades-easy/" />
+  <meta property="og:description" content="" />
+  <meta name="twitter:description" content="" />
+  <meta property="og:title" content="Making GHC upgrades easy | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="Making GHC upgrades easy | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2026-06-12" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/making-ghc-upgrades-easy/">Making GHC upgrades easy</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/simon-peyton-jones/">Simon Peyton Jones</a> <span class="rpad"></span> June 12, 2026 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/ghc/">GHC</a>] #<a href="https://blog.haskell.org/tags/hackage/">hackage</a>  #<a href="https://blog.haskell.org/tags/cabal/">cabal</a> </span>
+
+    
+
+
+<h2 id="what-this-post-is-about">What this post is about</h2>
+<p>When a shiny new version of GHC comes out, it should be easy to upgrade.  After all, the new compiler should be more capable than the previous version!</p>
+<span id="continue-reading"></span>
+<p>But in practice that isn't even nearly true.  The upgrade path is so hard that many companies are using versions of GHC from many years back; it's just too much work for them to upgrade.  This is bad in many ways:</p>
+<ul>
+<li>It denies those users access to both bug-fixes and cutting-edge work that are embodied in newer GHCs</li>
+<li>It strongly inhibits those users from spending resources <em>contributing</em> to GHC, because their work would land in an old version and would not propagate to the HEAD.</li>
+<li>It places a maintenance burden on GHC's implementers to support more old versions.</li>
+</ul>
+<p>The GHC team has been working hard on this issue, and has made lots of progress.  This post summarises what we have done, what remains to be done, and invites your help.</p>
+<h2 id="1-goals">1. Goals</h2>
+<p>We have two big goals.  The most important is this one::</p>
+<h3 id="stability-goal-the-big-stability-goal">(STABILITY goal) The Big Stability Goal.</h3>
+<p>Suppose a package P compiles successfully with GHC 10.0.  When GHC 10.2 is released, it should be possible to use GHC 10.2 to compile package P, and all its dependencies, <em>without modification.</em></p>
+<p>It is impossible to provide a 100.0% promise of (STABILITY goal): see <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#4-1-caveats">Section 4.1</a> below.  But we can get very close.</p>
+<p>There is a complementary goal, which relates to the <code>base</code> package.  The <code>base</code> package provides core functionality to every Haskell program, including all the modules specified in the Haskell Report, especially the <code>Prelude</code> module. Almost every Haskell package in existence depends, directly or indirectly, on <code>base</code>.  (Hence its name.)</p>
+<h3 id="base-goal-the-base-package-goal">(BASE goal) The Base Package Goal.</h3>
+<p>The <code>base</code> package should be a package like any other:</p>
+<ul>
+<li>In its own repository</li>
+<li>With its own maintainers</li>
+<li>With its own changelog, independent of GHC's changelog.</li>
+<li>Released on a schedule independent of GHC</li>
+<li>Can be refactored without reference to GHC</li>
+<li>The version of <code>base</code> that you use must obviously be compilable with the version of GHC that you are using; but you can use any version of <code>base</code> that has that property.</li>
+</ul>
+<p>We are now getting very close to achieving these goals.  This post explains why it is harder than it looks, what we have done recently, and what we mean by "very close".</p>
+<p>The two goals look independent, but in fact overcoming one set of obstacles will unlock both goals, which is why I am treating them together here.  <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#2-background-the-problem">Section 2</a> describes the problem.</p>
+<h2 id="2-background-the-problem">2. Background: the problem</h2>
+<p>In the past, each version of GHC came with a new version of the <code>base</code> package.  For example:</p>
+<ul>
+<li>GHC 9.8 came with base-4.19.0</li>
+<li>GHC 9.10 came with base-4.20.2</li>
+<li>GHC 9.12 came with base-4.21.1</li>
+<li>GHC 9.14 came with base-4.22.0</li>
+</ul>
+<p><strong>Moreover, each version of GHC was indissolubly tied to one, and only one, version of <code>base</code>.</strong>  For example, every program compiled with (say) GHC 9.10, say, must be compiled against <code>base-4.20.2</code>.  No other version of <code>base</code> will do.</p>
+<h3 id="2-1-why-tight-coupling-is-a-problem">2.1 Why tight coupling is a problem</h3>
+<p>This tight coupling was convenient for the implementers of early versions of GHC, well before we were thinking about stability, even before Cabal and Hackage even existed. But with the benefit of hindsight, the tight coupling is highly undesirable:</p>
+<ul>
+<li>Suppose package P, is compiled with GHC 9.10, against <code>base-4.20.2</code>.</li>
+<li>To compile P with GHC 9.12, I must use <code>base-4.21.1</code>, because GHC 9.12 insists on that.</li>
+<li>So at the very least, I must update P's upper bound on <code>base</code>.</li>
+<li>The reason that the <code>base</code> version number changed was because of changes approved by the Core Libraries Committee, perhaps adding new functions, or removing some.  These changes may force changes in P beyond just the dependency-bound change.</li>
+<li>Even if P is fine with the new <code>base</code>, perhaps P depends on Q; so P cannot be compiled until Q is adapted to the new <code>base</code>.  But the maintainer of Q might be otherwise engaged so it may take a while to adapt.</li>
+<li>In practice P may depend, directly or indirectly, on dozens of packages, all of which must be adapted (perhaps only by bumping a version bound, but perhaps more) to the new <code>base</code>.</li>
+</ul>
+<p>This is very, very bad.  It may take months for a wave of version bumps and to sweep through Hackage.   It directly contradicts (STABILITY goal).</p>
+<h3 id="2-2-the-problem-of-known-entities">2.2 The problem of known entities</h3>
+<p>But <em>why</em> does GHC 9.10, say, insist on <code>base-4.20.2</code> and nothing else?</p>
+<p>The main reason is that GHC needs to "know about" hundreds of functions, types, and classes defined in <code>base</code>.   Example: when generating the code for <code>deriving(Show)</code> for a new data type, the generated code needs to refer to auxiliary functions defined in <code>base</code>.  By "know about" I mean that GHC needs to know the precise module in which the <code>Show</code> class (and many other auxiliary functions) is defined.</p>
+<p>There are many, many other examples: desugaring list comprehensions, or arrow notation, or record accesses.  Collectively these functions, types, and classes are called "<strong>known entities</strong>".</p>
+<p>This tight coupling between <code>base</code> and GHC directly contradicts (BASE goal).</p>
+<h2 id="3-the-glorious-plan-and-progress-so-far">3.  The Glorious Plan, and progress so far</h2>
+<p>We have made a lot of progress towards meeting (STABILITY goal) and (BASE goal).  This section lays out the steps we either have taken or propose to take.</p>
+<p>This is a multi-year project involving contributions from many people; see <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#6-credits">Section 6</a> for a timeline and credits.</p>
+<h3 id="3-1-splitting-base-and-ghc-internal">3.1 Splitting <code>base</code> and <code>ghc-internal</code></h3>
+<p>The first step was to split the old <code>base</code> library into two libraries, <code>ghc-internal</code> and <code>base</code>:</p>
+<ul>
+<li>
+<p><code>ghc-internal</code> should really be thought of as part of GHC, a part that just happens to be implemented in library code rather than in the compiler itself.  Its API is not stable, and every version of GHC comes tightly coupled to a new version of <code>ghc-internal</code>.  GHC and the <code>ghc-internal</code> library should be thought of as a single piece of software, living in a single repository, and with a single version number.</p>
+</li>
+<li>
+<p><code>base</code> depends on <code>ghc-internal</code>.  Unlike the latter, however, <code>base</code> has a very stable API, carefully curated by the Core Libraries Committee.  One way to think of <code>base</code> is that it is a shim that hides changes in <code>ghc-internal</code> behind a stable <code>base</code> API.</p>
+</li>
+</ul>
+<p>This architecture has a major advantages, in principle anyway:</p>
+<ul>
+<li>
+<p>A new version of GHC always comes with a new version of <code>ghc-internal</code>, but it can now come with the same version of <code>base</code>.   This addresses (STABILITY goal).   By "the same version" I mean that its API is unchanged; of course its <em>implementation</em> may change quite a bit, to accommodate the changes in <code>ghc-internal</code>.</p>
+<p>This API stability is reflected in the PVP version <code>base-A.B.C.D</code>.  The new version (with unchanged API) should differ only in its final components <code>C</code> or <code>D</code>. Typically, packages have dependencies like <code>base-4.22</code>, allowing upgrades to <code>4.22.0.1</code> or even <code>4.22.1</code> <em>without modification;</em> and that compile-without-modification is (STABILITY goal).</p>
+<p>(Side note: the <a rel="noopener" target="_blank" href="https://pvp.haskell.org/">Haskell PVP</a> is rather silent about version bumps when fixing bugs or doing internal refactoring.)</p>
+</li>
+<li>
+<p>The <code>base</code> library can be independently maintained, and could be released independently of GHC, like any other package.  This addresses (BASE goal).</p>
+<p>For example if the Core Libraries Committee decides to add a function <code>wombat</code> to <code>base</code>, the maintainer can add the function and make a new release of <code>base</code>, just like any other package.</p>
+<p>Moreover, like any other package, the maintainers of <code>base</code> may be able to make it compilable with multiple versions of GHC, so that the user can upgrade or choose its version regardless of compiler version.     That is, <code>base</code> becomes "re-installable".</p>
+</li>
+</ul>
+<p>This separation was achieved in GHC 9.14.  Doing it was trickier than it seemed; first <code>ghc-internal</code> and <code>base</code> had to be separated, and then <code>base</code> had to be made reinstallable.   (Timeline in <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#6-credits">Section 6</a> below.)</p>
+<p>Even after this all "known entities" (see <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#2-background-the-problem">Section 2</a>) had to be defined in <code>ghc-internal</code>.   In practice that pins a lot of library code in <code>ghc-internal</code> and means that <code>base</code> is largely just a shim.  (Still useful!  But without much functionality of its own.).  See <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#3-3-known-entities">Section 3.3</a> for the next step.</p>
+<h3 id="3-2-template-haskell">3.2  Template Haskell</h3>
+<p>Template Haskell allows you to create a source Haskell AST (Abstract Syntax Tree), and then to pattern match on it.  Since every release of GHC has changes to its Haskell AST, any package that does pattern-matching on a Template Haskell AST cannot possibly compile with a new version of GHC.</p>
+<p>This directly threatens (STABILITY goal).   More concretely:</p>
+<ul>
+<li>Modules that use Template Haskell depend on a library <code>template-haskell</code>.</li>
+<li>The API of <code>template-haskell</code> includes a data type for the Haskell AST, which necessarily changes in every GHC release, forcing a major bump in the version of <code>template-haskell</code>.</li>
+<li>Many many libraries depend transitively on some library L  that uses Template Haskell.</li>
+<li>So those libraries cannot work with a new version of GHC until the author of L has at least updated the version bound for their <code>template-haskell</code> dependency.</li>
+</ul>
+<p>This results in a lot of breakage when a new version of GHC comes out.  And most of that breakage is unnecessary!  Most use only quotations and splices (which are perfectly portable), rather than using the AST directly (which is not).    For more detail on different classes of Template Haskell usage, with different stability properties, see <a rel="noopener" target="_blank" href="https://informal.codes/posts/stabilising-th/">Teo's blog post</a>, or <a rel="noopener" target="_blank" href="https://informal.codes/talks/hew25/">their talk at the 2025 Haskell Ecosystem Workshop</a>.</p>
+<p>Thus motivated, Teo has been busy splitting up the previously-monolithic <code>template-haskell</code> package, whose API necessarily changed with each version of GHC, into several packages:</p>
+<ul>
+<li><code>template-haskell-lift</code></li>
+<li><code>template-haskell-quasiquoter</code></li>
+</ul>
+<p>These new packages have very stable APIs.   There is still a package <code>template-haskell</code> that exposes the TH AST data type, and that is necessarily unstable.  But very few clients need to depend on it.  (Side note: you might think it should be called  <code>template-haskell-internal</code> and you'd be right; but that's a disruptive change and we won't make it yet.)</p>
+<p>These new packages already exist in GHC 9.14, and all the boot libraries now depend on them rather than on <code>template-haskell</code>.  (Side note: while these changes have landed in the relevant boot-library repos, they have not all been released at the time of writing.)  By GHC 10.2, the <code>ghc</code> package itself will no longer transitively depend on <code>template-haskell</code>.</p>
+<p>To get the benefits, however, library authors who use Template Haskell must update their packages to depend on stable APIs, namely:</p>
+<ul>
+<li>TH splices and quotations</li>
+<li>The stable libraries <code>template-haskell-lift</code> and <code>template-haskell-quasiquoter</code></li>
+</ul>
+<p>and remove dependencies on <code>template-haskell</code>.</p>
+<p>More background in :</p>
+<ul>
+<li><a rel="noopener" target="_blank" href="https://informal.codes/posts/stabilising-th">Stabilising Template Haskell</a> (blog post 2024).</li>
+<li><a rel="noopener" target="_blank" href="https://informal.codes/posts/ann-th-lift-and-quasi/">Announcing template-haskell-lift and template-haskell-quasiquoter</a> (blog post 2025)</li>
+<li><a rel="noopener" target="_blank" href="https://informal.codes/talks/hew25/">Template Haskell: a base study in (in)-stability</a>, Haskell Ecosystem Workshop 2025</li>
+<li><a rel="noopener" target="_blank" href="https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0700-abstract-q.rst">The abstract Q proposal</a> (will land in GHC 10.2, not user facing but opens up new opportunities)</li>
+</ul>
+<h3 id="3-3-known-entities">3.3 Known entities</h3>
+<p>Up to and including GHC 10.0, for every "known entity" E (function, type, or class; see <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#2-2-the-problem-of-known-entities">Section 2.2</a>), GHC insists that</p>
+<ul>
+<li>E is defined in <code>ghc-internal</code></li>
+<li>GHC knows, baked into GHC's source code, the module in which E is defined.</li>
+</ul>
+<p>Our recent work (which will be in 10.2) means that, for the first time, these "known entities" no longer need to be defined in a known module.  Instead, E can be defined in any module of <code>base</code> or of <code>ghc-internal</code>.</p>
+<p>Moreover, changes in <code>base</code> can move E from one module to another, without changing GHC.  For example, using GHC 10.2 you can compile a module M against two versions of <code>base</code> that define E in different modules, without changing GHC itself.  So how does GHC find E?  It looks in the export list of a <code>base</code> module called <code>GHC.Essentials</code>.   The author of <code>base</code> must simply ensure that <code>GHC.Essentials</code> <em>exports</em> all the known entities; but they do not need to be <em>defined</em> in <code>GHC.Essentials</code>.</p>
+<p>This architecture properly supports (BASE goal) because it allows the maintainer of <code>base</code> to refactor code freely, <em>including</em> moving known entities from one module to another.</p>
+<p>Better still, it <em>also</em> allows us to move code from <code>ghc-internal</code> to <code>base</code>.   That is good because bug fixes to code in <code>ghc-internal</code> can only come coupled to a new GHC release, whereas bug fixes to code in <code>base</code> can be made and released independently of the compiler.  The more code we can remove from <code>ghc-internal</code> and put in <code>base</code>, the better!</p>
+<h3 id="3-4-cleaning-up-the-base-api">3.4 Cleaning up the <code>base</code> API.</h3>
+<p>For historical reasons, <code>base</code> exports quite a few functions that should properly be considered internal to GHC -- they have been "grandfathered" into <code>base</code>.   For example <code>base:GHC.Base</code> exports <code>mapFB</code>, a function that is used only inside GHC's implementation of fusion for lists. Another more foundational example: <code>base:GHC.IO</code> exposes the <em>representation</em> of <code>IO</code>, not just the API of <code>IO</code>.   <a rel="noopener" target="_blank" href="https://docs.google.com/spreadsheets/d/1WmyYLbJIMk9Q-vK4No5qvKIIdIZwhhFFlw6iVWd1xNQ/edit?gid=1315971213#gid=1315971213">Here is a list of all base modules with an indication of their stability and status</a>.</p>
+<p>Even though those exports may be historical and somewhat accidental, packages may nevertheless depend on them.   That is bad all round:</p>
+<ul>
+<li>Those package authors are exposed to sometimes-unavoidable changes in GHC's internals.</li>
+<li>It inhibits GHC's implementers from changing what should properly be internal to GHC, even when it would make sense to do so.</li>
+<li>It forces a major-version bump to <code>base</code> even when GHC makes a change to an exotic corner of a GHC-internal function.  That major version bump forces a wave of changes through the ecosystem even though 99.9% of them neither know nor care about this GHC-internal function.</li>
+<li>If <code>base</code> exposes GHC-specific functions that makes it hard or impossible for other compilers (e.g. <a rel="noopener" target="_blank" href="https://hackage.haskell.org/package/MicroHs">MicroHs</a>) to support <code>base</code>.</li>
+</ul>
+<p>The obvious question is: why not just remove these accidental exports from the API of <code>base</code>?  Two reasons:</p>
+<ul>
+<li>
+<p>They may expose genuinely useful facilities.  <strong>The right thing to do is to carefully design a stable API, and commit to that in the future</strong>.  GHC's internals can change, provided they can still support this API.</p>
+</li>
+<li>
+<p>Regardless of design or utility, some existing packages may depend on these functions. What would be the impact of removing function <code>foo</code>?  The CLC responds to proposals and will ask for such an impact analysis if someone makes such a proposal.</p>
+</li>
+</ul>
+<p>So there is a task here, on which we have not made much progress.  We need to</p>
+<ul>
+<li>Identify which functions, or groups of functions should be removed.</li>
+<li>Find out what the impact would be, by looking at all the packages in Hackage.</li>
+<li>Decide whether to remove them, keep them, or design a new, stable API to provide that functionality.</li>
+<li>Make a CLC proposal or proposals that embodies the changes.</li>
+</ul>
+<p>A topical example is <a rel="noopener" target="_blank" href="https://github.com/haskell/core-libraries-committee/issues/405">the discussion in CLC ticket #405</a>.  One comment explains that <code>GHC.IO.Encoding</code> and <code>GHC.IO.Exception</code> both say "The API of this module is unstable and not meant to be consumed by the general public", and yet these modules are imported by 132 and 287 packages respectively.  So it's not easy just to remove them!</p>
+<h3 id="3-5-decoupling-base-from-ghc">3.5 Decoupling <code>base</code> from GHC</h3>
+<p>Ultimately we can move to the situation where <em><code>base</code> is a separate package like any other, with its own maintainer, repository, and release cycle</em>.   In particular, the release cycle of <code>base</code> no longer needs to be coupled to that of GHC.</p>
+<p>Moreover, because known entities can now be defined in <code>base</code> (not just in <code>ghc-internal</code>) lots of code can move from <code>ghc-internal</code> into <code>base</code>, so that <code>base</code> is no longer just a shim.  This process has started but there is plenty more to do.</p>
+<h2 id="4-what-is-now-possible">4. What is now possible</h2>
+<p>Because <code>base</code> is now reinstallable, it becomes possible to do the following.</p>
+<ul>
+<li>GHC 9.14 came with <code>base-4.22.0.0</code></li>
+<li>GHC 10.0 comes with <code>base-4.23.0.0</code>.  There is a major version bump from 4.22 to 4.23 because the CLC has agreed to changes in the <code>base</code> API in the time between GHC 9.14 and GHC 10.0.</li>
+<li>After releasing GHC 10.0, it would be possible to also release <code>base-4.22.0.1</code>, whose API is identical to <code>base-4.22.0.0</code></li>
+<li>This new <code>base-4.22.0.1</code> uses CPP magic to allow it to be compiled with <em>either</em> GHC 9.14 <em>or</em> GHC 10.0.</li>
+</ul>
+<p>Now any package P that compiles with GHC 9.14 against <code>base-4.22.0.0</code> can <em>also</em> be compiled with the shiny new GHC 10.0, against <code>base-4.22.0.1</code>.  That is: we can meet (STABILITY goal).  Victory!  (NB: provided the user bounds are <code>base-4.22.0.*</code>, P can also be compiled by ghc 9.14 against the self-same <code>base-4.22.0.1</code>.)</p>
+<p>Moreover, this same pattern can be repeated when GHC 10.2 is released.  Then, again in principle, one could release <code>base-4.22.0.2</code> which can be compiled with GHC 9.14, or 10.0, or 10.2.  Then package P can be compiled with GHC 10.2.</p>
+<h3 id="4-1-caveats">4.1 Caveats</h3>
+<p>There are caveats, of course</p>
+<ul>
+<li>
+<p>If P had a hard upper bound of <code>base-4.22.0.0</code>, and refused to compile with even a minor version bump to <code>base-4.22.0.1</code> then P won't compile.  Solution: packages should allow a version bump in at least the <code>d</code> field of <code>base-a.b.c.d</code>.</p>
+</li>
+<li>
+<p>For historical reasons, the <code>base</code> API includes many functions that should properly be considered as GHC internal functions that have no business being in the <code>base</code> API.  The stability of these functions are more vulnerable to changes in GHC internals, of course; in consultation with the CLC we should try to remove them from the <code>base</code> API.</p>
+</li>
+<li>
+<p>Packages that do pattern matching on Template Haskell syntax trees are always going to need updating when moving to a new GHC (see <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#3-2-template-haskell">Section 3.2</a>).  Happily, such packages are only a tiny proportion of the packages that use TH.</p>
+</li>
+<li>
+<p>A new release of GHC could outright change some behaviour.  GHC's developers make strenuous efforts to avoid changes in existing behaviour, but it can happen.   For example, suppose a bug meant that 1+3 evaluated to 5, and we fix the bug; a package relying on that behaviour might break, and everyone would probably agree that's fine.</p>
+<p>Sometimes there are compelling reasons for a behaviour change, but we try hard to offer a deprecation period, so that package authors have a release or two to adapt.</p>
+</li>
+<li>
+<p>GHC 10.0 could make changes in <code>ghc-internal</code> that make it impossible to implement the same API as <code>base-4.22.0.0</code>.   As an extreme case, suppose GHC 10.0 changed the definition of the class <code>Num</code>.  We couldn't shim over that!   Happily, fundamental changes like this are now vanishingly rare.</p>
+<p>A less extreme, and hence more troubling case is where <code>ghc-internal</code> changes the behaviour of a method in some class <em>instance</em>.  (Here's <a rel="noopener" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/merge_requests/14413/diffs">an example that happened between 9.14 and 10.0</a>.)  A shortcoming of instances is that you can't shim over them.</p>
+</li>
+<li>
+<p><code>P</code> might depend transitively on the <code>ghc</code> package, the so-called "GHC API" that lets you use GHC itself as a library.  Unfortunately, no one has written down a stable API for <code>ghc</code>, so in practice it exposes almost all of GHC, and its version necessarily increases with each release.</p>
+</li>
+<li>
+<p>Package collections like Stackage can only have a single version of <code>base</code>; but each Stackage release will be free to choose which version of <code>base</code> to incorporate. (There are some tricky corners to do with the fact that Stackage includes the <code>ghc</code> package itself, which may depend on a particular <code>base</code> version.)</p>
+</li>
+</ul>
+<p>But the biggest caveat is that all this takes work.</p>
+<ul>
+<li>Someone has to make <code>base-4.22.0.1</code></li>
+<li>They need to check that it is compilable with both GHC 9.14 and 10.0.</li>
+<li>They need to test that it has the same API as <code>base-4.22.0.0</code></li>
+</ul>
+<p>Some of this work will be simple and routine.   But it will take some care.  And the more versions of GHC are supposed to compile the same <code>base</code> version, the more care this will take.</p>
+<p>The good news is that</p>
+<ul>
+<li>This work can be done entirely decoupled from the GHC release cycle.   <code>base-4.22.0.1</code> can, for example, be released after GHC 10.0.</li>
+<li>It does not require any detailed knowledge of GHC.</li>
+</ul>
+<h2 id="5-how-you-can-help">5.  How you can help</h2>
+<p>GHC is an open source project.  It relies utterly on the contributions of volunteers.  There are a few people whose day job involves working on GHC, but most of them are working on specific projects for specific customers.  Cycles are scarce.</p>
+<p>We want to deliver on our goals: (STABILITY goal) and (BASE goal).  The groundwork, which can only really be done by people deeply familiar with GHC, has now been completed.  We are now in a phase where you can help; and indeed further progress relies on your help.  Specifically</p>
+<ul>
+<li>
+<p><strong>We need someone (or a small group) to become an active maintainer of <code>base</code>; and in particular to implement the <code>base</code> releases that can be compiled with multiple versions of GHC (see <a href="https://blog.haskell.org/making-ghc-upgrades-easy/#4-what-is-now-possible">Section 4</a>).</strong></p>
+<ul>
+<li>An example of this work in practice: <a rel="noopener" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/merge_requests/16070/commits">!16070.</a></li>
+<li>A very helpful document is the <a rel="noopener" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/blob/master/libraries/base/changelog.md">changelog for base</a>.</li>
+</ul>
+</li>
+<li>
+<p><strong>We need people to make CLC proposals to remove GHC-internal APIs from <code>base</code> (<a href="https://blog.haskell.org/making-ghc-upgrades-easy/#3-4-cleaning-up-the-base-api">Section 3.4</a>).   Doing so will require some kind of impact analysis; and perhaps the design of stable APIs to replace them.</strong></p>
+</li>
+</ul>
+<p>None of this is rocket science. It does not require intimate knowledge of GHC.  But it does require care, judgement, discussion, and negotiation.</p>
+<p>You would not be on your own.  There is a small community of people to consult and discuss with; the <a rel="noopener" target="_blank" href="https://github.com/haskellfoundation/stability">Haskell Foundation Stability Working Group</a> is very supportive.  You would be very welcome at the weekly GHC Team video call.</p>
+<p>If you are willing to help, please write to Rodrigo: rodrigo@well-typed.com.</p>
+<h2 id="6-credits">6. Credits</h2>
+<p>I hope it has become clear that although the goals are very simple and clear, the path to achieving them has been far from simple.  It has taken several years, involved interactions across the ecosystem (not just GHC internals), needed lots of discussion and communication, and is still on-going.</p>
+<p>I am hugely grateful to those who have made it all possible.  Specifically:</p>
+<ul>
+<li><strong>2022 onwards</strong>.  <strong>John Ericson</strong> was a tireless advocate for the "split-base" plan, <a rel="noopener" target="_blank" href="https://github.com/Ericson2314/tech-proposals/blob/standard-library-reform/proposals/accepted/047-standard-library-reform.rst">articulated in HF proposal #47</a>.</li>
+<li><strong>2023 onwards</strong>.   <strong>John Ericson, Ben Gamari, Adam Gundry, Andrew Lelechenko, Julian Ospald,</strong> and myself co-authored the subsequent <a rel="noopener" target="_blank" href="https://github.com/haskellfoundation/tech-proposals/blob/main/proposals/accepted/051-ghc-base-libraries.rst">HF proposal #51</a> which described the <code>base</code>/ <code>ghc-internal</code> split.</li>
+<li><strong>2023.</strong>  Executing on that proposal, by splitting <code>base</code> into <code>base</code> and <code>ghc-internal</code> was done mainly by <strong>Ben Gamari</strong>, funded by Well-Typed  (<a href="https://blog.haskell.org/making-ghc-upgrades-easy/#3-1-splitting-base-and-ghc-internal">Section 3.1</a>).   The split first appeared in GHC 9.10.</li>
+<li><strong>2024-25.</strong> The next step was to make <code>base</code> and <code>template-haskell</code> into fully-reinstallable packages (<a href="https://blog.haskell.org/making-ghc-upgrades-easy/#3-1-splitting-base-and-ghc-internal">Section 3.1</a>).  This involved changes to both GHC and <a rel="noopener" target="_blank" href="https://www.google.com/url?q=https://github.com/haskell/cabal/pull/10982&amp;sa=D&amp;source=docs&amp;ust=1781006171722758&amp;usg=AOvVaw3n-ePBoBHfwf7CmjVpolJQ">Cabal</a>, and was a collaboration between <strong>Matthew Pickering</strong> (funded by Well-Typed) and <strong>Teo Camarasu</strong>.  It happened in GHC 9.14.</li>
+<li><strong>2026</strong>.   Refactoring the <code>template-haskell</code> library into libraries with much more stable interfaces (<a href="https://blog.haskell.org/making-ghc-upgrades-easy/#3-2-template-haskell">Section 3.2</a>) has been almost entirely driven by <strong>Teo Camarasu</strong> with support from CircuitHub.</li>
+<li><strong>2026</strong>.  Making it possible for known entities to be defined in any module (<a href="https://blog.haskell.org/making-ghc-upgrades-easy/#3-3-known-entities">Section 3.3</a>) was a project initiated by <strong>Matthew Pickering,</strong> and initially executed by me.  Then <strong>Rodrigo Mesquita and Wolfgang Jeltsch</strong> took it over and pushed it to completion, funded by Well-Typed.</li>
+<li><strong>2026</strong>.  <strong>Wolfgang Jeltsch</strong> has done quite a bit of work, in negotiation with the CLC and supported by Well-Typed, to clean up the interface of <code>base</code> (<a href="https://blog.haskell.org/making-ghc-upgrades-easy/#3-4-cleaning-up-the-base-api">Section 3.4</a>).  This is very much on-going work, and needs help (<a href="https://blog.haskell.org/making-ghc-upgrades-easy/#5-how-you-can-help">Section 5</a>).</li>
+</ul>
+<p>You can find some more background <a rel="noopener" target="_blank" href="https://github.com/well-typed/reinstallable-base">here</a> and <a rel="noopener" target="_blank" href="https://discourse.haskell.org/t/what-are-the-next-steps-for-reinstallable-base/13319">here</a>.</p>
+<p>Although many people have contributed, often supported by their employers, the above list makes it clear that the direct support of Well-Typed has been particularly critical to success.  Thank you Well-Typed!</p>
+<p>I'm very grateful to many people who reviewed drafts of this post and helped me to improve it, including
+Moritz Angermann, Manuel Bärenz, Teo Camarasu, Tobias Dammers, Trevis Elser, Adam Gundry, Wolfgang Jeltsch, Andreas Klebinger, Andrew Lelechenko, and Rodrigo Mesquita.</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.haskell.org/overview-of-haskell-security-tooling/">&#8249; Overview of Haskell security tooling</a>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/contributing-to-haskell-through-a-beginner-s-lens/"> Contributing to Haskell Through a Beginner’s Lens &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2026</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

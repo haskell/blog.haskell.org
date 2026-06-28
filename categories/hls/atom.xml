@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog - HLS</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/categories/hls/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-05-31T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/categories/hls/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Contributing to Haskell Through a Beginner’s Lens</title>
+        <published>2026-05-31T00:00:00+00:00</published>
+        <updated>2026-05-31T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/contributing-to-haskell-through-a-beginner-s-lens/"/>
+        <id>https://blog.haskell.org/contributing-to-haskell-through-a-beginner-s-lens/</id>
+        
+        <summary type="html">&lt;p&gt;October 2025 was when I wrote my first line of Haskell. Fast forward to May 2026, I am consistently contributing to the Haskell Language Server (HLS) and my Google Summer of Code proposal also got accepted. This blog is a mix of my personal experiences along with general learnings that could help beginners to start contributing to Haskell repositories.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Haskell Language Server 2.14.0.0 release</title>
+        <published>2026-04-30T00:00:00+00:00</published>
+        <updated>2026-04-30T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/hls-2-14-0-0/"/>
+        <id>https://blog.haskell.org/hls-2-14-0-0/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/hls-2-14-0-0/">&lt;p&gt;The HLS team is excited to announce the &lt;code&gt;2.14.0.0&lt;&#x2F;code&gt; Haskell Language Server release!&lt;&#x2F;p&gt;
+&lt;p&gt;You can install it today with GHCup: &lt;code&gt;$ ghcup install hls --set 2.14.0.0&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;features&quot;&gt;Features&lt;&#x2F;h2&gt;
+&lt;p&gt;This new HLS version adds support for the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;latest&#x2F;docs&#x2F;users_guide&#x2F;exts&#x2F;template_haskell.html#extension-ExplicitLevelImports&quot;&gt;&lt;code&gt;ExplicitLevelImports&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; language extension, which was added in GHC 9.14.1 in &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;haskell-language-server&#x2F;pull&#x2F;4846&quot;&gt;#4846&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;HLS now starts up faster in &lt;code&gt;sessionLoading: multipleComponents&lt;&#x2F;code&gt; mode and handles out-of-project files more gracefully thanks to &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;haskell-language-server&#x2F;pull&#x2F;4445&quot;&gt;#4445&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;haskell-language-server&#x2F;pull&#x2F;4791&quot;&gt;#4791&lt;&#x2F;a&gt; adds lots of great quality of life improvements when using Notes such as hover information and autocompletions for note references and declarations.&lt;&#x2F;p&gt;
+&lt;p&gt;Additionally, this version introduces smart-case matching when completing modules and file paths in cabal files.&lt;&#x2F;p&gt;
+&lt;p&gt;As of &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;haskell-language-server&#x2F;pull&#x2F;4621&quot;&gt;#4621&lt;&#x2F;a&gt; is now able to recognise file types based on the provided language kind instead of by file ending only.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;some-notable-bug-fixes&quot;&gt;Some notable bug fixes&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;HLS will now only show linear arrows when the LinearTypes language extension is enabled &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;haskell-language-server&#x2F;pull&#x2F;4862&quot;&gt;#4862&lt;&#x2F;a&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;HLS will no longer offer &#x27;Add Argument&#x27; for identifiers which include qualified names &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;haskell-language-server&#x2F;pull&#x2F;4852&quot;&gt;#4852&lt;&#x2F;a&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;When expanding nested records, HLS will now expand the record the cursor is pointing to instead of the outermost one &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;haskell-language-server&#x2F;pull&#x2F;4813&quot;&gt;#4813&lt;&#x2F;a&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;HLS now names the code action for &lt;code&gt;record syntax conversion&lt;&#x2F;code&gt; as such instead of it being called  &lt;code&gt;wildcard expansion&lt;&#x2F;code&gt; &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;haskell-language-server&#x2F;pull&#x2F;4819&quot;&gt;#4819&lt;&#x2F;a&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;supported-ghc-versions&quot;&gt;Supported GHC versions&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;9.14.1&lt;&#x2F;li&gt;
+&lt;li&gt;9.12.4&lt;&#x2F;li&gt;
+&lt;li&gt;9.12.2&lt;&#x2F;li&gt;
+&lt;li&gt;9.10.3&lt;&#x2F;li&gt;
+&lt;li&gt;9.8.4&lt;&#x2F;li&gt;
+&lt;li&gt;9.6.7&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;things-to-look-forward-to-gsoc-2026&quot;&gt;Things to look forward to - GSOC 2026&lt;&#x2F;h2&gt;
+&lt;p&gt;We are very happy to announce that HLS has two exciting upcoming projects our Google Summer of Code students will be working on this summer!&lt;&#x2F;p&gt;
+&lt;p&gt;@vidit-od will be working on &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;summer.haskell.org&#x2F;ideas.html#goto-third-party-deps&quot;&gt;goto third-party definition&lt;&#x2F;a&gt;, which will enable developers to view source code of external libraries by clicking goto definition on them. Within external libraries, many of the usual intellisense will keep working such as hover or goto references.&lt;&#x2F;p&gt;
+&lt;p&gt;@Aster89 will be working on the much sought after &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;summer.haskell.org&#x2F;ideas.html#casesplit&quot;&gt;case split plugin&lt;&#x2F;a&gt;. This plugin will add refactoring options for &lt;code&gt;case X of&lt;&#x2F;code&gt; which supplies holes for all possible constructors of &lt;code&gt;X&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;thank-you-haskell-community&quot;&gt;Thank you, Haskell Community&lt;&#x2F;h2&gt;
+&lt;p&gt;We wish all Haskellers happy hacking while using the latest releases of the Haskell Language Server, and hope to see you in the issue tracker or even in some pull requests!&lt;&#x2F;p&gt;
+&lt;p&gt;Finally, a reminder that you can donate to the development of HLS via &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;opencollective.com&#x2F;haskell-language-server&quot;&gt;OpenCollective&lt;&#x2F;a&gt;. The OpenCollective money pays for tedious, but important maintenance work and, sometimes, for getting new features over the finish line.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Haskell Language Server 2.13.0.0 release</title>
+        <published>2026-01-26T00:00:00+00:00</published>
+        <updated>2026-01-26T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/hls-2-13-0-0/"/>
+        <id>https://blog.haskell.org/hls-2-13-0-0/</id>
+        
+        <summary type="html">&lt;p&gt;The HLS team is happy to announce the 2.13.0.0 Haskell Language Server release which introduces two new exciting features!&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Haskell Language Server 2.10.0.0 release</title>
+        <published>2025-04-15T00:00:00+00:00</published>
+        <updated>2025-04-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/hls-2-10-0-0/"/>
+        <id>https://blog.haskell.org/hls-2-10-0-0/</id>
+        
+        <summary type="html">&lt;p&gt;The HLS Team is proud to announce the new release of the Haskell Language Server &lt;code&gt;2.10.0.0&lt;&#x2F;code&gt;!&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

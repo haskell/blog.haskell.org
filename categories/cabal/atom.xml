@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog - Cabal</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/categories/cabal/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-12-25T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/categories/cabal/atom.xml</id>
+    <entry xml:lang="en">
+        <title>A Comment-Preserving Cabal Parser</title>
+        <published>2025-12-25T00:00:00+00:00</published>
+        <updated>2025-12-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/a-comment-preserving-cabal-parser/"/>
+        <id>https://blog.haskell.org/a-comment-preserving-cabal-parser/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/a-comment-preserving-cabal-parser/">&lt;p&gt;&lt;em&gt;This article was originally posted on my blog &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;confusedcompiler.org&#x2F;articles&#x2F;2025-12-comment-preserving-cabal-parser&quot;&gt;here&lt;&#x2F;a&gt;.&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;hr&#x2F;&gt;
+&lt;h1 id=&quot;motivation&quot;&gt;Motivation&lt;&#x2F;h1&gt;
+&lt;p&gt;Cabal &lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#1&quot;&gt;1&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt; is the standard package system for Haskell software, it is similar to Cargo from the Rust
+world, or OPAM if you come from OCaml.&lt;&#x2F;p&gt;
+&lt;p&gt;Cabal reads cabal package manifests in the cabal format (with the extension &lt;code&gt;.cabal&lt;&#x2F;code&gt;).
+However, it is currently unable to modify it loselessly: comments are lost, imports are
+fused and written in place, &lt;code&gt;elif&lt;&#x2F;code&gt; in a conditional will be desugared to a nested &lt;code&gt;if&lt;&#x2F;code&gt; in an &lt;code&gt;else&lt;&#x2F;code&gt;.
+A tracking issue was opened in cabal&#x27;s repository since 2021 &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;issues&#x2F;7544&quot;&gt;here&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;For this reason, critical features such as adding modules to the .cabal manifest or generating
+package dependency bounds are implemented poorly.
+For example, cabal emits a warning when a module is not listed in the manifest, but it can&#x27;t apply
+the fix the warning indicates for you.
+Furthermore, &lt;code&gt;cabal gen-bounds&lt;&#x2F;code&gt; (which generates dependency bounds that are not specified) doesn&#x27;t
+write dependency bounds information directly to the cabal file, it dumps them to the terminal.
+Frustrating!&lt;&#x2F;p&gt;
+&lt;p&gt;If we use the current pretty printer in cabal to try to implement these features, the resulting
+cabal manifest will be mangled.
+This is because cabal can&#x27;t do &lt;em&gt;exact printing&lt;&#x2F;em&gt; yet.
+Concretely this means the spaces and empty lines, comments, common stanzas, and if conditions that
+you add will be lost.
+Adding an exact printer will allow cabal to modify the cabal files automatically and loselessly!&lt;&#x2F;p&gt;
+&lt;p&gt;An exact printer is a special kind of pretty printer.
+It uses concrete syntax information in the in-memory representation to output a file that is
+byte-to-byte identical to the file originally parsed.
+To do that, its corresponding parser must store enough information in the in-memory
+representation.
+Formally, the exact parser&#x2F;printer combination obeys the law presented below.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;hs&quot; class=&quot;language-hs z-code&quot;&gt;&lt;code class=&quot;language-hs&quot; data-lang=&quot;hs&quot;&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;forall cabalFile&lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;.&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;IsValid&lt;&#x2F;span&gt; cabalFile &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&amp;gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;    exactPrint (exactParse cabalFile) &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;==&lt;&#x2F;span&gt; cabalFile
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This reads as &quot;for all valid cabal manifests, the operation &lt;code&gt;exactPrint . exactParse&lt;&#x2F;code&gt; should output a
+file that is byte-to-byte identical to the original&quot;.&lt;&#x2F;p&gt;
+&lt;p&gt;Furthermore, we also aim to allow modification to the in-memory representation. Unmodified parts of
+the representation will be printed out verbatim to the original parsed cabal file.&lt;&#x2F;p&gt;
+&lt;p&gt;This property is crucial for tools to be able to manipulate cabal files programmatically:
+adding dependency, export a module, or generate package bounds just to name a few.&lt;&#x2F;p&gt;
+&lt;p&gt;In order to achieve introducing an exact printer, the first step is to preserve concrete syntax information. For example,
+comments must not be altered, comma style in comma-separated fields must be preserved, blank spaces
+and blank lines should be preserved.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;jappie.me&#x2F;&quot;&gt;Jappie&lt;&#x2F;a&gt; started doing a prototype that works well since 2024 Zurihac.
+The proposal has matured enough and was accepted by the Haskell Foundation, the current step is
+to implement it in Cabal. =D&lt;&#x2F;p&gt;
+&lt;p&gt;The following sections will be talking about handling comments in the parser and lexer.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;how-the-cabal-parser-works&quot;&gt;How the cabal parser works&lt;&#x2F;h1&gt;
+&lt;p&gt;There are three main parts to the cabal parser, namely the lexer, the field parser, and the field
+grammar parser.&lt;&#x2F;p&gt;
+&lt;p&gt;The lexer is written in &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;haskell-alex.readthedocs.io&#x2F;&quot;&gt;Alex&lt;&#x2F;a&gt;, a lexer generator for Haskell.
+Using a lexer generator has the advantage to write a set of production rules without thinking
+about their ordering or ambiguity, Alex will detect inconsistencies during the generation of the
+lexer. The lexer produces a stream of &lt;code&gt;Token&lt;&#x2F;code&gt;s.&lt;&#x2F;p&gt;
+&lt;p&gt;The field parser is written in plain Haskell. It calls the code generated by Alex, consuming the
+produced &lt;code&gt;Token&lt;&#x2F;code&gt;s. The top-level (entry point) of field parsers is &lt;code&gt;readFields&lt;&#x2F;code&gt;. It produces a
+stream of &lt;code&gt;Field ann&lt;&#x2F;code&gt; where &lt;code&gt;ann&lt;&#x2F;code&gt; holds some annotation related to the field. Before this work on comment
+preservation, &lt;code&gt;ann&lt;&#x2F;code&gt; is instantiated as &lt;code&gt;Position&lt;&#x2F;code&gt; which represents the row and column of the source
+code where the field is seen.&lt;&#x2F;p&gt;
+&lt;p&gt;The field parser not only interacts with the lexer by consuming &lt;code&gt;Token&lt;&#x2F;code&gt;s, but also by changing its
+state.
+Modeled as an automaton, Alex allows users to set &quot;state&quot;, or &quot;start codes&quot;. Each production rule in
+Alex can switch state and either produce a &lt;code&gt;Token&lt;&#x2F;code&gt; or nothing (drop the token for the parser to
+never see it). The field parser sets the state of the lexer upon seeing certain &lt;code&gt;Token&lt;&#x2F;code&gt;s that give
+hint to the following context.
+This has the benefit of producing better lexical error messages because the lexer &quot;is more
+knowledgable&quot; thanks to the parser, but also makes the logic a bit intertwined and less
+straightforward. In cabal&#x27;s case, certain states are inaccessible without the parser deciding to
+transition to it.&lt;&#x2F;p&gt;
+&lt;p&gt;The lexer and the field parser together handles the cabal envelope format. Imagine if today cabal
+were to not use its own format and uses something like TOML like Cargo from Rust does, this format
+is the equivalent of TOML.&lt;&#x2F;p&gt;
+&lt;p&gt;The inner format is founded on the &quot;field grammar&quot;, it handles things like &quot;which field should be
+defined for a cabal file to be a package description&quot;, &quot;which field can be defined multiple times
+with its values merged together&quot;, &quot;which fields contains comma separated values or dependency bound
+description&quot;, and so on.&lt;&#x2F;p&gt;
+&lt;p&gt;This inner format is handled by the field grammar parser.
+It is a lot less straightforward than the two aforementioned parts and is primarily defined with
+type classes. The &lt;code&gt;FieldGrammar&lt;&#x2F;code&gt; type class describes how the pretty printer and parser should
+behave, two birds one stone! &lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#2&quot;&gt;2&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;how-we-achieved-comment-preserving-parsing&quot;&gt;How we achieved comment-preserving parsing&lt;&#x2F;h1&gt;
+&lt;p&gt;Prior to the work on comment-preserving parsing,
+comments are dropped by the lexer and no other parts down the pipeline can see any comments.
+To preserve comments, we must go against this prior design by making the lexer emit comments.&lt;&#x2F;p&gt;
+&lt;p&gt;We also needed to store the comments somewhere in the output of &lt;code&gt;readFields&lt;&#x2F;code&gt; which outputs
+&lt;code&gt;[Field Position]&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;The &lt;code&gt;Field ann&lt;&#x2F;code&gt; data type is defined as follows&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;hs&quot; class=&quot;language-hs z-code&quot;&gt;&lt;code class=&quot;language-hs&quot; data-lang=&quot;hs&quot;&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;data&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Field&lt;&#x2F;span&gt; ann
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Field&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;!&lt;&#x2F;span&gt;(&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Name&lt;&#x2F;span&gt; ann) [&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;FieldLine&lt;&#x2F;span&gt; ann]
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;|&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Section&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;!&lt;&#x2F;span&gt;(&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Name&lt;&#x2F;span&gt; ann) [&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;SectionArg&lt;&#x2F;span&gt; ann] [&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Field&lt;&#x2F;span&gt; ann]
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-meta z-deriving z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;deriving&lt;&#x2F;span&gt; (&lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Eq&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Show&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Functor&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Foldable&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Traversable&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Generic&lt;&#x2F;span&gt;)&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Originally, Jappie&#x27;s prototype adds another constructor &lt;code&gt;Comment !ByteString&lt;&#x2F;code&gt; to hold a
+comment. This was quite straightforward (exactly what we want in a prototype!) but it also
+introduced subtle footguns: all code that depend on the &lt;code&gt;Field&lt;&#x2F;code&gt; data type now has to deal with
+with &lt;code&gt;Comment&lt;&#x2F;code&gt;s.&lt;&#x2F;p&gt;
+&lt;p&gt;With help from &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;andreabedini&quot;&gt;Andrea Bedini&lt;&#x2F;a&gt;, we changed the design to maintain the
+original definition of &lt;code&gt;Field ann&lt;&#x2F;code&gt;, while instantiating &lt;code&gt;ann&lt;&#x2F;code&gt; differently.
+Previously this type variable was &lt;code&gt;Position&lt;&#x2F;code&gt;; by changing it to &lt;code&gt;([ByteString], Position)&lt;&#x2F;code&gt;, we were
+able to store comments without polluting all usages of &lt;code&gt;Field ann&lt;&#x2F;code&gt; with the &lt;code&gt;Comment&lt;&#x2F;code&gt; constructor!
+Concretely we decided to give this pattern a type to disallow uses of &lt;code&gt;Data.Bifunctor.first&lt;&#x2F;code&gt; and
+&lt;code&gt;Data.Bifunctor.second&lt;&#x2F;code&gt;, as it can be less straightforward.
+The &lt;code&gt;WithComments ann&lt;&#x2F;code&gt; type is as follows:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;hs&quot; class=&quot;language-hs z-code&quot;&gt;&lt;code class=&quot;language-hs&quot; data-lang=&quot;hs&quot;&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;data&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;WithComments&lt;&#x2F;span&gt; ann &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;WithComments&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  { justComments &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;::&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;!&lt;&#x2F;span&gt;[&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Comment&lt;&#x2F;span&gt; ann]
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-punctuation z-separator z-comma z-haskell&quot;&gt;,&lt;&#x2F;span&gt; unComments &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;::&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;!&lt;&#x2F;span&gt;ann
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  }
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-meta z-deriving z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;deriving&lt;&#x2F;span&gt; (&lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Show&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Generic&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Eq&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Ord&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Functor&lt;&#x2F;span&gt;)&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;A minor downside with the &lt;em&gt;comments-in-&lt;code&gt;ann&lt;&#x2F;code&gt;&lt;&#x2F;em&gt; model is that a file with no field but only comments
+can&#x27;t be represented. However we don&#x27;t consider this case because such a file won&#x27;t be a valid cabal
+file.&lt;&#x2F;p&gt;
+&lt;p&gt;We changed the top-level field parser &lt;code&gt;readFields&lt;&#x2F;code&gt; as follows:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;hs&quot; class=&quot;language-hs z-code&quot;&gt;&lt;code class=&quot;language-hs&quot; data-lang=&quot;hs&quot;&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-comment z-line z-double-dash z-haskell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-haskell&quot;&gt;--&lt;&#x2F;span&gt; Old definition is kept with the same type
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-meta z-function z-type-declaration z-haskell&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-haskell&quot;&gt;readFields&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-other z-double-colon z-haskell&quot;&gt;::&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;B8&lt;&#x2F;span&gt;.&lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;ByteString&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-other z-arrow z-haskell&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;Either&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;ParseError&lt;&#x2F;span&gt; [&lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;Field&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;Position&lt;&#x2F;span&gt;]
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-meta z-function z-type-declaration z-haskell&quot;&gt;&lt;&#x2F;span&gt;readFields &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&lt;&#x2F;span&gt; (fmap &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;.&lt;&#x2F;span&gt; map &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;.&lt;&#x2F;span&gt; fmap) unComments &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;.&lt;&#x2F;span&gt; readFieldsWithComments
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-comment z-line z-double-dash z-haskell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-haskell&quot;&gt;--&lt;&#x2F;span&gt; New comment-preserving alternative for the exact printer (and&#x2F;or other future tooling interested in comments)
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-meta z-function z-type-declaration z-haskell&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-haskell&quot;&gt;readFieldsWithComments&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-other z-double-colon z-haskell&quot;&gt;::&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;B8&lt;&#x2F;span&gt;.&lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;ByteString&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-other z-arrow z-haskell&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;Either&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;ParseError&lt;&#x2F;span&gt; [&lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;Field&lt;&#x2F;span&gt; (&lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;WithComments&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-haskell&quot;&gt;Position&lt;&#x2F;span&gt;)]
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-meta z-function z-type-declaration z-haskell&quot;&gt;&lt;&#x2F;span&gt;readFieldsWithComments &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&lt;&#x2F;span&gt; fmap fst &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;.&lt;&#x2F;span&gt; readFieldsWithComments&amp;#39;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;tracing-out-lexer-states&quot;&gt;Tracing out lexer states&lt;&#x2F;h1&gt;
+&lt;p&gt;The current cabal already &quot;handles&quot; comments, the problem is that it drops them.
+This is good news because we only needed to change the right hand side of the production rule to retain
+the comments from the lexer. We didn&#x27;t have to worry that our modifications will alter the syntax of
+cabal.&lt;&#x2F;p&gt;
+&lt;p&gt;I traced out the automaton graph to see where comments can occur, and added them to the field parser.
+The lexer state diagram svg is generated with graphviz, the source code is available &lt;a href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;a-comment-preserving-cabal-parser&#x2F;.&#x2F;lexer_states.dot&quot;&gt;here&lt;&#x2F;a&gt;.
+&lt;img src=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;a-comment-preserving-cabal-parser&#x2F;.&#x2F;lexer_states.svg&quot; alt=&quot;Lexer States&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The start state is used to handle BOM only once and for the purpose of comment parser we can ignore
+it.
+In the graph, edges with red labels are transitions made by the lexer with its own information; on
+the other hand, edges with blue labels are transitions made by the field parser knowing what token
+it just saw. The states colored in yellow can emit comments.&lt;&#x2F;p&gt;
+&lt;p&gt;Having this diagram is very useful as it tells us how the different contexts relate to each other,
+and clarifies which locations can contain comments in a Cabal file.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;FieldLayoutOrBraces&lt;&#x2F;code&gt; and &lt;code&gt;FieldInlineOrBraces&lt;&#x2F;code&gt; would start in &lt;code&gt;in_section&lt;&#x2F;code&gt; state, switch to
+&lt;code&gt;in_field_layout&lt;&#x2F;code&gt; or &lt;code&gt;in_field_braces&lt;&#x2F;code&gt; depending on the context and run a parser, and finally switch
+back to &lt;code&gt;in_section&lt;&#x2F;code&gt;. To annotate this we use a double ended edge because the transition condition
+isn&#x27;t visible from the lexer context.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;functor-multiplicity-is-a-footgun&quot;&gt;Functor multiplicity is a footgun&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;code&gt;Field ann&lt;&#x2F;code&gt; is a functor, so doing &lt;code&gt;fmap&lt;&#x2F;code&gt; on &lt;code&gt;Field (WithComments Position)&lt;&#x2F;code&gt; we can alter the
+annotation on a field, right? Hold on! Let&#x27;s look at the &lt;code&gt;Field ann&lt;&#x2F;code&gt; type again.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;hs&quot; class=&quot;language-hs z-code&quot;&gt;&lt;code class=&quot;language-hs&quot; data-lang=&quot;hs&quot;&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;data&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Field&lt;&#x2F;span&gt; ann
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Field&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;!&lt;&#x2F;span&gt;(&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Name&lt;&#x2F;span&gt; ann) [&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;FieldLine&lt;&#x2F;span&gt; ann]
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;|&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Section&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;!&lt;&#x2F;span&gt;(&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Name&lt;&#x2F;span&gt; ann) [&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;SectionArg&lt;&#x2F;span&gt; ann] [&lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Field&lt;&#x2F;span&gt; ann]
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-meta z-deriving z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;deriving&lt;&#x2F;span&gt; (&lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Eq&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Show&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Functor&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Foldable&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Traversable&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Generic&lt;&#x2F;span&gt;)&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;ann&lt;&#x2F;code&gt; is used everywhere, especially in &lt;code&gt;[FieldLine ann]&lt;&#x2F;code&gt; and &lt;code&gt;[Field ann]&lt;&#x2F;code&gt;.
+This means if we &lt;code&gt;fmap&lt;&#x2F;code&gt; and attach comments to a &lt;code&gt;Field&lt;&#x2F;code&gt;, its first and second arguments will all have
+the same comments attached!&lt;&#x2F;p&gt;
+&lt;p&gt;I think there&#x27;s no way to avoid this, since it&#x27;s still convenient to have a functor instance.
+The moral of the story is that you must have a clear understanding of the instances of the data
+types you&#x27;re using.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;conclusion-and-future-work&quot;&gt;Conclusion and future work&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;code&gt;GenericPackageDescription&lt;&#x2F;code&gt; is the final representation of a parsed cabal file.
+To preserve &lt;code&gt;Eq&lt;&#x2F;code&gt; extensionality &lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#3&quot;&gt;3&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;, we wrapped it with a data type which isn&#x27;t an instance of &lt;code&gt;Eq&lt;&#x2F;code&gt;.
+Otherwise, a &lt;code&gt;GenericPackageDescription&lt;&#x2F;code&gt; would be considered different when the comments are
+different!&lt;&#x2F;p&gt;
+&lt;p&gt;We duplicated the top-level parsing functions so we have one entry-point that parses
+annotation (&lt;code&gt;parseAnnotatedGenericPackagedescription&lt;&#x2F;code&gt;), and another one that doesn&#x27;t
+(&lt;code&gt;parseGenericPackageDescription&lt;&#x2F;code&gt;) to provide backward compatibilty.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;hs&quot; class=&quot;language-hs z-code&quot;&gt;&lt;code class=&quot;language-hs&quot; data-lang=&quot;hs&quot;&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;data&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;AnnotatedGenericPackageDescription&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;AnnotatedGenericPackageDescription&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  { exactComments &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;::&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Map&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;Position&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;ByteString&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-punctuation z-separator z-comma z-haskell&quot;&gt;,&lt;&#x2F;span&gt; unannotatedGpd &lt;span class=&quot;z-keyword z-operator z-haskell&quot;&gt;::&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-other z-haskell&quot;&gt;GenericPackageDescription&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  }
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-haskell&quot;&gt;  &lt;span class=&quot;z-meta z-deriving z-haskell&quot;&gt;&lt;span class=&quot;z-keyword z-other z-haskell&quot;&gt;deriving&lt;&#x2F;span&gt; (&lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Show&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Data&lt;&#x2F;span&gt;, &lt;span class=&quot;z-entity z-other z-inherited-class z-haskell&quot;&gt;Generic&lt;&#x2F;span&gt;)&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Since the position of all comments should not overlap, we store the comments in a map indexed
+by their &lt;code&gt;Position&lt;&#x2F;code&gt; in the source file. This is necessary to reconstruct the comments in the source
+file and achieve exact print.&lt;&#x2F;p&gt;
+&lt;p&gt;This change to the lexer and parser is isolated, meaning you can already use the comments when this is
+merged. However more work needs to be done for a complete exact print feature!
+Namely we need to stop common stanzas from being merged in.
+Currently I am working on a prototype to retain trivia in field grammar parser, so the spaces in
+dependency bounds won&#x27;t be dropped, for example.&lt;&#x2F;p&gt;
+&lt;p&gt;Please tell me if you have any thoughts on this work. :)&lt;&#x2F;p&gt;
+&lt;p&gt;I want to thank the the Haskell Foundation and Jappie for allowing this work to happen.
+I appreciate greatly the opportunity to work on cabal and solve a problem that helps Haskell
+programmers. :)
+I also want to thank the people in my life who believed in me when I needed help, without you I
+wouldn&#x27;t be who I am today. :)&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;1&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;1&lt;&#x2F;sup&gt;
+&lt;p&gt;Common Architecture for Building Applications and Libraries, &lt;em&gt;Cabal&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;2&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;2&lt;&#x2F;sup&gt;
+&lt;p&gt;The printer part doesn&#x27;t even work like we mentioned in the pre-amble,
+Jappie told me to say to you all it&#x27;s a lovecraftian horror.
+It&#x27;s Gods justice for our collective sin.
+If you wonder what an abyss of despair looks like, Jappie invites
+you to open &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;hackage-content.haskell.org&#x2F;package&#x2F;Cabal-syntax-3.16.0.0&#x2F;docs&#x2F;Distribution-FieldGrammar-Class.html&quot;&gt;pandora&#x27;s box&lt;&#x2F;a&gt;.
+This is your humanity. The face of God. To know it is to know madness.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;3&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;3&lt;&#x2F;sup&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Extensionality&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Extensionality&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Cabal 3.16 release</title>
+        <published>2025-07-24T00:00:00+00:00</published>
+        <updated>2025-07-24T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/cabal-3-16-0-0-release/"/>
+        <id>https://blog.haskell.org/cabal-3-16-0-0-release/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/cabal-3-16-0-0-release/">&lt;p&gt;The Cabal release team brings you a new release of the cabal-install tool and accompanying libraries, version 3.16.0.0. This release supports the (not yet available) GHC 9.14, including its upcoming alpha. We expect to publish cabal-install 3.16.1.0 soon after GHC 9.14 is out and address any discovered issues and incompatibilities that can be fixed in the respective timeframe.&lt;&#x2F;p&gt;
+&lt;p&gt;The binaries for cabal-install are available:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;In the GHCup main channel (we thank the GHCup maintainers for the swift support of our release).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;cabal&#x2F;cabal-install-3.16.0.0&#x2F;&quot;&gt;On our website&lt;&#x2F;a&gt; (the same set of binaries can also be installed via the GHCup vanilla channel); these binaries are signed by &quot;Francesco Ariis &lt;a href=&quot;mailto:francesco@ariis.it&quot;&gt;francesco@ariis.it&lt;&#x2F;a&gt;&quot; (fingerprint: &lt;code&gt;DAFB 4D8A F684 1435 18D5  051F A9AF 0AAA 6B87 EC51&lt;&#x2F;code&gt;; the key is hosted on keyserver.ubuntu.com).&lt;&#x2F;li&gt;
+&lt;li&gt;As usual, &lt;code&gt;cabal update &amp;amp;&amp;amp; cabal install cabal-install-3.16.0.0&lt;&#x2F;code&gt; is an option too.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;what-s-new&quot;&gt;What&#x27;s new&lt;&#x2F;h3&gt;
+&lt;p&gt;Some of the cool features in the release:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The new &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cabal.readthedocs.io&#x2F;en&#x2F;stable&#x2F;cabal-commands.html#cabal-target&quot;&gt;&lt;code&gt;cabal target&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; command;&lt;&#x2F;li&gt;
+&lt;li&gt;Faster Git clones;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;cabal haddock-project&lt;&#x2F;code&gt; handles user-provided CSS;&lt;&#x2F;li&gt;
+&lt;li&gt;Multiple &lt;code&gt;flags&lt;&#x2F;code&gt; stanzas in &lt;code&gt;cabal.project&lt;&#x2F;code&gt; accumulate values instead of using the last one;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;cabal gen-bounds&lt;&#x2F;code&gt; works with multi-package projects (i.e., embraces the &lt;code&gt;v2&lt;&#x2F;code&gt;-commands infrastructure);&lt;&#x2F;li&gt;
+&lt;li&gt;Cabal multi-repl supports reexported-modules with renaming for GHC &amp;gt;= 9.12, and more!&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;See the &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;blob&#x2F;master&#x2F;release-notes&#x2F;cabal-install-3.16.0.0.md&quot;&gt;cabal-install release notes on Github&lt;&#x2F;a&gt; for the full changelog. Power users may be interested in &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;blob&#x2F;master&#x2F;release-notes&#x2F;Cabal-3.16.0.0.md&quot;&gt;Cabal-the-library notes&lt;&#x2F;a&gt; too.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-16-0-0-contributors&quot;&gt;3.16.0.0 Contributors&lt;&#x2F;h3&gt;
+&lt;p&gt;The credits go to: Andreas Abel, Andreas Klebinger, Artem Pelenitsyn, Benjamin, Benjamin McRae, Berk Özkütük, Bodigrim, brandon s allbery kf8nh, Bryan Richter, Francesco Ariis, Francesco Gazzetta, Gleb Popov, Hécate Moonlight, James Blackburn, Jaro, Jasper Van der Jeugt, Javier Sagredo, Jens Petersen, Kazu Yamamoto, Kevin Quick, Leonid Znamenok, malteneuss, Matthew Pickering, Matt Parsons, Mike Pilgrem, Mikolaj Konarski, Moritz Angermann, noiioiu, parsonsmatt, Peter Becich, Phil de Joux, PHO, Praneya Kumar, Rebecca Turner, Rodrigo Mesquita, Sdywolf, Serge S. Gulin, Sergey Vinokurov, sheaf, Sylvain Henry, Teo Camarasu, theGhostJW, Tom Smeding, Trevis, Troels Henriksen, Yi Fang, Yuto Takano, zlonast, Zubin Duggal.&lt;&#x2F;p&gt;
+&lt;p&gt;We thank all the contributors as well as our reviewers, QA testers, devops, and others without whom this release wouldn’t be possible.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;feedback&quot;&gt;Feedback&lt;&#x2F;h3&gt;
+&lt;p&gt;Please report any issues you notice with the 3.16.0.0 release on our GitHub: &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;issues&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;cabal&#x2F;issues&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;— Cabal release team (Artem, Brandon, Francesco, Mikołaj)&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>GHC 9.12 &amp; Cabal 3.14 releases</title>
+        <published>2025-01-06T00:00:00+00:00</published>
+        <updated>2025-01-06T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/ghc-9-12-cabal-3-14/"/>
+        <id>https://blog.haskell.org/ghc-9-12-cabal-3-14/</id>
+        
+        <summary type="html">&lt;p&gt;To conclude the year 2024, the GHC and Cabal teams are happy to announce the releases of GHC 9.12 and cabal 3.14.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>How to collect performance statistics with Cabal</title>
+        <published>2024-12-23T00:00:00+00:00</published>
+        <updated>2024-12-23T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/"/>
+        <id>https://blog.haskell.org/how-to-collect-performance-statistics-with-cabal/</id>
+        
+        <summary type="html">&lt;p&gt;The &lt;a rel=&quot;noopener&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cabal.readthedocs.io&#x2F;en&#x2F;latest&#x2F;&quot;&gt;Cabal Manual&lt;&#x2F;a&gt; now has a guide on how to collect performance statistics of Haskell applications.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

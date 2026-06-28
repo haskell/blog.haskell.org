@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=d58d95c5efe846728d7b" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Overview of Haskell security tooling | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="" />
+  <link rel="canonical" href="https://blog.haskell.org/overview-of-haskell-security-tooling/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/overview-of-haskell-security-tooling/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/overview-of-haskell-security-tooling/" />
+  <meta property="og:description" content="" />
+  <meta name="twitter:description" content="" />
+  <meta property="og:title" content="Overview of Haskell security tooling | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="Overview of Haskell security tooling | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2026-06-29" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/overview-of-haskell-security-tooling/">Overview of Haskell security tooling</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/gautier-di-folco/">Gautier DI FOLCO</a> <span class="rpad"></span> June 29, 2026 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/security/">Security</a>] #<a href="https://blog.haskell.org/tags/tooling/">Tooling</a>  #<a href="https://blog.haskell.org/tags/infrastructure/">Infrastructure</a> </span>
+
+    
+
+
+<p>Here is an overview of the Haskell security infrastructure, detailing the security team, the advisory database, the libraries developed for security metadata, and how downstream tools leverage this data.</p>
+<span id="continue-reading"></span><h2 id="the-haskell-security-response-team">The Haskell Security Response Team</h2>
+<p>The Haskell Security Response Team (SRT) manages the security reporting and advisory workflow for the Haskell ecosystem.</p>
+<p>We formed the team to establish a formal process for handling vulnerabilities in Haskell packages, and we outlined our initial organization and objectives in the <a rel="noopener" target="_blank" href="https://github.com/haskell/security-advisories/blob/main/reports/2023-07-10-ann-q2-report.md">Q2 2023 report</a>. Since then, we have been gradually moving the ecosystem from ad-hoc vulnerability handling toward a structured repository model.</p>
+<h2 id="the-security-advisory-database">The Security Advisory Database</h2>
+<p>The central resource for security advisories is the <a rel="noopener" target="_blank" href="https://github.com/haskell/security-advisories/">haskell/security-advisories</a> repository. This database contains Markdown files documenting known vulnerabilities in packages hosted on Hackage.</p>
+<p>The repository produces several outputs for consumption by humans and machines:</p>
+<ol>
+<li><strong>Human-readable portal</strong>: The static website at <a rel="noopener" target="_blank" href="https://haskell.github.io/security-advisories/">haskell.github.io/security-advisories/</a> presents a searchable index of all advisories.</li>
+<li><strong>OSV Export</strong>: The <code>generated/osv-export</code> branch contains advisories formatted in the Open Source Vulnerabilities (OSV) schema. This allows integration into global vulnerability databases.</li>
+<li><strong>Snapshot Export</strong>: The <code>generated/snapshot-export</code> branch provides database snapshots designed for offline tools to synchronize.</li>
+</ol>
+<h2 id="security-data-libraries">Security Data Libraries</h2>
+<p>Within the <code>code/</code> subdirectory of the advisory repository, we develop several libraries to handle security data programmatically:</p>
+<ul>
+<li><strong><code>hsec-core</code></strong>: Defines the data structures for security advisories and handles their parsing and validation.</li>
+<li><strong><code>hsec-tools</code></strong>: Provides utility executables for database maintainers, including querying a security advisories database.</li>
+<li><strong><code>hsec-sync</code></strong>: A tool to synchronize the local advisory cache with the remote database snapshots.</li>
+<li><strong><code>osv</code></strong>: Implements serialization and deserialization for the OSV format.</li>
+<li><strong><code>cvss</code></strong>: Implements scoring and parsing for the Common Vulnerability Scoring System.</li>
+<li><strong><code>purl</code></strong>: Handles Package URL parsing and generation, which uniquely identifies package names and versions.</li>
+</ul>
+<h2 id="ecosystem-integration">Ecosystem Integration</h2>
+<p>Several downstream tools utilize this security data to protect Haskell applications:</p>
+<ul>
+<li><strong><a rel="noopener" target="_blank" href="https://github.com/MangoIV/cabal-audit/">cabal-audit</a></strong>: A command-line tool that parses Cabal project files or build plans and queries the database to report vulnerable dependencies in a project.</li>
+<li><strong><a rel="noopener" target="_blank" href="https://github.com/dancewithheart/cabal-plan-submit">cabal-plan-submit</a></strong>: A tool that extracts the build plan and submits the dependency graph to GitHub's Dependency Submission API.</li>
+<li><strong><a rel="noopener" target="_blank" href="https://github.com/blackheaven/haskell-security-action">haskell-security-action</a></strong>: A GitHub Action that runs <code>cabal-audit</code> during CI runs and formats the output into SARIF. This allows vulnerability warnings to be displayed directly in the GitHub Code Scanning interface.</li>
+</ul>
+<h2 id="tutorial-synchronizing-and-querying">Tutorial: Synchronizing and Querying</h2>
+<p>We are going to see how to fetch the HSEC database and query it locally for packages with known vulnerabilities.</p>
+<p>Note: The tools above are built on the same libraries you can use yourself.</p>
+<p>If you want to query the advisory database directly, the <code>hsec-tools</code> and <code>hsec-sync</code> executables let you do so from the command line.</p>
+<p>First, initialize/synchronize the local cache with the remote advisory database:</p>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hsec-sync sync</span>
+</span></code></pre>
+<p>Once the cache is synchronized, you can query whether a specific package is affected by known vulnerabilities. For example, to check the <code>aeson</code> package:</p>
+<pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hsec-tools query is-affected aeson</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Affected</span></span><span class="z-meta z-function-call z-arguments z-shell"> by:</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">*</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-keyword z-control z-regexp z-set z-begin z-shell">[</span>HSEC<span class="z-keyword z-operator z-word z-shell">-</span>2023<span class="z-keyword z-operator z-word z-shell">-</span>0001<span class="z-keyword z-control z-regexp z-set z-end z-shell">]</span> Hash flooding vulnerability in aeson</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">*</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-keyword z-control z-regexp z-set z-begin z-shell">[</span>HSEC<span class="z-keyword z-operator z-word z-shell">-</span>2026<span class="z-keyword z-operator z-word z-shell">-</span>0007<span class="z-keyword z-control z-regexp z-set z-end z-shell">]</span> Denial of Service and Memory Exhaustion in aeson and text-iso8601</span>
+</span></code></pre>
+<p>Because these packages are published on Hackage, developers can import <code>hsec-core</code> and query the advisory database programmatically in Haskell code without relying on the CLI.</p>
+<h2 id="future-developments">Future Developments</h2>
+<p>Our current goal is to improve the developer experience by tightening integration with core tooling. This includes:</p>
+<ul>
+<li><strong>Cabal integration</strong>: Providing native audit commands directly in <code>cabal</code> so that developers do not need external wrappers, similarly to <code>npm</code>/<code>cargo</code>.</li>
+<li><strong>Hackage server integration</strong>: Introducing fetching and checking advisories in <code>hackage-server</code> to warn maintainers and users about vulnerabilities directly on the Hackage package pages.</li>
+</ul>
+<p>To learn more about the Security Response Team, report a vulnerability, or get in touch, visit <a rel="noopener" target="_blank" href="https://haskell.org/security">haskell.org/security</a>.</p>
+
+      <nav>
+        <div>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/making-ghc-upgrades-easy/"> Making GHC upgrades easy &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2026</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>
