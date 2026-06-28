@@ -1,6 +1,6 @@
 +++
 title = "Overview of Haskell security tooling"
-date = 2026-06-22
+date = 2026-06-29
 [taxonomies]
 authors = ["Gautier DI FOLCO"]
 categories = ["Security"]
@@ -8,6 +8,7 @@ tags = ["Tooling", "Infrastructure"]
 +++
 
 Here is an overview of the Haskell security infrastructure, detailing the security team, the advisory database, the libraries developed for security metadata, and how downstream tools leverage this data.
+<!-- more -->
 
 ## The Haskell Security Response Team
 
