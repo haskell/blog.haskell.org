@@ -40,7 +40,11 @@ external_links_no_referrer = false # rel="noreferrer"
 smart_punctuation = false          # `...` to `…`, `"quote"` to `“curly”` etc
 
 [markdown.highlighting]
-theme = "github-light"
+# theme = "material-theme-lighter"
+# theme = "snazzy-light"
+# theme = "github-light"
+theme = "one-light"
+
 
 [extra]
 ###############################################################################
