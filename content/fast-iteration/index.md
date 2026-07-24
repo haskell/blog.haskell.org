@@ -19,9 +19,11 @@ seeing increased interest in the topic in recent months due to the
 rise in prominence of agentic coding.
 
 This article describes two techniques for fast iteration: using `ghci`
-to get fast feedback on the result of type checking an compilation, and
-speeding up builds with a careful choice of flags to `ghc` and
-`cabal`.  Let's dive in!
+to get fast feedback on the result of type checking an compilation,
+and speeding up builds with a careful choice of flags to `ghc` and
+`cabal`.  These techniques can be run on any existing codebase. They
+don't require you to restructure your code in any way, so you can get
+an instant improvement to your iteration times. Let's dive in!
 
 ## `ghci`-based
 
