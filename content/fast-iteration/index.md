@@ -208,6 +208,8 @@ $ cabal build all --project-file=cabal.fast.project
 
 That way, we have an easy set-up for fast builds. We could have project files for profiling builds, release builds, etc.
 
+Running the above command, we got a baseline compilation time on a private, commercial Haskell codebase of more than 150 000 lines of Haskell code. As we go through build optimizations below, we will report on the speedups achieved from this baseline.
+
 ### Tuning GHC's runtime options
 
 GHC is a wonderful piece of technology. In some ways, it might as well be from the future. However, compiling Haskell programs into performant executables is hard work, and GHC is itself a Haskell program. This means we must tune its runtime system to squeeze out more performance.
@@ -220,8 +222,11 @@ Thus, we update our `cabal.fast.project` project file to pass the appropriate fl
 import cabal.project
 
 -- Step 1: tuning GHC
-ghc-options: +RTS -A64m -RTS
+program-options:
+   ghc-options: +RTS -A64m -RTS
 ```
+
+Building with the above project file, we achieve a speedup of approximately 10%. Not huge, but not marginal either. Big gains remain!
 
 ### Disabling compile-time optimizations
 
@@ -233,13 +238,16 @@ But this is merely the _default_ behavior, and this article is all about speed. 
 import cabal.project
 
 -- Step 1: tuning GHC
-ghc-options: +RTS -A64m -RTS
+program-options:
+   ghc-options: +RTS -A64m -RTS
 
 -- Step 2: disable optimizations
 optimization: false
 ```
 
 Note that this optimization flag only applies to your locally-built packages. Your third-party dependencies will be compiled using the default optimization level, `-O1`. This is generally considered acceptable since your third-party dependencies are rarely built, and it allows you to re-use them for other build profiles.
+
+At this stage, the codebase is building 2x faster!
 
 ### Better resource-sharing for build parallelism
 
@@ -253,7 +261,8 @@ In our experience, a number from 4 - 8 is appropriate to start with. We therefor
 import cabal.project
 
 -- Step 1: tuning GHC
-ghc-options: +RTS -A64m -RTS
+program-options:
+   ghc-options: +RTS -A64m -RTS
 
 -- Step 2: disable optimizations
 optimization: false
@@ -271,7 +280,8 @@ We update our `cabal.fast.project` one final time:
 import cabal.project
 
 -- Step 1: tuning GHC
-ghc-options: +RTS -A64m -RTS
+program-options:
+   ghc-options: +RTS -A64m -RTS
 
 -- Step 2: disable optimizations
 optimization: false
@@ -286,6 +296,8 @@ Finally, our builds will be much faster:
 ```shell
 $ cabal build all --project-file=cabal.fast.project
 ```
+
+Compared to our baseline, we achieve a cumulative build speedup of 2.6x!
 
 ## Going further
 
