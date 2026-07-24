@@ -287,6 +287,14 @@ Finally, our builds will be much faster:
 $ cabal build all --project-file=cabal.fast.project
 ```
 
+## Going further
+
+If you're eager for even more build time improvements and are willing
+to spend time adjusting the structure of your codebase, we can point
+you where to look next: watch of Teo Camarasu's talk at the 2026
+Haskell Ecosystem Workshop, [Optimising for fast builds with
+GHC](https://www.youtube.com/watch?v=nmE6aa_I5TU).
+
 ## Conclusion
 
 We hope you enjoyed our brief tour of using `ghci` and `cabal` for
