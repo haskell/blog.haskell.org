@@ -302,4 +302,3 @@ fast iterative development in Haskell. If you have any comments or
 questions, or have your own tips and techniques you can share with the
 community, then please post on [the Haskell
 Discourse](https://discourse.haskell.org/).
-
