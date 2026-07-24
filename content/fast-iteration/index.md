@@ -33,9 +33,13 @@ interpreter](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/ghci.html)
 of GHC.  It is a REPL ("[read-eval-print
 loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)"),
 which means you can type expressions into it and it will run them,
-printing the result.  There are a variety of ways to use `ghci` for
-fast feedback, from using `ghci` itself directly to featureful
-wrappers.
+printing the result.  `ghci` is a good starting point for fast
+feedback because it doesn't have to fully compile code, rather it
+generates executable bytecode and skips machine code generation,
+making it inherently faster than a normal build.
+
+There are a variety of ways to use `ghci`, from using barebones `ghci`
+itself directly to featureful wrappers.
 
 ### `ghci` itself
 
