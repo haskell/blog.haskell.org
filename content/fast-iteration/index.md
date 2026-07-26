@@ -8,7 +8,6 @@ categories = ["Ecosystem"]
 tags = ["Practices", "Tooling"]
 +++
 
-
 ## Introduction
 
 The Haskell community has recently been discussing how to achieve fast
