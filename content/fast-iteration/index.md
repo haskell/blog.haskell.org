@@ -8,7 +8,6 @@ categories = ["Ecosystem"]
 tags = ["Practices", "Tooling"]
 +++
 
-# Quick tips for fast iteration in Haskell
 
 ## Introduction
 
