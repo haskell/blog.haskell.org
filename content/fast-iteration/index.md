@@ -156,23 +156,6 @@ on the Haskell Discourse, which includes a short video of Tricorder
 functionality. `tricorder` is a normal executable package on Hackage,
 so you can install it with, for example, `cabal install tricorder`
 
-#### References
-
-Lots of people have already written up their experience of workflows
-that `ghci`, including for fast iterative development. You might want
-to check them out.
-
-* [Using GHCi &mdash; GHC Users Guide](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/ghci.html)
-* [Fast Feedback](https://haskellweekly.news/episode/6.html)
-* [Haskell Development Workflows (4 ways)](https://academy.fpblock.com/blog/2018/08/haskell-development-workflows-4-ways/)
-* [ghcid for the win!](https://www.parsonsmatt.org/2018/05/19/ghcid_for_the_win.html)
-* [ghcid for Web App Development](https://functor.tokyo/blog/2019-04-07-ghcid-for-web-app-dev)
-* [Announcing ghciwatch 1.0](https://mercury.com/blog/announcing-ghciwatch)
-* [Haskell dev workflow with ghcid and neovim](https://jeancharles.quillet.org/posts/2024-09-04-Haskell-dev-workflow-with-ghcid-and-neovim.html)
-* [Multiple Component support for cabal repl](https://www.well-typed.com/blog/2023/03/cabal-multi-unit/)
-* [Cheaper: producing a program with less developer time](https://github.com/alexfmpe/semantic-satiation/blob/main/posts/002-cheaper.md)
-* [Rapid](https://hackage.haskell.org/package/rapid/docs/Rapid.html)
-
 ## `cabal`-based
 
 Let's now see how to speed up development builds using the [`cabal`](https://www.haskell.org/cabal/) build system. `cabal` has existed for a very long time, and you may be surprised by some of the things it offers!
@@ -312,3 +295,20 @@ fast iterative development in Haskell. If you have any comments or
 questions, or have your own tips and techniques you can share with the
 community, then please post on [the Haskell
 Discourse](https://discourse.haskell.org/).
+
+## References
+
+Lots of people have already written up their experience of workflows
+that `ghci`, including for fast iterative development. You might want
+to check them out.
+
+* [Using GHCi &mdash; GHC Users Guide](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/ghci.html)
+* [Fast Feedback](https://haskellweekly.news/episode/6.html)
+* [Haskell Development Workflows (4 ways)](https://academy.fpblock.com/blog/2018/08/haskell-development-workflows-4-ways/)
+* [ghcid for the win!](https://www.parsonsmatt.org/2018/05/19/ghcid_for_the_win.html)
+* [ghcid for Web App Development](https://functor.tokyo/blog/2019-04-07-ghcid-for-web-app-dev)
+* [Announcing ghciwatch 1.0](https://mercury.com/blog/announcing-ghciwatch)
+* [Haskell dev workflow with ghcid and neovim](https://jeancharles.quillet.org/posts/2024-09-04-Haskell-dev-workflow-with-ghcid-and-neovim.html)
+* [Multiple Component support for cabal repl](https://www.well-typed.com/blog/2023/03/cabal-multi-unit/)
+* [Cheaper: producing a program with less developer time](https://github.com/alexfmpe/semantic-satiation/blob/main/posts/002-cheaper.md)
+* [Rapid](https://hackage.haskell.org/package/rapid/docs/Rapid.html)
