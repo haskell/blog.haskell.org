@@ -6,7 +6,7 @@ The blog is made with [Zola] and based on the [Abridge theme] that is included
 as a Git [submodule][git-submodule].
 
 You will need:
-  * The `zola` binary v0.19.1 or higher
+  * The `zola` binary v0.22 or higher
 
 Run `zola serve` in order to serve the website and automatically render it when files change.
 
