@@ -68,7 +68,7 @@ away. If so then check out the next section on `ghcid`.
 
 ### `ghcid`
 
-`ghcid` is a wrapper around `ghci` that automates issuing `:r` when
+[`ghcid`](https://github.com/ndmitchell/ghcid) is a wrapper around `ghci` that automates issuing `:r` when
 any file in your project changes, so its workflow is even easier than
 that of `ghci`: make some changes to the files in your project and
 then merely *look at* your `ghcid` window; `ghcid` will have detected
