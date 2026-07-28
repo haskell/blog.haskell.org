@@ -124,10 +124,8 @@ here's a simple `ghcid` wrapper `bash` script called `ghcid-check`:
 
 * <https://github.com/tomjaguarpaw/ghcid-check/>
 
-Yes, that's right, there are two layers of wrapping: `ghcid-check` is
-a shell script which wraps `ghcid` which is Haskell program which
-wraps `ghci`!  `ghcid-check` is very basic and you might want to
-customize it to meet your own particular needs.
+`ghcid-check` is very basic and you might want to customize it to meet
+your own particular needs.
 
 Beyond `ghcid`, there are another couple of projects based on a
 similar idea that bring new features: `ghciwatch` and Tricorder.
