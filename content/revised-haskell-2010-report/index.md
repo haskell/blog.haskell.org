@@ -25,4 +25,15 @@ The Functor-Applicative-Monad, MonadFail, Foldable-Traversable and Monad-of-no-r
 If the Haskell 2010 language report were all that is available to you to know how the language works, then any non-trivial Haskell 2010 program that you would write is almost guaranteed to not be compilable with modern compilers like GHC or MicroHS. We can fix that situation, so let's do it!
 
 
-# How to get there
+# How to Get the Cost-Benefit Tradeoff Right
+
+Writing a new report is a lot of work, and we want to avoid running into the pitfalls that stalled previous attempts to write a new language report.
+It is therefore important that we set ourselves a goal that is both achievable and provides a tangible benefit for the Haskell community.
+The most obvious target is to start with a **Revised Haskell 2010 Language Report**:
+
+- A revised report is eminently achievable: We have a very clear todo list in the documented discrepancies in the user guide ([GHC User Guide: Bugs and Infelicities](https://downloads.haskell.org/ghc/latest/docs/users_guide/bugs.html)), and each of the discrepancies is already well-documented in the accepted proposals that lead to them.
+- None of the changes that we have to implement is likely to be contentious: They reflect the Haskell that we are already writing today. This also means that we can use a very lightweight decision process in the compilation of the revised report.
+- There is a very clear benefit for the community: The most important piece of our reference documentation is no longer outdated. We can refer people to the Haskell report without having to warn them to stay clear of certain passages and parts of the report that no longer hold true.
+- Since we don't define a new Haskell version with a new feature set, but only a revised version of a previous report, we don't generate any churn for the ecosystem or compiler writers. Taking inspiration from literature, we can even [retcon](https://en.wikipedia.org/wiki/Retroactive_continuity) the report and pretend that the revised report is what we meant by `Haskell2010` all along. The GHC user guide could then be simplified and remove most of its section 16 which documents differences between its implementation and the official report.
+
+So here is the clear target that we can set for ourselves: Every program that is valid according to the revised Haskell 2010 language report will be accepted by GHC using the `Haskell2010` language edition.
