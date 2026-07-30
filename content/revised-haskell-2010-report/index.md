@@ -70,9 +70,11 @@ The obvious solution is to document the API of the standard libraries using Hadd
 ## What Process Shall we Use
 
 The Haskell Prime process worked using a combination of mailing list discussions and a Git repository which discussed and collected RFCs. Notably, the process did not work directly on the source code used for building the report.
-I think we can reduce a lot of the overhead by switching to a collaboration process that is modelled more closely on how we develop code: Changes to the report should primarily be discussed in the form of pull requests to the textual sources of the report itself. The repository to organize the writing of the report is now public: TODO Please start contributing by discussing the existing issues, by contributing new issues, and by helping fix issues with the technical infrastructure. At the moment we will not merge any actual changes to the report, since these changes will need to find the consensus of the language committee that we will hopefully be able to establish.
+We can reduce a lot of the overhead by switching to a collaboration process that is modelled more closely on how we develop code: Changes to the report should primarily be discussed in the form of pull requests to the textual sources of the report itself. The repository to organize the writing of the report is now public: TODO Please start contributing by discussing the existing issues, by contributing new issues, and by helping fix issues with the technical infrastructure. At the moment we will not merge any actual changes to the report, since these changes will need to find the consensus of the language committee that we will hopefully be able to establish.
 
 ## Call to Action
 
-In order for a new report to become an official Haskell report which enjoys a broad support from the community we have to organize it under the umbrella of our existing institutions.
-The Haskell Foundation and its working groups is best suited to do this.
+In order for a new report to enjoy broad support from the Haskell community we have to organize it under the umbrella of our existing institutions.
+The Haskell Foundation and its working groups is best suited to host this project, but it will rely on volunteers who can contribute a part of their time to help organize the writing of the new report, and who are willing to help establish a new language committee tasked with revising the language report. While it will involve some work, it is also not going to be an unending endevour with unclear outcomes. The actual amount of work that remains is quite limited and I am confident we can finish a revision of the report within this year! So if you are interested in helping, then please join the discussion on the Haskell discourse!
+
+
