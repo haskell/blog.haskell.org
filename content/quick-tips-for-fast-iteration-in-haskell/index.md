@@ -198,10 +198,10 @@ Take a look at the [GHC 9.14.1 user guide's section on runtime control](https://
 Thus, we update our `cabal.fast.project` project file to pass the appropriate flag to GHC. We'll use an allocation area of 64MB, but do experiment on your own workloads:
 
 ```
-import cabal.project
+import: cabal.project
 
 -- Step 1: tuning GHC
-program-options:
+program-options
    ghc-options: +RTS -A64m -RTS
 ```
 
@@ -214,14 +214,14 @@ Even if GHC is given the appropriate resources to do its job more effectively, i
 But this is merely the _default_ behavior, and this article is all about speed. Instead, we can disable optimizations via the `optimization` option in cabal project files:
 
 ```
-import cabal.project
+import: cabal.project
 
 -- Step 1: tuning GHC
-program-options:
+program-options
    ghc-options: +RTS -A64m -RTS
 
 -- Step 2: disable optimizations
-optimization: false
+optimization: False
 ```
 
 Note that this optimization flag only applies to your locally-built packages. Your third-party dependencies will be compiled using the default optimization level, `-O1`. This is generally considered acceptable since your third-party dependencies are rarely built, and it allows you to re-use them for other build profiles.
@@ -240,11 +240,11 @@ In our experience, a number from 4 - 8 is appropriate to start with. We therefor
 import cabal.project
 
 -- Step 1: tuning GHC
-program-options:
+program-options
    ghc-options: +RTS -A64m -RTS
 
 -- Step 2: disable optimizations
-optimization: false
+optimization: False
 
 -- Step 3: build parallelism
 jobs: 6
@@ -256,14 +256,14 @@ We update our `cabal.fast.project` one final time:
 
 
 ```
-import cabal.project
+import: cabal.project
 
 -- Step 1: tuning GHC
-program-options:
+program-options
    ghc-options: +RTS -A64m -RTS
 
 -- Step 2: disable optimizations
-optimization: false
+optimization: False
 
 -- Step 3: build parallelism
 jobs: 6
