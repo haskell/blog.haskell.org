@@ -66,7 +66,7 @@ Documenting the standard libraries is an essential part of the report, because m
 Maintaining hundreds of pages of standard library documentation in purely textual form (either as LaTeX or Typst files), and ensuring that they remain valid Haskell and consistent with each other is very hard.
 If we want to avoid typos and inconsistencies to sneek into the report, and if we want to keep the library specification maintainable, then we have to organize it in some form which is amenable to machine checking.
 The obvious solution is to document the API of the standard libraries using Haddock. The repository for the revised report contains a cabal package which exposes the precise API specified in the Haskell 2010 language report.
-(This package only specifies the public API: The functions and methods themselves do not have an implementation. A possible stretch goal would be to use tools such as `api-diff` and `print-api` [Link](https://discourse.haskell.org/t/maintain-a-golden-test-of-your-packages-api-with-diff-package-api-and-print-api/9997) to ensure that the API exposed by packages like `base` is a strict superset of the API defined in the report.)
+(This package only specifies the public API: The functions and methods themselves do not have an implementation. A possible stretch goal would be to use tools like `api-diff` or `print-api` [Link](https://discourse.haskell.org/t/maintain-a-golden-test-of-your-packages-api-with-diff-package-api-and-print-api/9997) to ensure that the API exposed by packages like `base` is a strict superset of the API defined in the report.)
 
 ## What Process Shall we Use
 
