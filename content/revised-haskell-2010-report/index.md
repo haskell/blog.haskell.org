@@ -75,7 +75,12 @@ We can reduce a lot of the overhead by switching to a collaboration process that
 
 ## Call to Action
 
-In order for a new report to enjoy broad support from the Haskell community we have to organize it under the umbrella of our existing institutions.
+
+In order for the revised Haskell 2010 report to enjoy broad support from the community, we have established a new working group under the umbrella of the Haskell Foundation. But for the new report to be a success we need your help and participation. You can do so by becoming a member of the language committee, but you don't have to be a member to participate. If you do not want to become a member of the language committee you can still join all the discussions in the repository, contribute issues, and open pull requests with changes to the report.
+
+Becoming a part of the language committee comes with both rights and obligations: You get the right to cast your vote  on which changes of the report shall be adopted, but you also sign up to follow the discussions and to cast your vote when it comes to making decisions. It would be useful if you enjoy both writing and proofreading specification text, since that will mainly be what we are doing.
+
+
 The Haskell Foundation and its working groups is best suited to host this project, but it will rely on volunteers who can contribute a part of their time to help organize the writing of the new report, and who are willing to help establish a new language committee tasked with revising the language report. While it will involve some work, it is also not going to be an unending endevour with unclear outcomes. The actual amount of work that remains is quite limited and I am confident we can finish a revision of the report within this year! So if you are interested in helping, then please join the discussion on the Haskell discourse!
 
 
