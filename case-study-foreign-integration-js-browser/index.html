@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=14a137945a91a4b25717" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Case Study — Using a JavaScript component inside a Haskell application | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="" />
+  <link rel="canonical" href="https://blog.haskell.org/case-study-foreign-integration-js-browser/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/case-study-foreign-integration-js-browser/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/case-study-foreign-integration-js-browser/" />
+  <meta property="og:description" content="" />
+  <meta name="twitter:description" content="" />
+  <meta property="og:title" content="Case Study — Using a JavaScript component inside a Haskell application | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="Case Study — Using a JavaScript component inside a Haskell application | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2025-01-08" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/case-study-foreign-integration-js-browser/">Case Study — Using a JavaScript component inside a Haskell application</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/mateusz-goslinowski/">Mateusz Goślinowski</a> <span class="rpad"></span> January 08, 2025 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/ghc/">GHC</a>] #<a href="https://blog.haskell.org/tags/javascript/">javascript</a>  #<a href="https://blog.haskell.org/tags/case-study/">case-study</a> </span>
+
+    
+
+
+<p>GHC since version 9.8 allows us to create callbacks from JS to Haskell code, which enables us to create full-fledged browser apps.
+This article shows how to use the JS backend with foreign component libraries.</p>
+<span id="continue-reading"></span>
+<ul>
+<li>repository: https://github.com/Swordlash/halogen-blog</li>
+<li>ghc used: javascript-unknown-ghcjs-ghc-9.12.1 (ghcup)</li>
+</ul>
+<h2 id="preface">Preface</h2>
+<p>Any useful browser single-page application needs to be able to react to user input to modify the webpage content on response.
+Since GHC version 9.8 release, we can instantiate JavaScript-level functions with Haskell closures, allowing us to pass Haskell-level actions to DOM event listeners.</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="haskell"><span class="giallo-l"><span style="color: #A626A4;">foreign import</span><span style="color: #4078F2;"> javascript</span><span style="color: #A626A4;"> unsafe</span><span> </span></span>
+<span class="giallo-l"><span style="color: #50A14F;">  &quot;&quot;</span><span>&quot; </span></span>
+<span class="giallo-l"><span>  ((</span><span style="color: #4078F2;">f</span><span>) =&gt; { </span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    var node</span><span> = </span><span style="color: #4078F2;">document</span><span>.</span><span style="color: #4078F2;">createElement</span><span>(</span><span style="color: #50A14F;">&quot;button&quot;</span><span>); </span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    node</span><span>.</span><span style="color: #4078F2;">textContent</span><span> = </span><span style="color: #50A14F;">&quot;Click me!&quot;</span><span>; </span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    node</span><span>.</span><span style="color: #4078F2;">onclick</span><span> = () =&gt; { </span></span>
+<span class="giallo-l"><span style="color: #4078F2;">      node</span><span>.</span><span style="color: #4078F2;">textContent</span><span> = `Clicked ${</span><span style="color: #4078F2;">f</span><span>()} </span><span style="color: #4078F2;">times</span><span>`;</span></span>
+<span class="giallo-l"><span>    }; </span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    document</span><span>.</span><span style="color: #4078F2;">body</span><span>.</span><span style="color: #4078F2;">appendChild</span><span>(</span><span style="color: #4078F2;">node</span><span>);</span></span>
+<span class="giallo-l"><span>  })</span></span>
+<span class="giallo-l"><span style="color: #50A14F;">  &quot;&quot;</span><span>&quot;</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">  install_handler</span><span> ::</span><span style="color: #A626A4;"> Callback</span><span> (</span><span style="color: #A626A4;">IO JSVal</span><span>) -&gt;</span><span style="color: #A626A4;"> IO</span><span style="color: #986801;"> ()</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #4078F2;">main</span><span> ::</span><span style="color: #A626A4;"> IO</span><span style="color: #986801;"> ()</span></span>
+<span class="giallo-l"><span>main =</span><span style="color: #A626A4;"> do</span></span>
+<span class="giallo-l"><span>  ref &lt;- newIORef </span><span style="color: #986801;">0</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">  let</span><span> incRef = toJSInt &lt;$&gt; (modifyIORef&#39; ref (+</span><span style="color: #986801;">1</span><span>) *&gt; readIORef ref)</span></span>
+<span class="giallo-l"><span>  syncCallback&#39; incRef &gt;&gt;= install_handler</span></span></code></pre>
+<p>In the above snippet we're creating an <code>IORef</code> and pass a callback incrementing it to a foreign function that installs a button in body, counting a number of clicks
+(note for brevity I used a multiline syntax that is not yet available for foreign calls). The callback closes over the <code>IORef</code> and correctly updates the number after each click.</p>
+<center>
+<video src="https://github.com/user-attachments/assets/ceb86903-d136-4821-8e2d-de2e433889a5" type="video/quicktime" controls></video>
+</center>
+<p>Callbacks fully enable probably the most fascinating purpose of JavaScript backend, which is web programming. GHCJS has been around for quite some time now,
+however it is both outdated (being a GHC fork requiring separate maintenance; currently stuck on 8.10) and cumbersome to use (often necessitating a separate setup, typically through Nix). In one of my previous companies, while evaluating potential options for rewriting the frontend, I decided to use PureScript. It was close enough to Haskell and very easy to set up - it can be installed directly through <code>npm</code>, has its own <code>stack</code>-like package manager <code>spago</code> with a suite of existing bundler plugins, and a blazing fast language server.
+During this journey I was using <a rel="noopener external" target="_blank" href="https://github.com/purescript-halogen/purescript-halogen">purescript-halogen</a> library - a typesafe, declarative VDOM framework based on <a rel="noopener external" target="_blank" href="https://guide.elm-lang.org/architecture/">The Elm Architecture</a>.</p>
+<p>However, with all the joy that the Haskell-like web programming brought me, I couldn't shake the feeling that there is a room for improvement. From the small things that are
+always annoying in polyglot stacks (like FE-BE JSON encoding discrepancies or lack of code sharing), to sometimes very illegible <code>purs</code> compiler error messages and of course lack of a lot of language features. This is not my intention to criticize - for a language this small I was amazed by the number and quality of existing tools and frameworks and plenty of documentation; the overall experience exceeded my expectations by far. I would still recommend PureScript to anyone that wants a lightweight, easy to setup web language with strong type system.</p>
+<p>However the mentioned shortcomings were why I was closely following the development of the GHC JS backend, wishing to port the <code>purescript-halogen</code> library to GHC as soon as it's possible. A fruit of this labour was recently released as <a rel="noopener external" target="_blank" href="https://github.com/Swordlash/haskell-halogen">haskell-halogen</a>.</p>
+<h2 id="using-javascript-backend-with-existing-javascript-tools">Using JavaScript backend with existing JavaScript tools</h2>
+<p>Yet, even the most complex and technically beautiful undertaking is worthless if its fruits are not usable.
+One of the measures of such usability in this case is interoperability with the JavaScript ecosystem - existing libraries, bundlers, minifiers, as well of the performance (size and speed) of the generated code.</p>
+<h3 id="optimizing-and-bundling">Optimizing and bundling</h3>
+<p>Currently, <code>google-closure-compiler</code> is supported for minification of the bundle (see the blog post on <a rel="noopener external" target="_blank" href="https://blog.haskell.org/report-of-js-code-minification/">JS code minification</a>). Let's try it.</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">mateusz@m12844:~/personal/halogen-blog$</span><span style="color: #50A14F;"> ./run_example</span><span style="color: #986801;"> 1</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #0184BC;">...</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">+</span><span style="color: #50A14F;"> npx google-closure-compiler</span><span style="color: #986801;"> --language_in</span><span style="color: #50A14F;"> UNSTABLE</span><span style="color: #986801;"> --compilation_level</span><span style="color: #50A14F;"> ADVANCED_OPTIMIZATIONS</span><span style="color: #986801;"> --warning_level</span><span style="color: #50A14F;"> QUIET</span><span style="color: #986801;"> --isolation_mode</span><span style="color: #50A14F;"> IIFE</span><span style="color: #986801;"> --assume_function_wrapper --emit_use_strict --js</span><span style="color: #50A14F;"> /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example1-0.1.0.0/x/example1/build/example1/example1.jsexe/all.js</span><span style="color: #986801;"> --js</span><span style="color: #50A14F;"> /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example1-0.1.0.0/x/example1/build/example1/example1.jsexe/all.externs.js</span><span style="color: #986801;"> --js_output_file</span><span style="color: #50A14F;"> ../dev/index.js</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">Input</span><span style="color: #50A14F;"> size: 1.8M</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">Output</span><span style="color: #50A14F;"> size: 396K</span></span></code></pre>
+<p>Notice we have to call <code>google-closure-compiler</code> with two input files: first is the <code>all.js</code> package generated by the compiler after bundling our library with all dependencies,
+GHC's RTS and emscripten RTS files; second, is the <code>all.externs.js</code> file that declares external variables for the minifier. Its purpose is twofold - It informs the compiler that those variables are declared elsewhere, as not to fail with an "undeclared variable" error, and it prevents the mangling of those identifiers during minification.
+Note we had to add <code>--language_in UNSTABLE</code> when compiling for recent <code>emscripten</code> due to <a rel="noopener external" target="_blank" href="https://github.com/emscripten-core/emscripten/issues/23179">this issue</a>.</p>
+<p>Nice! We reduced size of the js file from 1.8M to merely 396K. This is even smaller after compression:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">mateusz@m12844:~/personal/halogen-blog$</span><span style="color: #50A14F;"> brotli</span><span style="color: #986801;"> -Z -o</span><span style="color: #50A14F;"> dev/index.js.br dev/index.js</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">mateusz@m12844:~/personal/halogen-blog$</span><span style="color: #50A14F;"> du</span><span style="color: #986801;"> -h</span><span style="color: #50A14F;"> dev/index.js.br</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">76K</span><span style="color: #50A14F;">     dev/index.js.br</span></span></code></pre>
+<p>Now, in the real life we very rarely just serve one file; we usually pull some external dependencies, stylesheets, static files. Those then get processed
+into a smaller number of optimized output files in a process called bundling. <code>parcel</code> is one of the simplest bundlers out there - it scans your html file
+for dependencies, recursively checks for js files embedded there and their dependencies, and has sensible defaults for installing browser polyfills on
+things that are <code>require</code>d in code. Let's check it out.</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">mateusz@m12844:~/personal/halogen-blog$</span><span style="color: #50A14F;"> npx parcel dev/index.html</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #4078F2;">this</span><span style="color: #50A14F;"> is going to install some polyfill libraries like os-browserify</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">Server</span><span style="color: #50A14F;"> running at http://localhost:1234</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">✨</span><span style="color: #50A14F;"> Built in 1.55s</span></span></code></pre>
+<p>Great! Let's check out the page.</p>
+<p>And behold!.. an empty page. What's happening? A quick look in dev console shows an issue:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">Uncaught</span><span style="color: #50A14F;"> Error: process.binding is not supported</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    at</span><span style="color: #50A14F;"> process.binding</span><span> (browser.js:177:11)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    at</span><span style="color: #50A14F;"> Object.</span><span>&lt;</span><span style="color: #50A14F;">anonymou</span><span>s&gt; (index.js:144:368)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    at</span><span style="color: #50A14F;"> d9Zcj.6c0765b8bdc1a4da</span><span> (index.js:898:391)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    at</span><span style="color: #50A14F;"> newRequire</span><span> (index.f708bf3c.js:71:24)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    at</span><span style="color: #50A14F;"> index.f708bf3c.js:122:5</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    at</span><span style="color: #50A14F;"> index.f708bf3c.js:145:3</span></span></code></pre>
+<p>Looking at the error, this comes from a parcel polyfill library for <code>process</code>. Why is <code>process</code> ever used?
+After some digging I found a related <a rel="noopener external" target="_blank" href="https://github.com/parcel-bundler/parcel/issues/4468#issuecomment-613598904">issue comment</a> in <code>parcel</code> and
+the affected <code>ghc-internal</code> <a rel="noopener external" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/blob/777f108f/libraries/ghc-internal/jsbits/platform.js#L49">line</a>.
+So it seems <code>parcel</code> is wrapping the processed module in a "header" that provides <code>require</code>, which confuses the <code>ghc-internal</code> over which environment
+it's running in - it thinks that since <code>require</code> is available it is running in <code>nodejs</code>, and calls the <code>process.binding</code> which is not polyfilled.</p>
+<p>Yuck!</p>
+<p>Now, there is an option to compile without this code entirely and omit the environment checking at all, if you configure your GHC in the following way:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #E45649;">CONF_CC_OPTS_STAGE2</span><span>=</span><span style="color: #50A14F;">&quot;-sENVIRONMENT=web&quot;</span><span style="color: #4078F2;"> emconfigure</span><span style="color: #50A14F;"> ./configure</span><span style="color: #986801;"> --target=javascript-unknown-ghcjs --with-js-cpp-flags=</span><span style="color: #50A14F;">&quot;-DGHCJS_BROWSER -E -CC -Wno-unicode -nostdinc&quot;</span></span></code></pre>
+<p>This way all environment checking code will be dropped, and <code>emcc</code> will compile-in only web-related part of its runtime.
+However, it being ghc-compile-time option (not link time option unlike in GHCJS), it's cumbersome to use and maintain from GHC side (separate testing, CI etc.), and also half-baked and not supported in all boot libraries (see GHC <a rel="noopener external" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/merge_requests/13779">PR</a> with sub-PRs fixing it in <code>unix</code> and <code>process</code>).</p>
+<p>Therefore, we need to abandon hopes about <code>parcel</code> for now. How about <code>webpack</code>?</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">mateusz@m12844:~/personal/halogen-blog$</span><span style="color: #50A14F;"> cat config/webpack.config.js</span><span> </span></span>
+<span class="giallo-l"><span style="color: #4078F2;">const</span><span style="color: #50A14F;"> path = require</span><span>(</span><span style="color: #4078F2;">&#39;path&#39;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">const</span><span style="color: #50A14F;"> HtmlWebpackPlugin = require</span><span>(</span><span style="color: #4078F2;">&#39;html-webpack-plugin&#39;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #4078F2;">module.exports</span><span style="color: #50A14F;"> = {</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">  entry:</span><span style="color: #50A14F;"> &#39;./dev/index.js&#39;,</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">  output:</span><span style="color: #50A14F;"> {</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    filename:</span><span style="color: #50A14F;"> &#39;main.js&#39;,</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    path:</span><span style="color: #50A14F;"> path.resolve</span><span>(</span><span style="color: #4078F2;">__dirname,</span><span style="color: #50A14F;"> &#39;../dist&#39;</span><span>)</span><span style="color: #50A14F;">,</span></span>
+<span class="giallo-l"><span>  },</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">  resolve:</span><span style="color: #50A14F;"> {</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">    fallback:</span><span style="color: #50A14F;"> {</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">      os:</span><span style="color: #986801;"> false</span><span style="color: #50A14F;">,</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">      fs:</span><span style="color: #986801;"> false</span><span style="color: #50A14F;">,</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">      child_process:</span><span style="color: #986801;"> false</span><span style="color: #50A14F;">,</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">      path:</span><span style="color: #986801;"> false</span><span style="color: #50A14F;">,</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>  },</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">  plugins:</span><span> </span></span>
+<span class="giallo-l"><span>    [ new HtmlWebpackPlugin({</span></span>
+<span class="giallo-l"><span>        title: &#39;Blog&#39;</span></span>
+<span class="giallo-l"><span>    })]</span></span>
+<span class="giallo-l"><span>};</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">mateusz@m12844:~/personal/halogen-blog$</span><span style="color: #50A14F;"> npx webpack build</span><span style="color: #986801;"> --config</span><span style="color: #50A14F;"> config/webpack.config.js</span><span> &amp;&amp;</span><span style="color: #4078F2;"> npx</span><span style="color: #50A14F;"> http-server dist/</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #0184BC;">...</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">Starting</span><span style="color: #50A14F;"> up http-server, serving dist/</span></span></code></pre>
+<p>It works! The button appeared on screen and the console errors disappeared.</p>
+<h3 id="bundling-with-external-deps">Bundling with external deps</h3>
+<p>Now, the above was only child's play since we didn't have any actual external dependencies to bundle, only our code.
+Let's create something more involved. Let's have our button be styled and managed by Google Material Components library.</p>
+<p>Doing it is very simple, as decribed in the <a rel="noopener external" target="_blank" href="https://m2.material.io/components/buttons/web#using-buttons">Material documentation</a>. We basically have to</p>
+<ul>
+<li>Create an HTML button component structure on page as described in docs:</li>
+</ul>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="html"><span class="giallo-l"><span>&lt;</span><span style="color: #E45649;">div</span><span style="color: #986801;"> class</span><span>=</span><span style="color: #50A14F;">&quot;mdc-touch-target-wrapper&quot;</span><span>&gt;</span></span>
+<span class="giallo-l"><span>  &lt;</span><span style="color: #E45649;">button</span><span style="color: #986801;"> class</span><span>=</span><span style="color: #50A14F;">&quot;mdc-button mdc-button--outlined mdc-button--icon-leading&quot;</span><span>&gt;</span><span style="color: #A0A1A7;font-style: italic;"> &lt;!-- this is {element} in below code --&gt;</span></span>
+<span class="giallo-l"><span>    &lt;</span><span style="color: #E45649;">span</span><span style="color: #986801;"> class</span><span>=</span><span style="color: #50A14F;">&quot;mdc-button__ripple&quot;</span><span>&gt;&lt;/</span><span style="color: #E45649;">span</span><span>&gt;</span></span>
+<span class="giallo-l"><span>    &lt;</span><span style="color: #E45649;">span</span><span style="color: #986801;"> class</span><span>=</span><span style="color: #50A14F;">&quot;mdc-button__touch&quot;</span><span>&gt;&lt;/</span><span style="color: #E45649;">span</span><span>&gt;</span></span>
+<span class="giallo-l"><span>    &lt;</span><span style="color: #E45649;">i</span><span style="color: #986801;"> class</span><span>=</span><span style="color: #50A14F;">&quot;material-icons mdc-button__icon&quot;</span><span style="color: #986801;"> aria-hidden</span><span>=</span><span style="color: #50A14F;">&quot;true&quot;</span><span>&gt;bookmark&lt;/</span><span style="color: #E45649;">i</span><span>&gt;</span></span>
+<span class="giallo-l"><span>    &lt;</span><span style="color: #E45649;">span</span><span style="color: #986801;"> class</span><span>=</span><span style="color: #50A14F;">&quot;mdc-button__label&quot;</span><span>&gt;My Accessible Button&lt;/</span><span style="color: #E45649;">span</span><span>&gt;</span></span>
+<span class="giallo-l"><span>  &lt;/</span><span style="color: #E45649;">button</span><span>&gt;</span></span>
+<span class="giallo-l"><span>&lt;/</span><span style="color: #E45649;">div</span><span>&gt;</span></span></code></pre>
+<ul>
+<li>"Activate" the material library on it:</li>
+</ul>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="javascript"><span class="giallo-l"><span style="color: #A626A4;">import</span><span> {</span><span style="color: #E45649;">MDCRipple</span><span>}</span><span style="color: #A626A4;"> from</span><span style="color: #50A14F;"> &#39;@material/ripple&#39;</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A626A4;">const</span><span style="color: #986801;"> buttonRipple</span><span style="color: #0184BC;"> =</span><span style="color: #A626A4;"> new</span><span style="color: #4078F2;"> MDCRipple</span><span>(element);</span></span></code></pre>
+<ul>
+<li>Import material styles and icons into your <code>.scss</code> bundle</li>
+<li>Destroy the element once it's removed from DOM: <code>buttonRipple.destroy()</code>.</li>
+</ul>
+<p>With this, we can start implementation!
+file: <a rel="noopener external" target="_blank" href="https://github.com/Swordlash/halogen-blog/blob/master/example2/src/Button.hs">example2/src/Button.hs</a></p>
+<p>First, a few imports:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="haskell"><span class="giallo-l"><span style="color: #A626A4;">import</span><span> Halogen</span><span style="color: #A626A4;"> hiding</span><span> (</span><span style="color: #A626A4;">Initialize</span><span>,</span><span style="color: #A626A4;"> Finalize</span><span>,</span><span style="color: #A626A4;"> State</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Halogen.HTML</span><span style="color: #A626A4;"> qualified as</span><span> HH</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Halogen.HTML.Properties</span><span style="color: #A626A4;"> qualified as</span><span> HP</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Halogen.HTML.Properties.ARIA</span><span style="color: #A626A4;"> qualified as</span><span> HPA</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Halogen.HTML.Events</span><span style="color: #A626A4;"> qualified as</span><span> HE</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Web.DOM.Internal.Types (</span><span style="color: #A626A4;">HTMLElement</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Control.Monad.State</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Data.Foreign</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Data.Foldable</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Data.Text</span><span style="color: #A626A4;"> qualified as</span><span> T</span></span></code></pre>
+<p>We are going to use foreign import for initializing and destroying a button ripple effect. We will include this code in <code>js-sources</code> field of the package's cabal file:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>library</span></span>
+<span class="giallo-l"><span>  (..)</span></span>
+<span class="giallo-l"><span>  js-sources: src/Button.js</span></span></code></pre>
+<p>The js file itself is quite simple and doesn't do much - we import the needed module and expose two mentioned functions.</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="javascript"><span class="giallo-l"><span style="color: #A626A4;">import</span><span> {</span><span style="color: #E45649;">MDCRipple</span><span>}</span><span style="color: #A626A4;"> from</span><span style="color: #50A14F;"> &#39;@material/ripple&#39;</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A626A4;">function</span><span style="color: #4078F2;"> init_ripple</span><span>(element) {</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">  return new</span><span style="color: #4078F2;"> MDCRipple</span><span>(element);</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A626A4;">function</span><span style="color: #4078F2;"> destroy_ripple</span><span>(ripple) {</span></span>
+<span class="giallo-l"><span>  ripple.</span><span style="color: #4078F2;">destroy</span><span>();</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Now, in the haskell file, using <code>Data.Foreign</code> module of <code>haskell-halogen</code> (which is just a type-tagged newtype over <code>GHC.JS.Prim.JSVal</code>), we define our imports:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="haskell"><span class="giallo-l"><span style="color: #A626A4;">newtype MDCRipple</span><span> =</span><span style="color: #986801;"> MDCRipple</span><span> (</span><span style="color: #A626A4;">Foreign MDCRipple</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A626A4;">foreign import</span><span style="color: #4078F2;"> javascript</span><span style="color: #A626A4;"> unsafe</span><span style="color: #50A14F;"> &quot;init_ripple&quot;</span><span style="color: #4078F2;"> initRipple</span><span> ::</span><span style="color: #A626A4;"> HTMLElement</span><span> -&gt;</span><span style="color: #A626A4;"> IO MDCRipple</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">foreign import</span><span style="color: #4078F2;"> javascript</span><span style="color: #A626A4;"> unsafe</span><span style="color: #50A14F;"> &quot;destroy_ripple&quot;</span><span style="color: #4078F2;"> destroyRipple</span><span> ::</span><span style="color: #A626A4;"> MDCRipple</span><span> -&gt;</span><span style="color: #A626A4;"> IO</span><span style="color: #986801;"> ()</span></span></code></pre>
+<p>Note, because <code>HTMLElement</code> and <code>MDCRipple</code> runtime representation is that of a <code>JSVal</code>, we can specify them directly in signatures without the need of unwrapping arguments into <code>JSVals</code> and wrapping <code>JSVal</code> results back.</p>
+<p>The Halogen library uses the Elm Architecture, so we need to specify the state of our button component and its actions. Our state will simply be a pair of <code>(foreign MDCRipple, click counter)</code>. The actions will be <code>Initialize</code> and <code>Finalize</code>, called when the element is added and removed from DOM, and <code>Click</code>:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="haskell"><span class="giallo-l"><span style="color: #A626A4;">data Action</span><span> =</span><span style="color: #986801;"> Initialize</span><span> |</span><span style="color: #986801;"> Finalize</span><span> |</span><span style="color: #986801;"> Click</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">data State</span><span> =</span><span style="color: #986801;"> State</span><span> {</span><span style="color: #E45649;"> ripple</span><span> ::</span><span style="color: #A626A4;"> Maybe MDCRipple</span><span>,</span><span style="color: #E45649;"> counter</span><span> ::</span><span style="color: #A626A4;"> Int</span><span> }</span></span></code></pre>
+<p>Note <code>ripple</code> is <code>Nothing</code> at the beginning, when our button is in DOM but the <code>Initialize</code> hasn't been dispatched yet. Now it's time for the rest of the plumbing:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="haskell"><span class="giallo-l"><span style="color: #4078F2;">button</span><span> ::</span><span style="color: #A626A4;"> Component</span><span style="color: #E45649;"> q i o</span><span style="color: #A626A4;"> IO</span></span>
+<span class="giallo-l"><span>button = mkComponent $</span><span style="color: #986801;"> ComponentSpec</span></span>
+<span class="giallo-l"><span>  {</span><span style="color: #E45649;"> initialState</span><span> = const $</span><span style="color: #986801;"> State Nothing 0</span></span>
+<span class="giallo-l"><span>  ,</span><span style="color: #E45649;"> render</span></span>
+<span class="giallo-l"><span>  ,</span><span style="color: #E45649;"> eval</span><span> = mkEval $ defaultEval {</span><span style="color: #E45649;"> handleAction</span><span>,</span><span style="color: #E45649;"> initialize</span><span> =</span><span style="color: #986801;"> Just Initialize</span><span>,</span><span style="color: #E45649;"> finalize</span><span> =</span><span style="color: #986801;"> Just Finalize</span><span> }</span></span>
+<span class="giallo-l"><span>  }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A626A4;">  where</span></span>
+<span class="giallo-l"><span>    ref =</span><span style="color: #986801;"> RefLabel</span><span style="color: #50A14F;"> &quot;mdc-button&quot;</span><span style="color: #A0A1A7;font-style: italic;"> -- reference that is added to .mdc-button element, to look it up in DOM and initialize with foreign code</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    text </span><span style="color: #986801;">0</span><span> =</span><span style="color: #50A14F;"> &quot;Click me!&quot;</span></span>
+<span class="giallo-l"><span>    text n = T.pack $</span><span style="color: #50A14F;"> &quot;Clicked &quot;</span><span> &lt;&gt; show n &lt;&gt;</span><span style="color: #50A14F;"> &quot; times&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    render </span><span style="color: #986801;">State</span><span>{</span><span style="color: #E45649;">counter</span><span>} = </span></span>
+<span class="giallo-l"><span>      HH.div [HP.class_ (HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;mdc-touch-target-wrapper&quot;</span><span>)]</span></span>
+<span class="giallo-l"><span>        $ pure</span></span>
+<span class="giallo-l"><span>        $ HH.button</span></span>
+<span class="giallo-l"><span>          [ HP.classes </span></span>
+<span class="giallo-l"><span>            [ HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;mdc-button&quot;</span><span>, HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;mdc-button--outlined&quot;</span><span>, HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;mdc-button--icon-leading&quot;</span><span> ]</span><span style="color: #A0A1A7;font-style: italic;"> -- the element in question</span></span>
+<span class="giallo-l"><span>            , HE.onClick (const </span><span style="color: #986801;">Click</span><span>)</span><span style="color: #A0A1A7;font-style: italic;"> -- this action is returned when button is clicked</span></span>
+<span class="giallo-l"><span>            , HP.ref ref </span><span style="color: #A0A1A7;font-style: italic;">-- we add reference here</span></span>
+<span class="giallo-l"><span>          ]</span></span>
+<span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">          -- rest of the HTML as the documentation specifies</span></span>
+<span class="giallo-l"><span>          [ HH.span [HP.class_ (HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;mdc-button__ripple&quot;</span><span>)]</span><span style="color: #986801;"> []</span></span>
+<span class="giallo-l"><span>          , HH.span [HP.class_ (HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;mdc-button__touch&quot;</span><span>)]</span><span style="color: #986801;"> []</span></span>
+<span class="giallo-l"><span>          , HH.i [HP.classes [HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;material-icons&quot;</span><span>, HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;mdc-button__icon&quot;</span><span>], HPA.hidden </span><span style="color: #50A14F;">&quot;true&quot;</span><span>] [HH.text </span><span style="color: #50A14F;">&quot;add&quot;</span><span>]</span></span>
+<span class="giallo-l"><span>          , HH.span [HP.class_ (HH.</span><span style="color: #986801;">ClassName</span><span style="color: #50A14F;"> &quot;mdc-button__label&quot;</span><span>)] [HH.text $ text counter]</span></span>
+<span class="giallo-l"><span>          ]</span></span></code></pre>
+<p>Pretty straightforward, now the action handling:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="haskell"><span class="giallo-l"><span>    handleAction </span><span style="color: #986801;">Click</span><span> = modify&#39; $ \s -&gt; s {</span><span style="color: #E45649;"> counter</span><span> = counter s +</span><span style="color: #986801;"> 1</span><span> }</span></span>
+<span class="giallo-l"><span>    handleAction </span><span style="color: #986801;">Finalize</span><span> = gets ripple &gt;&gt;= traverse_ (liftIO . destroyRipple)</span></span>
+<span class="giallo-l"><span>    handleAction </span><span style="color: #986801;">Initialize</span><span> =</span></span>
+<span class="giallo-l"><span>      getHTMLElementRef ref &gt;&gt;= \</span><span style="color: #A626A4;">case</span></span>
+<span class="giallo-l"><span style="color: #986801;">        Just</span><span> el -&gt;</span><span style="color: #A626A4;"> do</span></span>
+<span class="giallo-l"><span>          r &lt;- liftIO $ initRipple el </span></span>
+<span class="giallo-l"><span>          modify&#39; (\s -&gt; s {</span><span style="color: #E45649;"> ripple</span><span> =</span><span style="color: #986801;"> Just</span><span> r })</span></span>
+<span class="giallo-l"><span style="color: #986801;">        Nothing</span><span> -&gt; error </span><span style="color: #50A14F;">&quot;Could not find button element&quot;</span></span></code></pre>
+<p>And that's it. What's left is attaching this component to the <code>&lt;body&gt;</code> element in <code>Main.hs</code>:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="haskell"><span class="giallo-l"><span style="color: #A626A4;">import</span><span> Button</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Halogen.VDom.Driver (</span><span style="color: #4078F2;">runUI</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Halogen.IO.Util</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">import</span><span> Control.Monad (</span><span style="color: #4078F2;">void</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #4078F2;">main</span><span> ::</span><span style="color: #A626A4;"> IO</span><span style="color: #986801;"> ()</span></span>
+<span class="giallo-l"><span>main = awaitBody &gt;&gt;= void . runUI button </span><span style="color: #986801;">()</span></span></code></pre>
+<p>Let's run the example.</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">mateusz@m12844:~/personal/halogen-blog$</span><span style="color: #50A14F;"> ./run_example</span><span style="color: #986801;"> 2</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #0184BC;">...</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">+</span><span style="color: #50A14F;"> npx google-closure-compiler</span><span style="color: #986801;"> --language_in</span><span style="color: #50A14F;"> UNSTABLE</span><span style="color: #986801;"> --compilation_level</span><span style="color: #50A14F;"> ADVANCED_OPTIMIZATIONS</span><span style="color: #986801;"> --warning_level</span><span style="color: #50A14F;"> QUIET</span><span style="color: #986801;"> --isolation_mode</span><span style="color: #50A14F;"> IIFE</span><span style="color: #986801;"> --assume_function_wrapper --emit_use_strict --js</span><span style="color: #50A14F;"> /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-0.1.0.0/x/example2/build/example2/example2.jsexe/all.js</span><span style="color: #986801;"> --js</span><span style="color: #50A14F;"> /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-0.1.0.0/x/example2/build/example2/example2.jsexe/all.externs.js</span><span style="color: #986801;"> --js_output_file</span><span style="color: #50A14F;"> ./example2/assets/index.js</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">/home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-0.1.0.0/x/example2/build/example2/example2.jsexe/all.js:17760:0:</span><span style="color: #50A14F;"> ERROR -</span><span> [JSC_INVALID_MODULE_PATH] Invalid module path </span><span style="color: #50A14F;">&quot;@material/ripple&quot;</span><span style="color: #A626A4;"> for</span><span> resolution mode </span><span style="color: #50A14F;">&quot;BROWSER&quot;</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">  17760</span><span>|</span><span style="color: #4078F2;"> import</span><span style="color: #50A14F;"> {MDCRipple} from &#39;@material/ripple&#39;</span><span>;</span></span></code></pre>
+<p>Oof. <code>google-closure-compiler</code> doesn't like our <code>import</code>. And it makes total sense, since it checks for undefined variables, so it doesn't know what are we importing.
+Now, there isn't an easy way to fix this. We would essentially have to pass it all <code>node_modules</code> in question - unfortunately the webpack plugin is outdated; stuck at version Webpack 4.</p>
+<p>However, there is a workaround if you really like <code>google-closure-compiler</code>, and want to use it. What we can do is not bundle the <code>js-sources</code>, but instead create externs
+file for the closure compiler, and bundle the actual implementation later with webpack. To prevent name mangling just in case we hook our functions into <code>window</code> variable, like
+some of the ponyfills do.</p>
+<p>src/Button.externs.js</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="javascript"><span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">/**</span><span style="font-style: italic;"> @</span><span style="color: #A626A4;font-style: italic;">externs</span><span style="color: #A0A1A7;font-style: italic;"> */</span></span>
+<span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">/**</span><span style="font-style: italic;"> @</span><span style="color: #A626A4;font-style: italic;">type</span><span style="color: #C18401;font-style: italic;"> {*}</span><span style="color: #A0A1A7;font-style: italic;"> */</span><span> window.</span><span style="color: #E45649;">Halogen</span><span style="color: #0184BC;"> =</span><span> {};</span></span>
+<span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">/**</span><span style="font-style: italic;"> @</span><span style="color: #A626A4;font-style: italic;">return</span><span style="color: #C18401;font-style: italic;"> {*}</span><span style="color: #A0A1A7;font-style: italic;"> */</span><span> window.</span><span style="color: #E45649;">Halogen</span><span>.</span><span style="color: #4078F2;">init_ripple</span><span style="color: #0184BC;"> =</span><span style="color: #A626A4;"> function</span><span> (_el) {};</span></span>
+<span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">/**</span><span style="font-style: italic;"> @</span><span style="color: #A626A4;font-style: italic;">return</span><span style="color: #C18401;font-style: italic;"> {*}</span><span style="color: #A0A1A7;font-style: italic;"> */</span><span> window.</span><span style="color: #E45649;">Halogen</span><span>.</span><span style="color: #4078F2;">destroy_ripple</span><span style="color: #0184BC;"> =</span><span style="color: #A626A4;"> function</span><span> (_ripple) {};</span></span></code></pre>
+<p>src/Button.hs</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="haskell"><span class="giallo-l"><span style="color: #A626A4;">foreign import</span><span style="color: #4078F2;"> javascript</span><span style="color: #A626A4;"> unsafe</span><span style="color: #50A14F;"> &quot;window.Halogen.init_ripple&quot;</span><span style="color: #4078F2;"> initRipple</span><span> ::</span><span style="color: #A626A4;"> HTMLElement</span><span> -&gt;</span><span style="color: #A626A4;"> IO MDCRipple</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">foreign import</span><span style="color: #4078F2;"> javascript</span><span style="color: #A626A4;"> unsafe</span><span style="color: #50A14F;"> &quot;window.Halogen.destroy_ripple&quot;</span><span style="color: #4078F2;"> destroyRipple</span><span> ::</span><span style="color: #A626A4;"> MDCRipple</span><span> -&gt;</span><span style="color: #A626A4;"> IO</span><span style="color: #986801;"> ()</span></span></code></pre>
+<p>Now we add it to our <code>google-closure-compiler</code> invocation:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">mateusz@m12844:~/personal/halogen-blog$</span><span style="color: #50A14F;"> ./run_example 2-workaround</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #0184BC;">...</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">+</span><span style="color: #50A14F;"> npx google-closure-compiler</span><span style="color: #986801;"> --language_in</span><span style="color: #50A14F;"> UNSTABLE</span><span style="color: #986801;"> --compilation_level</span><span style="color: #50A14F;"> ADVANCED_OPTIMIZATIONS</span><span style="color: #986801;"> --warning_level</span><span style="color: #50A14F;"> QUIET</span><span style="color: #986801;"> --isolation_mode</span><span style="color: #50A14F;"> IIFE</span><span style="color: #986801;"> --assume_function_wrapper --emit_use_strict --js</span><span style="color: #50A14F;"> /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-workaround-0.1.0.0/x/example2-workaround/build/example2-workaround/example2-workaround.jsexe/all.js</span><span style="color: #986801;"> --js</span><span style="color: #50A14F;"> /home/mateusz/personal/halogen-blog/dist-newstyle/build/javascript-ghcjs/ghc-9.12.1/example2-workaround-0.1.0.0/x/example2-workaround/build/example2-workaround/example2-workaround.jsexe/all.externs.js</span><span style="color: #986801;"> --js</span><span style="color: #50A14F;"> ./example2-workaround/src/Button.externs.js</span><span style="color: #986801;"> --js_output_file</span><span style="color: #50A14F;"> ./example2-workaround/assets/index.js</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">Input</span><span style="color: #50A14F;"> size: 3.4M</span></span>
+<span class="giallo-l"><span style="color: #4078F2;">Output</span><span style="color: #50A14F;"> size: 756K</span></span></code></pre>
+<p>Great! It passed! Now we add the real <code>Button.js</code> to entry files in webpack:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="javascript"><span class="giallo-l"><span>mateusz@m12844:</span><span style="color: #0184BC;">~/</span><span>personal</span><span style="color: #0184BC;">/</span><span>halogen</span><span style="color: #0184BC;">-</span><span>blog$ cat example2</span><span style="color: #0184BC;">-</span><span>workaround</span><span style="color: #0184BC;">/</span><span>assets</span><span style="color: #0184BC;">/</span><span>webpack.</span><span style="color: #E45649;">config</span><span>.</span><span style="color: #E45649;">js</span><span> </span></span>
+<span class="giallo-l"><span style="color: #A626A4;">const</span><span style="color: #986801;"> path</span><span style="color: #0184BC;"> =</span><span style="color: #4078F2;"> require</span><span>(</span><span style="color: #50A14F;">&#39;path&#39;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #A626A4;">const</span><span style="color: #986801;"> HtmlWebpackPlugin</span><span style="color: #0184BC;"> =</span><span style="color: #4078F2;"> require</span><span>(</span><span style="color: #50A14F;">&#39;html-webpack-plugin&#39;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #E45649;">module</span><span>.</span><span style="color: #E45649;">exports</span><span style="color: #0184BC;"> =</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">  entry</span><span style="color: #0184BC;">:</span><span> [</span><span style="color: #50A14F;">&#39;./example2-workaround/assets/index.js&#39;</span><span>,</span><span style="color: #50A14F;"> &#39;./example2-workaround/assets/style.scss&#39;</span><span>,</span><span style="color: #50A14F;"> &#39;./example2-workaround/src/Button.js&#39;</span><span>],</span></span>
+<span class="giallo-l"><span style="color: #E45649;">  output</span><span style="color: #0184BC;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">    filename</span><span style="color: #0184BC;">:</span><span style="color: #50A14F;"> &#39;main.js&#39;</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E45649;">    path</span><span style="color: #0184BC;">:</span><span> path.</span><span style="color: #4078F2;">resolve</span><span>(__dirname,</span><span style="color: #50A14F;"> &#39;../../dist&#39;</span><span>),</span></span>
+<span class="giallo-l"><span>  },</span></span>
+<span class="giallo-l"><span style="color: #E45649;">  resolve</span><span style="color: #0184BC;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">    fallback</span><span style="color: #0184BC;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">      os</span><span style="color: #0184BC;">:</span><span style="color: #986801;"> false</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E45649;">      fs</span><span style="color: #0184BC;">:</span><span style="color: #986801;"> false</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E45649;">      child_process</span><span style="color: #0184BC;">:</span><span style="color: #986801;"> false</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E45649;">      path</span><span style="color: #0184BC;">:</span><span style="color: #986801;"> false</span><span>,</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>  },</span></span>
+<span class="giallo-l"><span style="color: #E45649;">  module</span><span style="color: #0184BC;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">    rules</span><span style="color: #0184BC;">:</span><span> [</span></span>
+<span class="giallo-l"><span>      {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">        test</span><span style="color: #0184BC;">: /\.s</span><span style="color: #986801;">[ac]</span><span style="color: #0184BC;">ss</span><span style="color: #A626A4;">$</span><span style="color: #0184BC;">/</span><span style="color: #A626A4;">i</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E45649;">        use</span><span style="color: #0184BC;">:</span><span> [</span><span style="color: #50A14F;"> &quot;style-loader&quot;</span><span>,</span><span style="color: #50A14F;"> &quot;css-loader&quot;</span><span>,</span><span style="color: #50A14F;"> &quot;sass-loader&quot;</span><span>],</span></span>
+<span class="giallo-l"><span>      }</span></span>
+<span class="giallo-l"><span>    ],</span></span>
+<span class="giallo-l"><span>  },</span></span>
+<span class="giallo-l"><span style="color: #E45649;">  plugins</span><span style="color: #0184BC;">:</span><span> </span></span>
+<span class="giallo-l"><span>    [</span><span style="color: #A626A4;"> new</span><span style="color: #4078F2;"> HtmlWebpackPlugin</span><span>({</span></span>
+<span class="giallo-l"><span style="color: #E45649;">        title</span><span style="color: #0184BC;">:</span><span style="color: #50A14F;"> &#39;Blog&#39;</span></span>
+<span class="giallo-l"><span>    })]</span></span></code></pre>
+<p>We also use scss to add styles and font needed:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="scss"><span class="giallo-l"><span>mateusz@m12844:~/personal/halogen-blog$ cat example2-workaround/assets/</span><span style="color: #E45649;">style</span><span style="color: #986801;">.scss</span><span> </span></span>
+<span class="giallo-l"><span style="color: #A626A4;">@use</span><span style="color: #50A14F;"> &quot;@material/button/styles&quot;</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A626A4;">@font-face</span><span> {</span></span>
+<span class="giallo-l"><span>  font-family:</span><span style="color: #50A14F;"> &#39;Material Icons&#39;</span><span>;</span></span>
+<span class="giallo-l"><span>  font-style: normal;</span></span>
+<span class="giallo-l"><span>  font-weight:</span><span style="color: #986801;"> 400</span><span>;</span></span>
+<span class="giallo-l"><span>  src:</span><span style="color: #0184BC;"> url</span><span>(https://fonts.gstatic.com/s/materialicons/v142/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2)</span><span style="color: #0184BC;"> format</span><span>(</span><span style="color: #50A14F;">&#39;woff2&#39;</span><span>);</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #986801;">.material-icons</span><span> {</span></span>
+<span class="giallo-l"><span>  font-family:</span><span style="color: #50A14F;"> &#39;Material Icons&#39;</span><span>;</span></span>
+<span class="giallo-l"><span>  font-weight: normal;</span></span>
+<span class="giallo-l"><span>  font-style: normal;</span></span>
+<span class="giallo-l"><span>  font-size:</span><span style="color: #986801;"> 24px</span><span>;</span></span>
+<span class="giallo-l"><span>  line-height:</span><span style="color: #986801;"> 1</span><span>;</span></span>
+<span class="giallo-l"><span>  letter-spacing: normal;</span></span>
+<span class="giallo-l"><span>  text-transform: none;</span></span>
+<span class="giallo-l"><span>  display: inline-block;</span></span>
+<span class="giallo-l"><span>  white-space: nowrap;</span></span>
+<span class="giallo-l"><span>  word-wrap: normal;</span></span>
+<span class="giallo-l"><span>  direction: ltr;</span></span>
+<span class="giallo-l"><span style="color: #0184BC;">  -webkit-font-feature-settings</span><span>:</span><span style="color: #50A14F;"> &#39;liga&#39;</span><span>;</span></span>
+<span class="giallo-l"><span>  font-feature-settings:</span><span style="color: #50A14F;"> &#39;liga&#39;</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #0184BC;">  -webkit-font-smoothing</span><span>: antialiased;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>And we're ready:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>mateusz@m12844:~/personal/halogen-blog$webpack build --config example2-workaround/assets/webpack.config.js &amp;&amp; http-server dist/</span></span>
+<span class="giallo-l"><span>(...)</span></span>
+<span class="giallo-l"><span>Starting up http-server, serving dist/</span></span></code></pre>
+<p>Behold, a material button!</p>
+<center>
+<video src="https://github.com/user-attachments/assets/4abe2e52-0bd2-4cb7-99c0-c0b0a1796528" type="video/quicktime" controls></video>
+</center>
+<h3 id="bundling-with-webpack-and-swc-loader">Bundling with <code>webpack</code> and <code>swc-loader</code></h3>
+<p>However, while the above trick works for standalone executables, it isn't really useful for libraries that have to ship with full code - haskell and javascript.
+Requiring downstream users to add separately-shipped externs and js files to their pipeline sounds like an unpleasant thing to do, and exposes
+them to too much implementation detail. Can we do better?</p>
+<p>The answer is - yes, if we ditch the closure compiler but use <code>swc</code> instead. <a rel="noopener external" target="_blank" href="https://swc.rs/">swc</a> is a Rust-based platform used by a lot of tools like <code>Parser</code>, <code>Next.js</code>
+or <code>Vercel</code>, and provides its own minifier pipeline with webpack plugin.</p>
+<p>What we have to do is, instead of installing our workaround and calling <code>google-closure-compiler</code>, add the following loader to our webpack file:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="javascript"><span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">// mateusz@m12844:~/personal/halogen-blog$ cat example2/assets/webpack.config.js</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #E45649;">module</span><span>.</span><span style="color: #E45649;">exports</span><span style="color: #0184BC;"> =</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">  // no more Button here, `index.js` is just a copy of `all.js`</span></span>
+<span class="giallo-l"><span style="color: #E45649;">  entry</span><span style="color: #0184BC;">:</span><span> [</span><span style="color: #50A14F;">&#39;./example2/assets/index.js&#39;</span><span>,</span><span style="color: #50A14F;"> &#39;./example2/assets/style.scss&#39;</span><span>],</span></span>
+<span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">  // (...)</span></span>
+<span class="giallo-l"><span style="color: #E45649;">  module</span><span style="color: #0184BC;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">    rules</span><span style="color: #0184BC;">:</span><span> [</span></span>
+<span class="giallo-l"><span>      {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">        test</span><span style="color: #0184BC;">: /\.s</span><span style="color: #986801;">[ac]</span><span style="color: #0184BC;">ss</span><span style="color: #A626A4;">$</span><span style="color: #0184BC;">/</span><span style="color: #A626A4;">i</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E45649;">        use</span><span style="color: #0184BC;">:</span><span> [</span><span style="color: #50A14F;"> &quot;style-loader&quot;</span><span>,</span><span style="color: #50A14F;"> &quot;css-loader&quot;</span><span>,</span><span style="color: #50A14F;"> &quot;sass-loader&quot;</span><span>],</span></span>
+<span class="giallo-l"><span>      },</span></span>
+<span class="giallo-l"><span>      {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">        test</span><span style="color: #0184BC;">: /\.m?js</span><span style="color: #A626A4;">$</span><span style="color: #0184BC;">/</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E45649;">        exclude</span><span style="color: #0184BC;">: /(node_modules)/</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E45649;">        use</span><span style="color: #0184BC;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E45649;">          loader</span><span style="color: #0184BC;">:</span><span style="color: #50A14F;"> &quot;swc-loader&quot;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>      }</span></span>
+<span class="giallo-l"><span>    ],</span></span>
+<span class="giallo-l"><span>  },</span></span>
+<span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">  // (...)</span></span>
+<span class="giallo-l"><span>};</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A0A1A7;font-style: italic;">// mateusz@m12844:~/personal/halogen-blog$ cat .swcrc</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #50A14F;">  &quot;minify&quot;</span><span>: </span><span style="color: #986801;">true</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #50A14F;">  &quot;jsc&quot;</span><span>: {</span></span>
+<span class="giallo-l"><span style="color: #50A14F;">    &quot;minify&quot;</span><span style="color: #0184BC;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #50A14F;">      &quot;compress&quot;</span><span style="color: #0184BC;">:</span><span style="color: #986801;"> true</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #50A14F;">      &quot;mangle&quot;</span><span style="color: #0184BC;">:</span><span style="color: #986801;"> true</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #50A14F;">      &quot;sourceMap&quot;</span><span style="color: #0184BC;">:</span><span style="color: #986801;"> false</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>  }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>And voilà! It all works as before. The uncompressed bundle size is slightly bigger (844 KiB vs 803 KiB with <code>google-closure-compiler</code>) however we don't need any more workarounds,
+and we can safely ship our foreign code with imports to our users (provided they do install our <code>npm</code> dependencies).</p>
+<p>A library with richer functionality is available <a rel="noopener external" target="_blank" href="https://github.com/Swordlash/haskell-halogen-material">here</a>.
+At the moment of writing, it contains Halogen components for customizable buttons, lists and tabbed panes.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The above article shows how to use the JavaScript backend effectively and integrate it with foreign libraries, using <code>webpack</code> for bundling and <code>swc-loader</code> for minification/mangling.</p>
+<p>What's next? There is still a lot to do in terms of code size &amp; performance, as well as integration with other tools:</p>
+<ul>
+<li>This cabal <a rel="noopener external" target="_blank" href="https://github.com/haskell/cabal/pull/10722">PR</a> adds a new field, <code>js-options</code>, that allows passing custom flags to <code>js-sources</code> preprocessor.
+Notably that would enable i.e. conditional compilation of traces along the lines of <code>#ifdef XXX &lt;put-trace&gt;</code> in foreign library code and <code>if flag(trace-flag) js-options: -optJSP-DXXX</code> in cabal file.</li>
+<li>Low-hanging fruits like <a rel="noopener external" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/issues/25633">adding multiline strings support to inline foreign imports</a>.</li>
+<li><a rel="noopener external" target="_blank" href="https://gitlab.haskell.org/ghc/ghc/-/issues/25469">Integration efforts</a> with npm.</li>
+</ul>
+<p>What is still a minor unknown is deeper integration of the GHC build pipeline with <code>webpack</code> build pipeline, in the spirit of gathering <code>npm</code> libraries that need to be installed for each Haskell dependency, like <code>@material/button</code> in the above example.
+I believe there will have to be a way of declaring inside the cabal package an <code>npm</code> dependency (something like the existing <code>pkgconfig-depends</code>) and
+a webpack plugin will be created for loading haskell package for bundling.</p>
+<p>Personally, I'm going to continue maintaining and developing the <code>haskell-halogen</code> and <code>haskell-halogen-material</code> libraries, adding more component classes to the latter.</p>
+<h2 id="thanks">Thanks!</h2>
+<p>Many thanks to <a rel="noopener external" target="_blank" href="https://github.com/GulinSS">Serge S. Gulin</a> for his help and discussions on Matrix channel, and to <a rel="noopener external" target="_blank" href="https://gitlab.haskell.org/Kleidukos">Hécate Kleidukos</a> for inviting me to write this blog post. I want also to thank <a rel="noopener external" target="_blank" href="https://gitlab.haskell.org/hsyl20">Sylvain Henry</a> and <a rel="noopener external" target="_blank" href="https://gitlab.haskell.org/luite">Luite Stegeman</a> for our mail and PR discussions, and whole IOG GHC Engineering team for the joint effort of releasing the JS backend. Awesome work!</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.haskell.org/stability-working-group/">&#8249; Introducing the Haskell Foundation Stability Working Group</a>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/ghc-9-12-cabal-3-14/"> GHC 9.12 &amp; Cabal 3.14 releases &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2026</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>
