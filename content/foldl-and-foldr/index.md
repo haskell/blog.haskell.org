@@ -4,7 +4,7 @@ description = "`foldl` and `foldr` can be confusing, so let's work out what's up
 date = 2026-09-25
 [taxonomies]
 authors = ["Alexis King"]
-categories = ["Haskellers from the trenches"]
+categories = ["Deep Dives"]
 tags = []
 +++
 
