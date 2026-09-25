@@ -11,9 +11,7 @@ tags = []
 _reproduced verbatim, with permission, from [hasura/graphql-engine!2933](https://github.com/hasura/graphql-engine/pull/2933#discussion_r328821960)_
 _originally posted 26th September 2019_
 
-Yes, that’s right. It never makes sense to use `foldl` on lists because it never has any benefit and will always leak space.
-
-To explain why, I wrote a mini blog post explaining the difference between `foldl` and `foldr` in Haskell. To start, you have to understand that `foldl` and `foldr` are *not* folds “from the left” and “from the right.” Both `foldl` and `foldr` traverse the structure in the same order, which in the case of lists means left to right. The difference is the fold’s *associativity*.
+To start, you have to understand that `foldl` and `foldr` are *not* folds “from the left” and “from the right.” Both `foldl` and `foldr` traverse the structure in the same order, which in the case of lists means left to right. The difference is the fold’s *associativity*.
 
 ### `foldl` vs `foldr` illustrated
 
