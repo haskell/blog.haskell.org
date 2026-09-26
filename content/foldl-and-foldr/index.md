@@ -10,6 +10,8 @@ tags = []
 
 _Editor's note: This article is a reproduction of a seminal explanation of the differences between foldr and foldl, both strict and lazy versions. As it has been used consistently to teach newcomers since its first appearance on [hasura/graphql-engine!2933](https://github.com/hasura/graphql-engine/pull/2933#discussion_r328821960) on the 26th September 2019, we believe that it ought to be preserved in the blog. Our many thanks to Alexis King for giving her permission to do so._
 
+---
+
 To start, you have to understand that `foldl` and `foldr` are *not* folds “from the left” and “from the right.” Both `foldl` and `foldr` traverse the structure in the same order, which in the case of lists means left to right. The difference is the fold’s *associativity*.
 
 ### `foldl` vs `foldr` illustrated
