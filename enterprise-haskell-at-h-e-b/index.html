@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=14a137945a91a4b25717" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Enterprise Haskell at H-E-B | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="How Haskell earned its place in H-E-B&#x27;s supply chain." />
+  <link rel="canonical" href="https://blog.haskell.org/enterprise-haskell-at-h-e-b/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/enterprise-haskell-at-h-e-b/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/enterprise-haskell-at-h-e-b/" />
+  <meta property="og:description" content="How Haskell earned its place in H-E-B&#x27;s supply chain." />
+  <meta name="twitter:description" content="How Haskell earned its place in H-E-B&#x27;s supply chain." />
+  <meta property="og:title" content="Enterprise Haskell at H-E-B | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="Enterprise Haskell at H-E-B | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2026-07-16" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/enterprise-haskell-at-h-e-b/">Enterprise Haskell at H-E-B</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/joshua-miller/">Joshua Miller</a> <span class="rpad"></span> July 16, 2026 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/haskellers-from-the-trenches/">Haskellers from the trenches</a>] #<a href="https://blog.haskell.org/tags/production/">Production</a>  #<a href="https://blog.haskell.org/tags/h-e-b/">H-E-B</a> </span>
+
+    
+
+
+<p><em>This article is the second installment of our series "<a href="/categories/haskellers-from-the-trenches/">Haskellers from the trenches</a>",
+where we invite experienced engineers to talk about their subjects of expertise, best practices, and production tales with Haskell</em></p>
+<h2 id="the-mainframe-problem">The mainframe problem</h2>
+<p>When I joined <a rel="noopener external" target="_blank" href="https://www.heb.com">H-E-B</a> back in 2018, I was entering a world far removed from any
+of my previous roles in technology. H-E-B is a <em>retail</em> company first, and the
+largest privately held company in Texas. Our customers care about full shelves,
+not the systems behind them, and for decades those systems delivered:
+rock-solid COBOL mainframes doing their job reliably, day in and day out.
+Reliability like that is no small thing. But customer expectations have
+shifted. Curbside pickup, home delivery, real-time inventory, in-store search,
+and many other tech-heavy features have really only emerged in the last 10
+years, and meeting that demand means scaling supply chain operations across
+435+ stores and the distribution centers that feed them. That kind of growth
+asks more of our core systems than they were originally designed to give,
+especially as the grocery business turns more digital and more competitive by
+the year.</p>
+<p>It's no secret that a lot of the world still runs on mainframes. There's
+usually little incentive to spend the capital on a massive lift-and-shift into
+the cloud when current systems maintain the status quo well enough. Copying
+code from one machine to another is hardly the real challenge here. Usually
+these kinds of projects fail to deliver because they lack the bespoke
+institutional knowledge encoded in decades of legacy business logic. How do you
+take a monolithic application operating on hundreds of tables and split it out
+into microservices, owned and operated by their own autonomous engineering
+teams? It's both a technological and political undertaking of enormous
+proportions, and an expensive one. Whatever product comes out on the other end,
+you can bet that the business owners don't want to repeat this process ever
+again.</p>
+<h2 id="enter-the-lambda">Enter the lambda</h2>
+<p>Haskell was originally pitched by consultants as the lingua franca for a new
+initiative to replace the largest mainframe application in the company. I came
+onto this new project in its infancy, ready and giddy to use Haskell on a
+real-world project with real-world impact. What started as an experiment grew
+into multiple production systems now running critical supply chain
+applications. Eight years on, those systems are still in production, with
+nearly a million lines of Haskell maintained by several teams across different
+domains. So there have been real successes, but also real struggles. I hope that
+my experience on these projects can translate into some valuable lessons for
+those who wonder about or may already be running Haskell programs in
+production.</p>
+<h2 id="why-haskell">Why Haskell?</h2>
+<p>Pitching a programming language as a business solution is an uphill battle.
+Haskell is not known for being an enterprise language, and while it thrives in
+programming-language research, it lost the foothold it once had in the intro
+course, despite Dijkstra's famous defense of it over Java in his <a rel="noopener external" target="_blank" href="https://www.cs.utexas.edu/~EWD/transcriptions/OtherDocs/Haskell.html">letter to the
+UT Austin Budget
+Council</a>.
+But "enterprise language" says more about market forces than language design.
+The same momentum that filled the intro course with Java fills the hiring pool
+and the vendor SDK lists, and nearly all of that momentum belongs to imperative
+languages, deemed easier to hire for, and these days, easier to prompt for. The
+enterprise cares not for laziness, pure functions, immutable data, or anything
+that weighs lambda calculus against object-oriented orthodoxy. The enterprise
+just wants another COBOL: a system that runs for 40 more years without
+null-pointer exceptions and with a lower maintenance burden. I firmly believe
+that Haskell fits into this niche. But it's not trivial to translate the
+benefits of a souped-up polymorphic lambda calculus and software-transactional
+memory into a business case.</p>
+<p>So what's my pitch?</p>
+<p>I can tell our CTO that a Haskell application will suffer fewer classes of
+runtime failure by default, ruling out the whole category of bugs that
+imperative and dynamically typed programs encounter on a daily basis. There
+will still be bugs, but the ones that remain tend to be the interesting ones in
+our business logic, rather than null-pointer exceptions and type confusion.</p>
+<p>In the face of multi-year strangler fig migrations of legacy systems, I can
+tell Haskell developers that <em>it's ok to make mistakes</em>. They can iterate
+while the business requirements are still taking shape, because GHC gives
+them the tools for painless refactoring. That freedom is what lets a
+migration run like an agile project instead of a waterfall. The business
+measures results incrementally, rather than paying up front for an incorrect,
+crystallized product that will be abandoned in a year.</p>
+<p>Integrating with legacy systems is bread-and-butter work for Haskell programs.
+By chance do you need to parse thousands of lines of fixed-width IBM copybooks?
+Parsers in Haskell are best in class. A legacy system that can't easily emit
+XML or JSON doesn't have to, because its native format becomes the contract.
+Need to hook into old services that only offer C libraries? Haskell has one of
+the best foreign-function interfaces in the game. We've written Haskell
+libraries around simdjson (C++), Oracle's ODPI-C, and IBM's MQ, to name a few.</p>
+<p>The dearth of Haskell SDKs in the wild looks like a showstopper at first. In
+practice, you take on the maintenance burden forever, and in exchange you own
+your contracts outright, avoid vendor lock-in, and never wait on an upstream
+maintainer to ship a fix. For critical dependencies, we've found that trade
+well worth making. Today the velocity gap is narrower than it looks, since
+porting your favorite Go library to Haskell is the kind of mechanical work a
+coding agent does well. Unfortunately, rote translations like that may not
+take full advantage of the type system without clever prompting.</p>
+<p>There's a subtler advantage that makes Haskell a compelling core enterprise
+language: its strength as a host for embedded DSLs. A central team can encode a
+domain model or business logic once in a Haskell eDSL and generate safe, typed
+code in whatever language other teams already use, letting them hook into your
+system without ever writing Haskell themselves.
+<a rel="noopener external" target="_blank" href="https://github.com/CategoricalData/hydra">Hydra</a>, an open-source project that
+grew out of graph-data work at Uber, is a striking example. It's a
+Haskell-bootstrapped DSL framework that generates semantically-equivalent
+implementations across Java, Python, Scala, and more, with a shared test suite
+guaranteeing parity. You keep Haskell's correctness guarantees at the source
+while meeting every other team where they already are.</p>
+<p>We've explored this embedded DSL idea in various ways at H-E-B. In one case,
+we prototyped a Haskell DSL for sensitive financial calculations that could be
+shared across our Haskell, TypeScript, and Java teams. In another, we built a
+Haskell DSL for bidirectional JSON schemas, similar in spirit to the
+<a rel="noopener external" target="_blank" href="https://hackage.haskell.org/package/autodocodec">autodocodec</a> library, but
+using a tagless final encoding that allows users to extend the core semantics
+with their own type classes. It lets our Haskell teams standardize on schema
+versioning strategies, documentation/OpenAPI generation, and regression/golden
+testing. For anything else, developers can write ad-hoc interpreters, e.g.
+converting a JSON schema to a PostgreSQL table definition, swapping in
+<code>simdjson</code> for <code>aeson</code>, or layering on additional validation.</p>
+<p>I could go on about what Haskell offers programmers in the way of type safety,
+purity, and elegant concurrency, but these days most modern languages offer
+many of the same features (some of them inspired by Haskell itself). The
+difference lies in the kind of engineering culture the language promotes. Ian
+Duncan's <a rel="noopener external" target="_blank" href="https://blog.haskell.org/a-couple-million-lines-of-haskell/">post</a>
+covers this territory well, and I risk parroting it here. Suffice to say, his
+general advice holds. Haskell attracts idealists who care about correctness and
+think carefully about the abstractions they build with. Hiring for a Haskell
+role has never been the problem that leaders think it will be. If anything,
+candidates came to us for the Haskell itself, even when they had no particular
+interest in supply chain.</p>
+<h2 id="why-not-haskell">Why not Haskell?</h2>
+<p>Let's get real for a little bit. Haskell has been around for a long time, it
+has warts, and it really pays to stay current with the latest GHC releases.
+Without an expert on your team, all it takes is one wart to fester and infect
+the entire project. In the beginning, we were fortunate to have consultants
+with extensive Haskell experience. We were prescribed guardrails and some basic
+rules to ensure we didn't get overwhelmed by language extensions and custom
+operator line noise.</p>
+<p>Back in those days we didn't yet have the GHC2021 or GHC2024 language editions,
+so a sane baseline of extensions was something each team had to curate by hand.
+That baseline was really a complexity budget - a cap on how much language a new
+hire has to absorb before they can contribute. And enforcing it turns out to be
+a losing game, because your dependencies spend the budget for you. Once you
+pull in something like <code>servant</code> or <code>haxl</code>, you've just blown through the whole
+budget on what the business sees as plumbing. Serving web requests with
+<code>servant</code> means encoding your API as a type-level DSL, and extending it with
+your own combinators drags in type families and the inscrutable errors that
+come with them. Batching concurrent operations with <code>haxl</code> means modeling every
+data source as a GADT indexed by its result type. These are elegant designs,
+but they are not free.</p>
+<p>As beginners become adepts and adepts become veterans, the perception of a
+complexity budget begins to fade. More advanced features become tempting to
+use, and their adoption weakens our promise to the business of easy
+maintainability. New hires need to understand GADTs, type families, generics,
+tagless final encodings, arrows, free structures, higher-kinded data type
+patterns, and other shenanigans on top of an already dense business domain. It
+wasn't that we started out wanting to use all of these advanced patterns and
+features of the language, nor could we really. Their viability emerged over
+time as engineers became more familiar with the ecosystem. And that gradual
+creep can really sneak up on you.</p>
+<p>"Boring" Haskell is easier to preach than to enforce at an organizational
+level. We engineers get, well, bored, and we are often tempted to leverage GHC
+features for problems that may not warrant them. The key point here is an
+intentional echo from Ian's post, which is that encapsulating advanced Haskell
+behind sane interfaces reduces the blast radius and scopes your complexity
+budget to smaller libraries maintained by a handful of experts. The risk of
+exploding complexity at the language level is hardly unique to Haskell, but few
+languages offer so much rope. The business may measure complexity in lines of
+code or tokens spent, but a better gauge for a Haskell project is how much of
+it will break with the next GHC upgrade.</p>
+<h2 id="trials-by-fire">Trials by fire</h2>
+<p>A sobering truth is that not all teams are created equal. Haskell can empower
+one team while disempowering another. If this were not true, we would have more
+Haskell teams than we do today. I've had to watch Haskell fail to stick on two
+separate projects, and for seemingly unrelated reasons. In one case, a nasty
+space leak brought the entire program to a halt. This was a team of seasoned
+developers with no Haskell experience at all, using a project template copied
+from a sibling team. They were simply hoping to follow the conventions they
+inherited, but without a strong Haskell developer to guide them along, the
+space leak was enough to kill the entire endeavor. In the other case, the
+engineers who advocated for Haskell and built the applications left to work on
+other projects - priorities shifted, nothing to do with the language.</p>
+<p>In both cases a fallback option was always available. Engineers
+gravitated back to what they wrote before Haskell, unconvinced that it was
+making them more productive. This is the consequence of viewing Haskell as just
+another means to an end, as just another programming language. The engineers
+learned the language well enough. They just never found a passion for it.
+Ultimately, as saccharine as it may sound, this is the differentiator for a
+successful Haskell project in the enterprise. Nobody will be motivated to
+diagnose a space leak if there's an escape hatch to a Spring Boot template,
+and now that LLMs can mechanically translate whole codebases, that escape hatch
+is wider than ever. No codebase is too clever to rewrite, so the only real
+defense is to build a team that would rather keep the Haskell.</p>
+<p>Even on teams that embrace Haskell, there were some harrowing moments
+that made us reflect on our choices. We ran into double-free errors stemming
+from <a rel="noopener external" target="_blank" href="https://github.com/hdbc/hdbc-postgresql/pull/52">custom reference counting
+logic</a>, and we disabled
+parallel garbage collection on one project because it was the only thing that
+fixed a runaway space leak. In the worst case, <a rel="noopener external" target="_blank" href="https://github.com/iand675/datadog/pull/33">infinite
+loops</a> are one of the scariest bugs
+simply because <a rel="noopener external" target="_blank" href="https://discourse.haskell.org/t/debugging-program-with-infinite-loop-somewhere/13111">finding them is
+hard</a>.</p>
+<p>The GHC runtime itself has never been the root cause of a production outage
+for us. In steady state, its throughput and memory footprint have been more
+than competitive for our workloads, and the war stories above were exceptions
+rather than the norm. What matters here is that engineers were able to fix these
+problems by tracing through segfault core dumps, garbage collection metrics,
+and heap profiles. A crucial lesson learned is that test coverage cannot be
+sacrificed in the name of a strong type system. In fact, I wager that Haskell
+applications are prime candidates for chaos engineering. Because whole
+categories of trivial errors are compiled away, injecting infrastructure faults
+surfaces the genuine logic and resource failures of your system instead of the
+noise that would dominate a dynamically typed program.</p>
+<h2 id="times-have-changed">Times have changed</h2>
+<p>When we started building our systems, we were on GHC 8.2. We had to write
+most of our own API clients and SDKs for popular platforms. The Haskell language
+server did not exist. GHCup was brand new. Profiling the runtime was a dark
+art. If you'd asked me back then whether Haskell would increase velocity, I'd
+have had some caveats. The business wants everything off the shelf, it doesn't
+want to pay to reinvent wheels, and we had to spend resources on building what
+we needed. Developers coming from their Java IDEs recoiled at the state of
+Haskell tooling. H-E-B even went so far as to sponsor development of Debug
+Adapter Protocol support for Haskell (for VS Code users).</p>
+<p>But now, after years of hard work on GHC and across the ecosystem, building
+production-grade Haskell applications has gone from merely viable to genuinely
+competitive.</p>
+<p>For tooling we have HLS, <code>ghcid</code>, <code>ghciwatch</code>, <code>static-ls</code>,
+<a rel="noopener external" target="_blank" href="https://github.com/atelier-hub/tricorder">tricorder</a>, and first-class code
+editor plugins for Haskell. Some of us at H-E-B use GHC plugins to facilitate
+richer GHCi-driven development, while some of us use VS Code and HLS, and we
+cherish the freedom of developers to use their preferred tools.</p>
+<p>For observability we now have <code>hs-opentelemetry</code>, and we use
+<a rel="noopener external" target="_blank" href="https://github.com/aaronallen8455/opentelemetry-auto">opentelemetry-auto</a>, a
+GHC plugin that autoinstruments Haskell functions with OTel spans. If the
+business says they'd prefer Java or Python for their instrumentation story, we
+can point at this and say Haskell has the same story.</p>
+<p>The library shelf has filled out as well. Our services run on
+workhorses like <code>warp</code>, <code>aeson</code>, <code>attoparsec</code>, <code>stm</code>, <code>conduit</code>, <code>servant</code>, and
+<a rel="noopener external" target="_blank" href="https://hackage.haskell.org/package/orville-postgresql">orville-postgresql</a>.
+Where we find gaps, we write our own. For example,
+<a rel="noopener external" target="_blank" href="https://github.com/velveteer/arbiter">arbiter</a>, a transactional PostgreSQL job
+queue I maintain, was born from our work at H-E-B and runs in production
+today.</p>
+<p>All of this means developers and operations can both stop shuddering when
+someone says "this application uses Haskell". It's only getting better as GHC
+improves its own runtime diagnostics, compiler performance, monitoring features
+(e.g. eventlog streaming), and <a rel="noopener external" target="_blank" href="https://well-typed.com/blog/2026/05/lay-annotation-land/">exception
+annotations</a>. For the
+record, I haven't feared a space leak since info table profiling landed in GHC
+9.2.</p>
+<h2 id="haskell-culture">Haskell culture</h2>
+<p>Internal libraries matter a great deal in our organization, and we encourage
+developers to work on both internal and open-source projects. We've been
+running a Haskell meetup every other week for years, hoping to attract interest
+across the company, sometimes succeeding. The meetups serve as an open forum for
+engineers to share their own Haskell explorations and teach others.
+Cross-pollination of ideas and patterns matters, because silos are everywhere
+in the enterprise. This is also our answer to the bus-factor risk.
+The more engineers who can read and own a codebase, the less any single
+departure can sink it.</p>
+<p>How do we empower developers while simultaneously advocating for boring
+Haskell? Certainly we set some loose ground rules, but tech leads make the
+final decisions on how to spend their complexity budgets. If a team must store
+PII encrypted at rest, it will likely pay off to add type-level guarantees that
+make leaking sensitive data a compile error rather than a runtime incident,
+the kind of assurance security reviews actually care about. If a team is tiring
+of boilerplate and wants to consolidate four API contracts using a
+trees-that-grow pattern, it may not be worth obscuring the public-facing
+schemas with type families.</p>
+<p>For us, boring Haskell doesn't preclude type-level programming or advanced
+GHC features. It's more that we establish principled conventions and weigh the
+costs of straying from them. A big one is "no spooky action at a distance",
+e.g. no <code>TemplateHaskell</code> code generation, no <code>Generic</code>-derived serialization
+logic, etc. The convention in this case is to write boilerplate and keep
+everything explicit for the programmer. It's not as draconian as it sounds,
+since teams who want quasiquoters and deriving via <code>Generically</code> are not
+forbidden outright. We want healthy skepticism when an engineer implements the
+type-level state machine for a web form, or reaches for a GADT when a regular
+ADT would do. An engineer can argue that their complexity is essential, but it
+takes the whole team, and a culture where pushback is welcome, to spot when
+it's accidental.</p>
+<p>That said, there's plenty of advanced Haskell across our projects in both
+libraries and production applications. I think it goes to show that you don't
+have to stay bored forever. You just have to limit the scope of your playtime.
+We use Haskell because we want to work <em>and</em> play, and somewhere in the middle
+is where engineering happens.</p>
+<h2 id="the-road-ahead">The road ahead</h2>
+<p>I am incredibly optimistic about Haskell and GHC's future in industry. Through
+many years of using GHC we've found and reported a handful of bugs, none of
+which were game-breaking for us. Production incidents are rare, and the
+few we do see trace back to business logic far more often than to type errors
+or the runtime.</p>
+<p>There's also a new argument forming in Haskell's favor. Coding agents now write
+a growing share of our code, which shifts the bottleneck from writing code to
+verifying it, and a compiler like GHC is well suited to that job. The same
+type system that makes refactoring painless for humans gives an agent a tight
+feedback loop that rejects hallucinated code before it runs.</p>
+<p>We need more stories of Haskell's success, and I am grateful that the Haskell
+Foundation is making the effort to bring them to light.</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.haskell.org/quick-tips-for-fast-iteration-in-haskell/">&#8249; Quick tips for fast iteration in Haskell</a>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/overview-of-haskell-security-tooling/"> Overview of Haskell security tooling &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2026</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

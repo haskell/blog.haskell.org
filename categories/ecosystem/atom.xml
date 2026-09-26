@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>The Haskell Programming Language&#x27;s blog - Ecosystem</title>
+    <link rel="self" type="application/atom+xml" href="https://blog.haskell.org/categories/ecosystem/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://blog.haskell.org"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-08-04T00:00:00+00:00</updated>
+    <id>https://blog.haskell.org/categories/ecosystem/atom.xml</id>
+    <entry xml:lang="en">
+        <title>A Revised Haskell 2010 Language Report</title>
+        <published>2026-08-04T00:00:00+00:00</published>
+        <updated>2026-08-04T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/revised-haskell-2010-report/"/>
+        <id>https://blog.haskell.org/revised-haskell-2010-report/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/revised-haskell-2010-report/">&lt;p&gt;The Haskell 2010 language report was released almost exactly 16 years ago, and although various attempts have been made, no further report has been released.
+This does not mean, however, that the language hasn&#x27;t changed.
+On the contrary, the Haskell that we write today is quite different to the one we wrote 16 years ago, and the language has become more beautiful, consistent and ergonomic in the process.
+The specification, unfortunately, couldn&#x27;t keep up.&lt;&#x2F;p&gt;
+&lt;p&gt;Many members of our community express some pessimism when it comes to the possibility of a new report. Sure, they would also love to have a new and updated report, but they think that it is either too hard or not worth the effort. I think that is not true. Having an up-to-date report is essential for the health of our community, and it is actually possible for us to get there in a reasonable amount of time with a reasonable amount of work.
+Here is my plan for how we can get there, and how we can finish the process before the new year.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;why-we-need-a-new-report&quot;&gt;Why We Need a New Report&lt;&#x2F;h2&gt;
+&lt;p&gt;The Haskell Language Report is an essential part of the documentation of the language. It is not the first thing that a beginner should consult when they learn Haskell, but it is an important resource for those who want to advance to being an intermediate or experienced Haskeller. If you want to learn about the precise syntax of floating point literals, the rules and desugaring for do-notation, or the meaning of &lt;code&gt;default&lt;&#x2F;code&gt; declarations, the report is the authorative resource where you can find answers.
+It is therefore unfortunate if the answers that you find in the report are wrong, or do not correspond to what compilers implement or the base library provides.
+In that case, you have to retrace the proposals and discussions that lead to the current state:
+The &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;wiki.haskell.org&#x2F;Functor-Applicative-Monad_Proposal&quot;&gt;Functor-Applicative-Monad&lt;&#x2F;a&gt;, &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;haskell&#x2F;prime&#x2F;-&#x2F;wikis&#x2F;libraries&#x2F;proposals&#x2F;monad-fail&quot;&gt;MonadFail&lt;&#x2F;a&gt;, &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;wiki.haskell.org&#x2F;Foldable_Traversable_In_Prelude&quot;&gt;Foldable-Traversable&lt;&#x2F;a&gt; and &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;ghc&#x2F;ghc&#x2F;-&#x2F;wikis&#x2F;proposal&#x2F;monad-of-no-return&quot;&gt;Monad-of-no-return&lt;&#x2F;a&gt; proposals undoubtedly made the language better, but they also turn programmers looking for answers in the report into involuntary Haskell historians.&lt;&#x2F;p&gt;
+&lt;p&gt;If the language report were the only Haskell resource available to you, then any non-trivial Haskell 2010 program that you would write is almost guaranteed to be incompatible with what modern compilers like GHC or MicroHS expect. We can, and should, fix that.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;how-to-get-the-cost-benefit-tradeoff-right&quot;&gt;How to Get the Cost-Benefit Tradeoff Right&lt;&#x2F;h2&gt;
+&lt;p&gt;Writing a new report is a lot of work, and we want to avoid running into the problems that stalled previous attempts of writing one.
+It is therefore important that we set ourselves a goal that is both achievable and provides a tangible benefit for the Haskell community.
+The most obvious such goal is to start with a &lt;strong&gt;Revised Haskell 2010 Language Report&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;A revised report is eminently achievable: We have a very clear &quot;todo list&quot; in the documented discrepancies in the user guide (&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;latest&#x2F;docs&#x2F;users_guide&#x2F;bugs.html&quot;&gt;GHC User Guide: Bugs and Infelicities&lt;&#x2F;a&gt;). Most of these listed discrepancies are already well-documented in the accepted proposals that lead to them.&lt;&#x2F;li&gt;
+&lt;li&gt;None of the changes that we have to implement are likely to be contentious: They reflect the Haskell that we are already writing today. Since the required changes are not contentious, we can use a lightweight decision process in the compilation of the revised report.&lt;&#x2F;li&gt;
+&lt;li&gt;There is a clear benefit for the community: The most important piece of our reference documentation is no longer outdated. We can refer people to the Haskell report without having to warn them to stay clear of parts of the report that no longer hold true.&lt;&#x2F;li&gt;
+&lt;li&gt;Since we don&#x27;t define a new Haskell version with a new feature set, but only a revised version of a previous report, we don&#x27;t generate any churn for the ecosystem or compiler writers. Taking inspiration from Tolkien who rewrote the Hobbit after he came up with the story of the Lord of the Rings, we can &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Retroactive_continuity&quot;&gt;retcon&lt;&#x2F;a&gt; the report and pretend that the revised report is what we meant by &lt;code&gt;Haskell2010&lt;&#x2F;code&gt; all along. We can then simplify the GHC user guide and remove most of its section 16 which documents infelicities compared to the existing report.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;So here is the a target that we can set for ourselves: Every program that is valid according to the revised Haskell 2010 language report will be accepted by MicroHS and GHC using the &lt;code&gt;Haskell2010&lt;&#x2F;code&gt; language edition.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;let-s-talk-technicalities&quot;&gt;Let&#x27;s Talk Technicalities&lt;&#x2F;h2&gt;
+&lt;p&gt;With the motivation and goal out of the way, let us discuss some technical details when it comes to working on the report, building it, and generating the final PDF and HTML documents.&lt;&#x2F;p&gt;
+&lt;p&gt;The Haskell 2010 language report is available both as a PDF and HTML document, and there are no obvious good reasons to change this.
+Working on a document of the complexity and length of the Haskell report can be made joyful if the authoring technology is right, and arduous if we are struggling with long compile times (Compiling long-ish PDFs with LaTeX can take minutes using the wrong tools and packages!), inscrutable error messages or a difficult scripting and programming model.&lt;&#x2F;p&gt;
+&lt;p&gt;The previous version of the Haskell report was written using a combination of command line tools (&lt;code&gt;sed&lt;&#x2F;code&gt;, &lt;code&gt;awk&lt;&#x2F;code&gt;, &lt;code&gt;perl&lt;&#x2F;code&gt;, &lt;code&gt;make&lt;&#x2F;code&gt;), a lexer&#x2F;parser for preprocessing a custom &lt;code&gt;.verb&lt;&#x2F;code&gt; file format, &lt;code&gt;pdflatex&lt;&#x2F;code&gt; to compile the PDF, and &lt;code&gt;tex4ht&lt;&#x2F;code&gt; to generate HTML.
+In 2026 we can use technology that was not available in 2010 and simplify the process of authoring the report significantly.
+Of the available technologies, the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;typst.app&#x2F;&quot;&gt;Typst&lt;&#x2F;a&gt; typesetting system currently satisfies the constraints the best:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;It is open-source software available under the Apache 2.0 license. (An associated cloud service similar to Overleaf is proprietary, but entirely optional.)&lt;&#x2F;li&gt;
+&lt;li&gt;Typst is implemented in Rust and has compile times that are roughly an order of magnitude faster than tex.
+This allows to get instantaneous visual feedback when working on the report.&lt;&#x2F;li&gt;
+&lt;li&gt;Both PDF and HTML output is supported natively, with no need to use separate tools.&lt;&#x2F;li&gt;
+&lt;li&gt;The compiler emits fantastic error messages which point to the erroneous location in the code.&lt;&#x2F;li&gt;
+&lt;li&gt;Simpler technologies (like plain Markdown) also allow to target multiple output formats, but they lack the advanced features to generate high-quality technical documentation, especially when it comes to the typesetting of mathematics and complex figures.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Using Typst means we have to convert the report from the custom &lt;code&gt;.verb&lt;&#x2F;code&gt; format to &lt;code&gt;.typ&lt;&#x2F;code&gt; files; fortunately this part of the work is completed, and the report can be compiled using a simple &lt;code&gt;typst compile&lt;&#x2F;code&gt; invocation. (The translation process did not involve LLMs, and was done manually using some &lt;code&gt;sed&lt;&#x2F;code&gt; and &lt;code&gt;awk&lt;&#x2F;code&gt; magic to facilitate the process.)
+Re-typesetting the BNF grammars also allowed to make them hyperlinked: It is now possible to navigate the grammar by clicking on non-terminal symbols and to jump to their definition.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;documenting-the-standard-libraries&quot;&gt;Documenting the Standard Libraries&lt;&#x2F;h2&gt;
+&lt;p&gt;The existing Haskell 2010 report consists of two parts: The first part documents the syntax and semantics of the language, and the second part documents the standard libraries.
+Documenting the standard libraries is an essential part of the report, because many aspects of the language can only be defined in terms of functions, types and type classes available in the libraries. For example, numeric literals are polymorphic and have to be defined in terms of the numeric hierarchy, do-notation has to be defined in terms of the Monad (and MonadFail) type classes, and the foreign function interface (FFI) makes extensive use of functions and types defined in the &lt;code&gt;Foreign.*&lt;&#x2F;code&gt; namespace.&lt;&#x2F;p&gt;
+&lt;p&gt;Maintaining hundreds of pages of standard library documentation in purely textual form (either as LaTeX or Typst files), and ensuring that they remain valid Haskell and consistent with each other is very hard.
+If we want to avoid typos and inconsistencies sneeking into the report, and if we want to keep the library specification maintainable, then we have to organize it in some form which is amenable to machine checking.
+The obvious solution is to document the API of the standard libraries using Haddock. The repository for the revised report contains a cabal package which exposes the precise API specified in the Haskell 2010 language report.
+(This package only specifies the public API: The functions and methods themselves do not have an implementation. A possible stretch goal would be to use tools like &lt;code&gt;api-diff&lt;&#x2F;code&gt; or &lt;code&gt;print-api&lt;&#x2F;code&gt; (&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;discourse.haskell.org&#x2F;t&#x2F;maintain-a-golden-test-of-your-packages-api-with-diff-package-api-and-print-api&#x2F;9997&quot;&gt;Link&lt;&#x2F;a&gt;) to ensure that the API exposed by packages like &lt;code&gt;base&lt;&#x2F;code&gt; is a strict superset of the API defined in the report.)&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-process-shall-we-use&quot;&gt;What Process Shall we Use&lt;&#x2F;h2&gt;
+&lt;p&gt;The Haskell Prime process worked using a combination of mailing list discussions and a Git repository which collected RFCs. Notably, the process did not work directly on the source code used for building the report.
+We can reduce a lot of the overhead by switching to a collaboration process that is modelled more closely on how we develop code: Changes to the report should primarily be discussed in the form of pull requests to the textual sources of the report itself. The repository to organize the writing of the report is now public: &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskellfoundation&#x2F;haskell-2010-revised-report&quot;&gt;github.com&#x2F;haskellfoundation&#x2F;haskell-2010-revised-report&lt;&#x2F;a&gt;. Please start contributing by discussing the existing issues, by contributing new issues, and by helping fix issues with the technical infrastructure. We will not yet merge any actual changes to the report, since these changes will need to be confirmed by the  new language committee that will be established, but we can start working on all other technical issues.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;call-to-action&quot;&gt;Call to Action&lt;&#x2F;h2&gt;
+&lt;p&gt;In order for the revised Haskell 2010 report to enjoy broad support from the community, we have established a new &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;gitlab.haskell.org&#x2F;hf&#x2F;meta&#x2F;-&#x2F;blob&#x2F;main&#x2F;working_groups&#x2F;revised-haskell-2010-report.md&quot;&gt;working group&lt;&#x2F;a&gt; under the umbrella of the Haskell Foundation. We now need your help and participation, ideally by deciding to become a member of the working group tasked with compiling the revised report. If you do not want to become a member of the working group you can still join all the discussions in the repository, contribute issues, and open pull requests with changes to the report, but becoming a member gives you the right to cast your vote on which changes to the report shall be adopted.&lt;&#x2F;p&gt;
+&lt;p&gt;We will shortly be announcing a call to join the working group on the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;discourse.haskell.org&#x2F;&quot;&gt;Haskell Discourse&lt;&#x2F;a&gt;, and soon thereafter start the work on the revised report.
+If you always wished for Haskell to get a new report, or were discouraged by the lack of progress when it comes to standardization, now is your chance to contribute! With the clearly delimited scope set out above we can also be confident that the finish line is clearly in sight. And who knows, if the revised report is a clear success we might even have the appetite to follow up with something more ambitious...&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Quick tips for fast iteration in Haskell</title>
+        <published>2026-07-28T00:00:00+00:00</published>
+        <updated>2026-07-28T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/quick-tips-for-fast-iteration-in-haskell/"/>
+        <id>https://blog.haskell.org/quick-tips-for-fast-iteration-in-haskell/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/quick-tips-for-fast-iteration-in-haskell/">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;The Haskell community has recently been discussing how to achieve fast
+iteration times when type checking and compiling Haskell code.  Fast
+feedback has always been important in software development, and we&#x27;re
+seeing increased interest in the topic in recent months due to the
+rise in prominence of agentic coding.&lt;&#x2F;p&gt;
+&lt;p&gt;This article describes two techniques for fast iteration: using &lt;code&gt;ghci&lt;&#x2F;code&gt;
+to get fast feedback on the result of type checking an compilation,
+and speeding up builds with a careful choice of flags to &lt;code&gt;ghc&lt;&#x2F;code&gt; and
+&lt;code&gt;cabal&lt;&#x2F;code&gt;.  These techniques can be run on any existing codebase. They
+don&#x27;t require you to restructure your code in any way, so you can get
+an instant improvement to your iteration times. Let&#x27;s dive in!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;ghci-based&quot;&gt;&lt;code&gt;ghci&lt;&#x2F;code&gt;-based&lt;&#x2F;h2&gt;
+&lt;p&gt;GHCi is &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;ghc&#x2F;doc&#x2F;users_guide&#x2F;ghci.html&quot;&gt;GHC&#x27;s interactive
+interpreter&lt;&#x2F;a&gt;
+(executable name &lt;code&gt;ghci&lt;&#x2F;code&gt;) which comes bundled with every installation
+of GHC.  It is a REPL (&quot;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Read%E2%80%93eval%E2%80%93print_loop&quot;&gt;read-eval-print
+loop&lt;&#x2F;a&gt;&quot;),
+which means you can type expressions into it and it will run them,
+printing the result.  &lt;code&gt;ghci&lt;&#x2F;code&gt; is a good starting point for fast
+feedback because it doesn&#x27;t have to fully compile code, rather it
+generates executable bytecode and skips machine code generation,
+making it inherently faster than a normal build.&lt;&#x2F;p&gt;
+&lt;p&gt;There are a variety of ways to use &lt;code&gt;ghci&lt;&#x2F;code&gt;, from using barebones &lt;code&gt;ghci&lt;&#x2F;code&gt;
+itself directly to featureful wrappers.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ghci-itself&quot;&gt;&lt;code&gt;ghci&lt;&#x2F;code&gt; itself&lt;&#x2F;h3&gt;
+&lt;p&gt;You can invoke &lt;code&gt;ghci&lt;&#x2F;code&gt; with a collection of source paths and it will
+compile and load those modules, for example:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;ghci src&#x2F;Path&#x2F;Module1.hs src&#x2F;Path&#x2F;Module2.hs&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Or, perhaps more useful, use a &lt;code&gt;ghci&lt;&#x2F;code&gt; invocation wrapper that comes
+with your build tool, &lt;code&gt;cabal&lt;&#x2F;code&gt; or &lt;code&gt;stack&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;stack ghci&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;cabal repl&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;For a simple &lt;code&gt;ghci&lt;&#x2F;code&gt; workflow, make some changes to the files in your
+project, then navigate to your &lt;code&gt;ghci&lt;&#x2F;code&gt; window and type &lt;code&gt;:reload&lt;&#x2F;code&gt; (or
+&lt;code&gt;:r&lt;&#x2F;code&gt; for short). &lt;code&gt;ghci&lt;&#x2F;code&gt; will type check and compiles your changes,
+printing any errors or warnings from GHC.  Simple!&lt;&#x2F;p&gt;
+&lt;p&gt;You might feel that continually typing &lt;code&gt;:r&lt;&#x2F;code&gt; ought to be automated
+away. If so then check out the next section on &lt;code&gt;ghcid&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ghcid&quot;&gt;&lt;code&gt;ghcid&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ndmitchell&#x2F;ghcid&quot;&gt;&lt;code&gt;ghcid&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; is a wrapper around &lt;code&gt;ghci&lt;&#x2F;code&gt; that automates issuing &lt;code&gt;:r&lt;&#x2F;code&gt; when
+any file in your project changes, so its workflow is even easier than
+that of &lt;code&gt;ghci&lt;&#x2F;code&gt;: make some changes to the files in your project and
+then merely &lt;em&gt;look at&lt;&#x2F;em&gt; your &lt;code&gt;ghcid&lt;&#x2F;code&gt; window; &lt;code&gt;ghcid&lt;&#x2F;code&gt; will have detected
+your changes and the result of type check and compilation will appear
+automatically.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;automatically-running-tests&quot;&gt;Automatically running tests&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;code&gt;ghcid&lt;&#x2F;code&gt; also allows you to get more quick feedback than just the
+result of type checking and compilation: you can run tests (or indeed
+any code) when your source files change.  There are two ways to do
+this:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Embed comments with expressions to be evaluated. For example add
+this comment to a source file to evaluate &lt;code&gt;expr&lt;&#x2F;code&gt; after loading:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- $&amp;gt; expr&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;(Evaluating embedded comment expressions requires using the
+&lt;code&gt;--allow-eval&lt;&#x2F;code&gt; flag.)&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Pass an expression to the command line option &lt;code&gt;--test&lt;&#x2F;code&gt;, to run
+after the code is loaded successfully, for example:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;ghcid --test myTestFun&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;(By default the test expression will only run if the code is
+warning-free.  To run the test expression even if there are
+warnings, also pass &lt;code&gt;--warnings&lt;&#x2F;code&gt;.)&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;For more information on these features, see the
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ndmitchell&#x2F;ghcid#evaluation&quot;&gt;Evaluation&lt;&#x2F;a&gt; section
+of the &lt;code&gt;ghcid&lt;&#x2F;code&gt; README.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;installation&quot;&gt;Installation&lt;&#x2F;h4&gt;
+&lt;p&gt;&lt;code&gt;ghcid&lt;&#x2F;code&gt; is a normal executable package on Hackage, so you can install
+it with, for example, &lt;code&gt;cabal install ghcid&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ghcid-check&quot;&gt;&lt;code&gt;ghcid-check&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;One limitation of &lt;code&gt;ghcid&lt;&#x2F;code&gt;&#x27;s default behaviour is that it is not
+&lt;em&gt;programatic&lt;&#x2F;em&gt;.  When you change source files, &lt;code&gt;ghcid&lt;&#x2F;code&gt;&#x27;s updates appear
+in the terminal in which it is already running.  That&#x27;s no good if you
+want to give fast feedback to a coding agent; ideally the coding agent
+would run a command line executable to obtain the feedback.&lt;&#x2F;p&gt;
+&lt;p&gt;That&#x27;s fine, because &lt;code&gt;ghcid&lt;&#x2F;code&gt; supports that too, with its &lt;code&gt;--reload&lt;&#x2F;code&gt; and
+&lt;code&gt;--outputfile&lt;&#x2F;code&gt; options. But setting that up is a little fiddly, so
+here&#x27;s a simple &lt;code&gt;ghcid&lt;&#x2F;code&gt; wrapper &lt;code&gt;bash&lt;&#x2F;code&gt; script called &lt;code&gt;ghcid-check&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;tomjaguarpaw&#x2F;ghcid-check&#x2F;&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;tomjaguarpaw&#x2F;ghcid-check&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;code&gt;ghcid-check&lt;&#x2F;code&gt; is very basic and you might want to customize it to meet
+your own particular needs.&lt;&#x2F;p&gt;
+&lt;p&gt;Beyond &lt;code&gt;ghcid&lt;&#x2F;code&gt;, there are another couple of projects based on a
+similar idea that bring new features: &lt;code&gt;ghciwatch&lt;&#x2F;code&gt; and Tricorder.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ghciwatch&quot;&gt;&lt;code&gt;ghciwatch&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;mercurytechnologies&#x2F;ghciwatch#ghciwatch&quot;&gt;&lt;code&gt;ghciwatch&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;
+is an updated take on &lt;code&gt;ghcid&lt;&#x2F;code&gt;, from the Haskell developers at
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;mercury.com&#x2F;blog&#x2F;topics&#x2F;engineering-blog&quot;&gt;Mercury&lt;&#x2F;a&gt;.  Compared
+to &lt;code&gt;ghcid&lt;&#x2F;code&gt; it has more sophisticated checking for new, removed and new
+modules, which sometimes trip up &lt;code&gt;ghcid&lt;&#x2F;code&gt;, as well as other new
+features.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;tricorder&quot;&gt;Tricorder&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;tweag&#x2F;tricorder#tricorder&quot;&gt;Tricorder&lt;&#x2F;a&gt; is from
+Tweag and provides even more live status and diagnostic updates than
+&lt;code&gt;ghcid&lt;&#x2F;code&gt; or &lt;code&gt;ghciwatch&lt;&#x2F;code&gt;, including access to documentation and
+machine-readable output, and is designed from the ground up to be
+usable programatically by coding agents as well as interactively by
+humans.&lt;&#x2F;p&gt;
+&lt;p&gt;Check out the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;discourse.haskell.org&#x2F;t&#x2F;ann-tricorder-a-new-development-tool-for-haskell-and-llms&#x2F;14208&quot;&gt;announcement
+post&lt;&#x2F;a&gt;
+on the Haskell Discourse, which includes a short video of Tricorder
+functionality. &lt;code&gt;tricorder&lt;&#x2F;code&gt; is a normal executable package on Hackage,
+so you can install it with, for example, &lt;code&gt;cabal install tricorder&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;cabal-based&quot;&gt;&lt;code&gt;cabal&lt;&#x2F;code&gt;-based&lt;&#x2F;h2&gt;
+&lt;p&gt;Let&#x27;s now see how to speed up development builds using the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.haskell.org&#x2F;cabal&#x2F;&quot;&gt;&lt;code&gt;cabal&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; build system. &lt;code&gt;cabal&lt;&#x2F;code&gt; has existed for a very long time, and you may be surprised by some of the things it offers!&lt;&#x2F;p&gt;
+&lt;p&gt;Speeding up development builds using &lt;code&gt;cabal&lt;&#x2F;code&gt; involves three broad optimizations:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tuning GHC&#x27;s runtime options;&lt;&#x2F;li&gt;
+&lt;li&gt;Decreasing the amount of work &lt;code&gt;cabal&lt;&#x2F;code&gt; and GHC have to do by disabling compile-time optimizations;&lt;&#x2F;li&gt;
+&lt;li&gt;Increasing resource-sharing for more effective build parallelism.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Before we describe the build optimizations above, it is worth understanding how cabal can be configured. Cabal uses &lt;em&gt;project&lt;&#x2F;em&gt; files to bundle configuration options related to multiple packages. The default configuration file, which is picked up automatically by &lt;code&gt;cabal&lt;&#x2F;code&gt;, is &lt;code&gt;cabal.project&lt;&#x2F;code&gt;. A typical &lt;code&gt;cabal.project&lt;&#x2F;code&gt; file for a project with three packages looks like:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;packages:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    packageA&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    packageB&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    packageC&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Recent versions of cabal allow project files to import other projects files. Therefore, without changing our default &lt;code&gt;cabal.project&lt;&#x2F;code&gt; file, we&#x27;ll create a new configuration file specifically for development builds. Let&#x27;s call it &lt;code&gt;cabal.fast.project&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;import: cabal.project&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;As we go through build optimizations below, we&#x27;ll append to our &lt;code&gt;cabal.fast.project&lt;&#x2F;code&gt;. Then, a fast build will specify to use &lt;code&gt;cabal.fast.project&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #4078F2;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #50A14F;&quot;&gt; cabal build all&lt;&#x2F;span&gt;&lt;span style=&quot;color: #986801;&quot;&gt; --project-file=cabal.fast.project&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;That way, we have an easy set-up for fast builds. We could have project files for profiling builds, release builds, etc.&lt;&#x2F;p&gt;
+&lt;p&gt;Running the above command, we got a baseline compilation time on a private, commercial Haskell codebase of more than 150 000 lines of Haskell code. As we go through build optimizations below, we will report on the speedups achieved from this baseline.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;tuning-ghc-s-runtime-options&quot;&gt;Tuning GHC&#x27;s runtime options&lt;&#x2F;h3&gt;
+&lt;p&gt;GHC is a wonderful piece of technology. In some ways, it might as well be from the future. However, compiling Haskell programs into performant executables is hard work, and GHC is itself a Haskell program. This means we must tune its runtime system to squeeze out more performance.&lt;&#x2F;p&gt;
+&lt;p&gt;Take a look at the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;downloads.haskell.org&#x2F;ghc&#x2F;9.14.1&#x2F;docs&#x2F;users_guide&#x2F;runtime_control.html&quot;&gt;GHC 9.14.1 user guide&#x27;s section on runtime control&lt;&#x2F;a&gt;. In our experience, however, simply tuning the garbage collection allocation size is a great first step if your computer is somewhat recent. In particular, increasing the allocation size from the default of 4MB to 64MB, 128MB, er even 256MB may dramatically increase compilation throughput!&lt;&#x2F;p&gt;
+&lt;p&gt;Thus, we update our &lt;code&gt;cabal.fast.project&lt;&#x2F;code&gt; project file to pass the appropriate flag to GHC. We&#x27;ll use an allocation area of 64MB, but do experiment on your own workloads:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;import: cabal.project&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 1: tuning GHC&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;program-options&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   ghc-options: +RTS -A64m -RTS&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Building with the above project file, we achieve a speedup of approximately 10%. Not huge, but not marginal either. Big gains remain!&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;disabling-compile-time-optimizations&quot;&gt;Disabling compile-time optimizations&lt;&#x2F;h3&gt;
+&lt;p&gt;Even if GHC is given the appropriate resources to do its job more effectively, it still does a lot of work by default, since GHC&#x27;s default optimization level is &lt;code&gt;-O1&lt;&#x2F;code&gt;. This means that GHC performs &lt;em&gt;some&lt;&#x2F;em&gt; optimizations, which necessarily requires more compilation time.&lt;&#x2F;p&gt;
+&lt;p&gt;But this is merely the &lt;em&gt;default&lt;&#x2F;em&gt; behavior, and this article is all about speed. Instead, we can disable optimizations via the &lt;code&gt;optimization&lt;&#x2F;code&gt; option in cabal project files:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;import: cabal.project&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 1: tuning GHC&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;program-options&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   ghc-options: +RTS -A64m -RTS&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 2: disable optimizations&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;optimization: False&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Note that this optimization flag only applies to your locally-built packages. Your third-party dependencies will be compiled using the default optimization level, &lt;code&gt;-O1&lt;&#x2F;code&gt;. This is generally considered acceptable since your third-party dependencies are rarely built, and it allows you to re-use them for other build profiles.&lt;&#x2F;p&gt;
+&lt;p&gt;At this stage, the codebase is building 2x faster!&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;better-resource-sharing-for-build-parallelism&quot;&gt;Better resource-sharing for build parallelism&lt;&#x2F;h3&gt;
+&lt;p&gt;We&#x27;ve tuned GHC, and minimized the amount of work it needs to do. What is left is speed up the build across &lt;em&gt;multiple packages&lt;&#x2F;em&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;cabal&lt;&#x2F;code&gt; has an option for parallel builds called &lt;code&gt;--jobs&lt;&#x2F;code&gt;. You can either specify a number of capabilities to dedicate to the build (e.g. &lt;code&gt;--jobs=2&lt;&#x2F;code&gt;), or let &lt;code&gt;cabal&lt;&#x2F;code&gt; decide based on your hardware (using a bare &lt;code&gt;--jobs&lt;&#x2F;code&gt;). Higher is not &lt;em&gt;always&lt;&#x2F;em&gt; better; this depends on your build graph!&lt;&#x2F;p&gt;
+&lt;p&gt;In our experience, a number from 4 - 8 is appropriate to start with. We therefore update our &lt;code&gt;cabal.fast.project&lt;&#x2F;code&gt; project file:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;import cabal.project&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 1: tuning GHC&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;program-options&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   ghc-options: +RTS -A64m -RTS&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 2: disable optimizations&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;optimization: False&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 3: build parallelism&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;jobs: 6&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;We can do even better! If you use &lt;code&gt;cabal&lt;&#x2F;code&gt; 3.12+ in combination with GHC 9.8+, you can take advantage of a new flag, &lt;code&gt;--semaphore&lt;&#x2F;code&gt;, which allows &lt;code&gt;cabal&lt;&#x2F;code&gt; to share resources better with GHC. While &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;well-typed.com&#x2F;blog&#x2F;2023&#x2F;08&#x2F;reducing-haskell-parallel-build-times&#x2F;&quot;&gt;Well-Typed has a full breakdown of the why and how&lt;&#x2F;a&gt;, we summarize the result here. In short, if cabal can take advantage of multiple parallel invocations of GHC, it will do so; however, under the &lt;code&gt;--semaphore&lt;&#x2F;code&gt; option, if cabal &lt;em&gt;cannot&lt;&#x2F;em&gt; take advantage of all the cores it was allocated, it can tell GHC to use more cores. This can result in compilation time reductions of up to 30%!&lt;&#x2F;p&gt;
+&lt;p&gt;We update our &lt;code&gt;cabal.fast.project&lt;&#x2F;code&gt; one final time:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;import: cabal.project&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 1: tuning GHC&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;program-options&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   ghc-options: +RTS -A64m -RTS&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 2: disable optimizations&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;optimization: False&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-- Step 3: build parallelism&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;jobs: 6&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;semaphore: True&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Finally, our builds will be much faster:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #383A42; background-color: #FAFAFA;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #4078F2;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #50A14F;&quot;&gt; cabal build all&lt;&#x2F;span&gt;&lt;span style=&quot;color: #986801;&quot;&gt; --project-file=cabal.fast.project&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Compared to our baseline, we achieve a cumulative build speedup of 2.6x!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;going-further&quot;&gt;Going further&lt;&#x2F;h2&gt;
+&lt;p&gt;If you&#x27;re eager for even more build time improvements and are willing
+to spend time adjusting the structure of your codebase, we can point
+you where to look next: watch of Teo Camarasu&#x27;s talk at the 2026
+Haskell Ecosystem Workshop, &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=nmE6aa_I5TU&quot;&gt;Optimising for fast builds with
+GHC&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;We hope you enjoyed our brief tour of using &lt;code&gt;ghci&lt;&#x2F;code&gt; and &lt;code&gt;cabal&lt;&#x2F;code&gt; for
+fast iterative development in Haskell. If you have any comments or
+questions, or have your own tips and techniques you can share with the
+community, then please post on &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;discourse.haskell.org&#x2F;&quot;&gt;the Haskell
+Discourse&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;&#x2F;h2&gt;
+&lt;p&gt;Lots of people have already written up their experience of workflows
+that &lt;code&gt;ghci&lt;&#x2F;code&gt;, including for fast iterative development. You might want
+to check them out.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;ghc&#x2F;doc&#x2F;users_guide&#x2F;ghci.html&quot;&gt;Using GHCi — GHC Users Guide&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;haskellweekly.news&#x2F;episode&#x2F;6.html&quot;&gt;Fast Feedback&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;academy.fpblock.com&#x2F;blog&#x2F;2018&#x2F;08&#x2F;haskell-development-workflows-4-ways&#x2F;&quot;&gt;Haskell Development Workflows (4 ways)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.parsonsmatt.org&#x2F;2018&#x2F;05&#x2F;19&#x2F;ghcid_for_the_win.html&quot;&gt;ghcid for the win!&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;functor.tokyo&#x2F;blog&#x2F;2019-04-07-ghcid-for-web-app-dev&quot;&gt;ghcid for Web App Development&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;mercury.com&#x2F;blog&#x2F;announcing-ghciwatch&quot;&gt;Announcing ghciwatch 1.0&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;jeancharles.quillet.org&#x2F;posts&#x2F;2024-09-04-Haskell-dev-workflow-with-ghcid-and-neovim.html&quot;&gt;Haskell dev workflow with ghcid and neovim&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.well-typed.com&#x2F;blog&#x2F;2023&#x2F;03&#x2F;cabal-multi-unit&#x2F;&quot;&gt;Multiple Component support for cabal repl&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;alexfmpe&#x2F;semantic-satiation&#x2F;blob&#x2F;main&#x2F;posts&#x2F;002-cheaper.md&quot;&gt;Cheaper: producing a program with less developer time&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;hackage.haskell.org&#x2F;package&#x2F;rapid&#x2F;docs&#x2F;Rapid.html&quot;&gt;Rapid&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>What Would You See Changed in Haskell?</title>
+        <published>2026-04-02T00:00:00+00:00</published>
+        <updated>2026-04-02T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://blog.haskell.org/what-would-you-see-changed-in-haskell/"/>
+        <id>https://blog.haskell.org/what-would-you-see-changed-in-haskell/</id>
+        
+        <content type="html" xml:base="https://blog.haskell.org/what-would-you-see-changed-in-haskell/">&lt;p&gt;This report condenses the free form answers to Question 77 of the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;discourse.haskell.org&#x2F;t&#x2F;state-of-haskell-2025-results&#x2F;13755&quot;&gt;State of Haskell Survey 2025&lt;&#x2F;a&gt;.
+Due to the phrasing of the question, we have received 553 answers, with varying degrees of precision, actionability, and relevance.
+A team of two people (Sawa &amp;amp; Hécate) proceeded to quantitatively and qualitatively analyse the survey results,
+extracting trends and topics about what the community would like to see changed.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;interpreting-the-answers&quot;&gt;Interpreting The Answers&lt;&#x2F;h2&gt;
+&lt;p&gt;A qualitative analysis of survey answers entails the hard task of noticing trends and moods, as well as determining the relevance of answers.
+We needed to understand if an answer is an example of the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;XY_problem&quot;&gt;XY Problem&lt;&#x2F;a&gt;,
+and if so establish what the deeper problem is. Some answers were simply too vague to be classified either as a trending mood, or an actionable suggestion.
+Finally, one important thing to do when performing such an analysis is to have empathy for the people who spent their time responding to the survey and not outright dismiss their answers.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;major-topics&quot;&gt;Major Topics&lt;&#x2F;h2&gt;
+&lt;p&gt;The following topics are the ones that have collected the most answers from the survey participants. They are presented in no particular order.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;switching-apis-to-using-text-instead-of-string&quot;&gt;Switching APIs to using &lt;code&gt;Text&lt;&#x2F;code&gt; instead of &lt;code&gt;String&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;A laser-focused suggestion that came up is the replacement of &lt;code&gt;String&lt;&#x2F;code&gt; by &lt;code&gt;Text&lt;&#x2F;code&gt; as the canonical type for textual data. In particular, one answer explains the reasoning:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The &lt;code&gt;text&lt;&#x2F;code&gt; library must live from &lt;code&gt;base&lt;&#x2F;code&gt;,  because none of the APIs of &lt;code&gt;base&lt;&#x2F;code&gt; can use &lt;code&gt;Text&lt;&#x2F;code&gt;, and when people look
+at base for examples of well-written Haskell code, they end up using &lt;code&gt;String&lt;&#x2F;code&gt;, which is not the right choice.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;This has been a common source of frustration for beginners and advanced users alike.
+The topic was especially discussed in 2022 on the Discourse: &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;discourse.haskell.org&#x2F;t&#x2F;bringing-data-text-into-base-what-is-the-next-step&#x2F;5016&#x2F;&quot;&gt;&lt;em&gt;Bringing Data.Text into &lt;code&gt;base&lt;&#x2F;code&gt;: What is the next step?&lt;&#x2F;em&gt;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;onboarding-of-beginners&quot;&gt;Onboarding of Beginners&lt;&#x2F;h3&gt;
+&lt;p&gt;Concerns regarding the quality of resources for beginners have been expressed in large numbers. Up-to-date content, and a centralised entry point in the language are some of the most actionable suggestions that we received.
+The Haskell Wiki is especially well-referenced by search engines, but has seen a steady decrease in contributions. People are encouraged to apply for an account and contribute to the articles.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;documentation&quot;&gt;Documentation&lt;&#x2F;h3&gt;
+&lt;p&gt;This one will not be a surprise to anyone, but thankfully some of the insights that were received pointed to concrete improvements that could be made. Library authors are encouraged to provide more &lt;em&gt;working&lt;&#x2F;em&gt; examples, as well as documentation that goes beyond the scope of a simple API reference.&lt;&#x2F;p&gt;
+&lt;p&gt;Community gatherings lend themselves especially well to documentation contributions, as people needing the documentation can meet with people who are best positioned to write it.&lt;&#x2F;p&gt;
+&lt;p&gt;For more information about what types of documentation exist and when to use particular ones, you can read &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.haskell.org&#x2F;documentation-best-practices-in-2024&#x2F;&quot;&gt;Documentation Best Practices in 2024&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;complexity-of-the-haskell-language&quot;&gt;Complexity of the Haskell Language&lt;&#x2F;h3&gt;
+&lt;p&gt;We have noticed a trend amongst participants that the Haskell Language is perceived as too complex, riddled with historical cruft, and that there is a lack of consistency in how the language and its libraries have evolved over the decade.&lt;&#x2F;p&gt;
+&lt;p&gt;Avoiding partial functions in the Prelude and more generally sane &#x2F; safe defaults are a recurring suggestion. People want to feel proud of the &lt;code&gt;base&lt;&#x2F;code&gt; library, where the strengths of Haskell can shine, and not be just a hodgepodge of convenient functions.&lt;&#x2F;p&gt;
+&lt;p&gt;There have been requests to stop adding language extensions to GHC or even re-design the existing ones with a holistic approach. This feedback is in line with answers asking for a new Haskell Language Report, which could take advantage of the extensions that GHC has introduced over the years&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;the-record-system&quot;&gt;The Record System&lt;&#x2F;h3&gt;
+&lt;p&gt;A certain proportion of survey participants have expressed their dissatisfaction at the state of records in Haskell. Answers remained vague, which gives us a mood indicator more than an action plan, but there are notable requests for &lt;code&gt;OverloadedRecordDot&lt;&#x2F;code&gt; and &lt;code&gt;NoFieldSelectors&lt;&#x2F;code&gt; to be enabled by default.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;tooling&quot;&gt;Tooling&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;compilation-times&quot;&gt;Compilation times&lt;&#x2F;h4&gt;
+&lt;p&gt;“Make GHC 10x faster” is one of the prevalent moods amongst participants. Coming from end-users, these suggestions do not come with actionable advice or specific pain points in the compilation pipeline. Specific situations like underpowered laptops have been mentioned.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;ecosystem-consolidation-developer-experience&quot;&gt;Ecosystem consolidation, Developer Experience&lt;&#x2F;h4&gt;
+&lt;p&gt;As the Haskell language and its ecosystem are more than thirty years old, it’s normal that we see a certain degree of fragmentation in the tooling, as new people and ideas enter the community. However, they tend to also confuse newcomers, who do not wish to navigate the intricacies of the technical and political disagreements that produced the existing tooling ecosystem. Survey participants very helpfully directed our attention to projects like &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.astral.sh&#x2F;uv&#x2F;&quot;&gt;&lt;code&gt;uv&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;  for an example of a fully-integrated toolchain (tooling management and project management).&lt;&#x2F;p&gt;
+&lt;p&gt;Compilation error messages are also called confusing. This might be explained by a mismatch between the intended audience of those messages and the actual audience. Error messages may feel more intended for implementers than for end-users. Recent versions of GHC have started to direct users to the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;errors.haskell.org&#x2F;&quot;&gt;Haskell error index&lt;&#x2F;a&gt;, so we can expect some positive development in the coming years. However, we should keep improving error messages for end-users who are not in the know about implementation details.&lt;&#x2F;p&gt;
+&lt;p&gt;Lastly, the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;haskell-language-server.readthedocs.io&#x2F;en&#x2F;latest&#x2F;what-is-hls.html#what-is-the-haskell-language-server&quot;&gt;Haskell Language Server&lt;&#x2F;a&gt; is often mentioned when participants complain about development experience, mostly due to the fact that they have to directly interact with it. Memory usage and reliability are thus felt by most people.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;program-performance&quot;&gt;Program Performance&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;pervasive-laziness&quot;&gt;Pervasive Laziness&lt;&#x2F;h4&gt;
+&lt;p&gt;Anxiety about laziness is a recurring theme, indicating lasting difficulties developers have in reasoning about lazy evaluation. Resource blow-up due to misunderstood runtime behaviours make people anxious when it comes to deploying or distributing Haskell software. Actionable advice like eliminating lazy I&#x2F;O was given, which is indeed known for tripping people up, when they may expect it to happen only when they use a streaming library.&lt;&#x2F;p&gt;
+&lt;p&gt;Some suggestions are more targeted, like having data structures strict by default, and only explicitly lazy when the developer wishes so, by means of the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.gitlab.haskell.org&#x2F;ghc&#x2F;doc&#x2F;users_guide&#x2F;exts&#x2F;strict.html#strict-by-default-data-types&quot;&gt;StrictData extension&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;minor-topics&quot;&gt;Minor Topics&lt;&#x2F;h2&gt;
+&lt;p&gt;These topics have been mentioned in lesser but still substantial amounts. This does not mean that they are worthless, just that other concerns seemed more pressing to most participants.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;dependent-haskell&quot;&gt;Dependent Haskell&lt;&#x2F;h3&gt;
+&lt;p&gt;When people are not thinking about what is bad, they start thinking about what could be better. The subject of Dependent Types has come up enough times to attract our attention. Dependent Haskell is viewed as a unified solution that can replace otherwise loosely related language extensions. You can see the progress of the implementation on the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ghc.serokell.io&#x2F;dh&quot;&gt;Dependent Haskell Roadmap&lt;&#x2F;a&gt; page.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;community&quot;&gt;Community&lt;&#x2F;h3&gt;
+&lt;p&gt;The desire for community is ever present in human beings, and Haskellers are no exception. They want to see their community thrive, meet more people, and see higher regard for non-technical contributions.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;effect-systems&quot;&gt;Effect Systems&lt;&#x2F;h3&gt;
+&lt;p&gt;The past few years have seen an increase in the research and development of algebraic effect systems, meant to replace the shortcomings of the existing Transformers&#x2F;MTL approaches. We are beginning to see an interest for &lt;code&gt;base&lt;&#x2F;code&gt; to provide such a thing out of the box. Participants wishing for more interoperability also expressed the desire to change most functions operating in the &lt;code&gt;IO&lt;&#x2F;code&gt; monad to instead make use of &lt;code&gt;MonadIO&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Participants expressed interest in having a coherent story when it comes to the architecture of Haskell programs, the choice of libraries, and the fragmentation of the ecosystem.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;debugging&quot;&gt;Debugging&lt;&#x2F;h3&gt;
+&lt;p&gt;Debugging is still a sore point for participants, but the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;well-typed.github.io&#x2F;haskell-debugger&#x2F;&quot;&gt;Haskell Debugger&lt;&#x2F;a&gt; is mentioned and seems to address most of the pain points. “&lt;code&gt;HasCallStack&lt;&#x2F;code&gt; everywhere&quot; is also mentioned, which we consider to be a symptom of the perception of the existing debugging tools and backtrace mechanisms.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;academia-industry-hobbyists&quot;&gt;Academia, Industry, Hobbyists&lt;&#x2F;h2&gt;
+&lt;p&gt;An underlying theme of many of the previously mentioned answers is the question of “To whom does Haskell cater?”. Historically an academic project to study non-strict evaluation and pure functional programming, Haskell has grown to be adopted by software engineers in industry, leading to different ways of learning and socialising. A certain proportion of industrial programmers feel disenfranchised by the academic focus of the ecosystem, especially those that do not have an academic background or formal education.&lt;&#x2F;p&gt;
+&lt;p&gt;One answer in particular elaborates on the subject:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There needs to be a recognition that there is documentation produced for&#x2F;by the type theory &#x2F; heavy mathematics enthusiasts which doesn&#x27;t translate well as developer documentation. When new developers are looking for best practices they are often pointed into the direction of blogs written by clever, well-meaning people who write in a verbose style, often from the vantage point of mathematical abstractions. Any documentation that is software engineering oriented is always welcomed, but surprisingly rare.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;special-mentions&quot;&gt;Special Mentions&lt;&#x2F;h2&gt;
+&lt;p&gt;Some answers had to be categorised in a way that had to reflect how incredible they were. Here are our favourites:&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;a-whole-other-language&quot;&gt;&quot;A whole other language&quot;&lt;&#x2F;h4&gt;
+&lt;p&gt;Some survey participants just want another language, going beyond taking inspiration from others, with suggestions such as swapping the meanings of &lt;code&gt;::&lt;&#x2F;code&gt; and &lt;code&gt;:&lt;&#x2F;code&gt;, removing laziness, or a total language and tooling cleanup, scorched-earth style. &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;lean-lang.org&#x2F;&quot;&gt;Lean&lt;&#x2F;a&gt; and &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.idris-lang.org&#x2F;&quot;&gt;Idris&lt;&#x2F;a&gt; might be more up your alley.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;i-don-t-know-how-but-make-it-better&quot;&gt;&quot;I don’t know how, but make it better&quot;&lt;&#x2F;h4&gt;
+&lt;p&gt;The vague rants and self-admitted impossible ideas hold a special place in our heart. “Replace base”, “tooling like TypeScript”, and “fix the weird syntax” were pretty good. It&#x27;s hard to imagine these changes being possible without the level of support given to large corporate projects, such as VS Code, TypeScript or Go.&lt;&#x2F;p&gt;
+&lt;p&gt;Special mention for “weird syntax”, which we can &lt;strong&gt;absolutely&lt;&#x2F;strong&gt; &lt;strong&gt;do&lt;&#x2F;strong&gt; something about, we just forgot to press the big red button that says “fix syntax”. Thanks for the reminder!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;to-conclude&quot;&gt;To conclude&lt;&#x2F;h2&gt;
+&lt;p&gt;This year’s survey has brought us a very valuable insight into the preoccupations of a certain proportion of Haskellers. Of course, the results are to be handled with care, as surveys are a self-selecting tool in the first place. We cannot possibly know what exactly the community thinks, only what the subset that answers the survey thinks.
+We had a variety of answers, ranging from one word (“base”) to several paragraphs that could be the start of a &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ghc-proposals&#x2F;ghc-proposals&#x2F;?tab=readme-ov-file#ghc-proposals&quot;&gt;GHC Proposal&lt;&#x2F;a&gt; or a &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;haskell&#x2F;core-libraries-committee?tab=readme-ov-file#core-libraries-committee&quot;&gt;Core Libraries Proposal&lt;&#x2F;a&gt;. Anyone can open one, and we encourage you to do so!&lt;&#x2F;p&gt;
+&lt;p&gt;Tooling is a common thread to many topics, from beginner onboarding to consolidation of the developer experience. There is a tension between a fully integrated development ecosystem and having a language with multiple implementations that are free to explore different paths.&lt;&#x2F;p&gt;
+&lt;p&gt;Thank you again for participating in this year’s survey. Each new edition gives us more data points to measure the community trends, and they help the various groups with crafting the best experience for Haskell developers.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

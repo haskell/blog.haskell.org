@@ -1,0 +1,25 @@
+digraph lexer_states {
+  rankdir="LR";
+
+  ""               [shape=none]                                               ;
+  start            [                                  shape=circle fixedsize=true width=1]   ;
+  bol_section      [style="filled" fillcolor="yellow" shape=circle fixedsize=true width=1.4] ;
+  bol_field_layout [style="filled" fillcolor="yellow" shape=circle fixedsize=true width=1.4] ;
+  bol_field_braces [style="filled" fillcolor="yellow" shape=circle fixedsize=true width=1.4] ;
+  in_section       [style="filled" fillcolor="yellow" shape=circle fixedsize=true width=1.4] ;
+  in_field_layout  [                                  shape=circle fixedsize=true width=1.4] ;
+  in_field_braces  [                                  shape=circle fixedsize=true width=1.4] ;
+
+  ""               -> start                                ;
+  start            -> bol_section                          ;
+  bol_section      -> in_section       [fontcolor="red" label="indent"]    ;
+  bol_field_layout -> in_field_layout  [fontcolor="red" label="indent"]    ;
+  bol_field_braces -> in_field_braces  [fontcolor="red" label="indent"]    ;
+  in_section       -> bol_section      [fontcolor="red" label="linebreak"] ;
+  in_field_layout  -> bol_field_layout [fontcolor="red" label="linebreak"] ;
+  in_field_braces  -> bol_field_braces [fontcolor="red" label="linebreak"] ;
+
+  in_section       -> in_field_layout  [dir="both" fontcolor="blue" label="FieldLayoutOrBraces"];
+  in_section       -> in_field_layout  [dir="both" fontcolor="blue" label="FieldInlineOrBraces"];
+  in_section       -> in_field_braces  [dir="both" fontcolor="blue" label="FieldLayoutOrBraces"];
+}
