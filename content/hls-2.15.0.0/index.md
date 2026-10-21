@@ -89,9 +89,11 @@ With pending improvements to `hls-cabal-plugin` [#4961](https://github.com/haske
 
 ## Thank you, Haskell Community
 
-We wish all Haskellers happy hacking while using the latest release of the Haskell Language Server, and hope to see you in the issue tracker or even in some pull requests!
+Thank you to all [Munihackers](https://munihac.de/2026.html) who attended and decided to join us in hacking on HLS! 
+We had a great time and were excited to welcome some brand new contributors as well as seeing some old faces return to the HLS table :heart:
+Lots of progress was made, issues closed, pull requests merged and most importantly fun was had. 
+Thank you so much for your time and effort!
 
-As MuniHac is drawing near, this could be a great opportunity for your first HLS contribution.
-There will be people hacking on HLS there, so simply approach us! We don't bite but we might show you an issue or two you could work on :upside_down_face:
+We wish all Haskellers happy hacking while using the latest release of the Haskell Language Server, and hope to see you in the issue tracker or even in some pull requests!
 
 Finally, a big thank you to @crtschin for taking care of this release and a reminder that you can donate to the development of HLS via [OpenCollective](https://opencollective.com/haskell-language-server). The OpenCollective money pays for tedious, but important maintenance work and, sometimes, for getting new features over the finish line.
