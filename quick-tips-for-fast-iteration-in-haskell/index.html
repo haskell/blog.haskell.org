@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://blog.haskell.org/abridge.css?h=14a137945a91a4b25717" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.haskell.org" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.haskell.org/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.haskell.org/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.haskell.org/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.haskell.org/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.haskell.org/favicon-16x16.png" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/source-sans-3-v9-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/ubuntu-mono-v15-latin-regular.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-700.woff2" type="font/woff2" />
+  <link rel="preload" as="font" href="https://blog.haskell.org/fonts/raleway-v28-latin-900.woff2" type="font/woff2" />
+  <link rel="alternate" type="application/atom+xml" title="The Haskell Programming Language&#x27;s blog Atom Feed" href="https://blog.haskell.org/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Quick tips for fast iteration in Haskell | The Haskell Programming Language's blog</title>
+  <meta name="author" content="Haskell.org" />
+  <meta name="copyright" content="The Haskell Programming Language&#x27;s blog" />
+  <meta name="description" content="Quick tips about tools and techniques for fast iteration when developing Haskell" />
+  <link rel="canonical" href="https://blog.haskell.org/quick-tips-for-fast-iteration-in-haskell/" />
+  <meta name="keywords" content="haskell, functional programming, blog" />
+  <meta property="og:url" content="https://blog.haskell.org/quick-tips-for-fast-iteration-in-haskell/" />
+  <meta name="twitter:url" content="https://blog.haskell.org/quick-tips-for-fast-iteration-in-haskell/" />
+  <meta property="og:description" content="Quick tips about tools and techniques for fast iteration when developing Haskell" />
+  <meta name="twitter:description" content="Quick tips about tools and techniques for fast iteration when developing Haskell" />
+  <meta property="og:title" content="Quick tips for fast iteration in Haskell | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:title" content="Quick tips for fast iteration in Haskell | The Haskell Programming Language&#x27;s blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:image" content="https://blog.haskell.org/images/haskell-opengraph.png" />
+  <meta property="og:site_name" content="The Haskell Programming Language&#x27;s blog" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2026-07-28" />
+  <script defer src="https://blog.haskell.org/js/abridge_nopwa.min.js?h=ad4669e842ae3b93e75c" integrity="sha384-L4qoD2LcUENkFpAPfhagH/avO0pb3xrSkp/zN5WETOjsol+2Kjx8eolYercZ3Z5k"></script>
+  <noscript><link rel="stylesheet" href="https://blog.haskell.org/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://blog.haskell.org" title="The Haskell Programming Language&#x27;s blog"><img src="https://blog.haskell.org/images/haskell.svg" alt="Haskell" width="40" height="28" />Haskell Blog</a></h1></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https:&#x2F;&#x2F;haskell.org"> Haskell </a></li><li><a class="s110" href="https://blog.haskell.org/archive/"> Posts </a></li><li><a class="s110" href="https://blog.haskell.org/categories/"> Categories </a></li><li><a class="s110" href="https://blog.haskell.org/about/"> About </a></li></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.haskell.org/quick-tips-for-fast-iteration-in-haskell/">Quick tips for fast iteration in Haskell</a></h1>
+
+      <span class="s95">
+          <a href="https://blog.haskell.org/authors/tom-ellis/">Tom Ellis</a>, 
+          <a href="https://blog.haskell.org/authors/laurent-p-rene-de-cotret/">Laurent P. René de Cotret</a> <span class="rpad"></span> July 28, 2026 <span class="rpad"></span> [<a href="https://blog.haskell.org/categories/ecosystem/">Ecosystem</a>] #<a href="https://blog.haskell.org/tags/practices/">Practices</a>  #<a href="https://blog.haskell.org/tags/tooling/">Tooling</a> </span>
+
+    
+
+
+<h2 id="introduction">Introduction</h2>
+<p>The Haskell community has recently been discussing how to achieve fast
+iteration times when type checking and compiling Haskell code.  Fast
+feedback has always been important in software development, and we're
+seeing increased interest in the topic in recent months due to the
+rise in prominence of agentic coding.</p>
+<p>This article describes two techniques for fast iteration: using <code>ghci</code>
+to get fast feedback on the result of type checking an compilation,
+and speeding up builds with a careful choice of flags to <code>ghc</code> and
+<code>cabal</code>.  These techniques can be run on any existing codebase. They
+don't require you to restructure your code in any way, so you can get
+an instant improvement to your iteration times. Let's dive in!</p>
+<h2 id="ghci-based"><code>ghci</code>-based</h2>
+<p>GHCi is <a rel="noopener external" target="_blank" href="https://ghc.gitlab.haskell.org/ghc/doc/users_guide/ghci.html">GHC's interactive
+interpreter</a>
+(executable name <code>ghci</code>) which comes bundled with every installation
+of GHC.  It is a REPL ("<a rel="noopener external" target="_blank" href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">read-eval-print
+loop</a>"),
+which means you can type expressions into it and it will run them,
+printing the result.  <code>ghci</code> is a good starting point for fast
+feedback because it doesn't have to fully compile code, rather it
+generates executable bytecode and skips machine code generation,
+making it inherently faster than a normal build.</p>
+<p>There are a variety of ways to use <code>ghci</code>, from using barebones <code>ghci</code>
+itself directly to featureful wrappers.</p>
+<h3 id="ghci-itself"><code>ghci</code> itself</h3>
+<p>You can invoke <code>ghci</code> with a collection of source paths and it will
+compile and load those modules, for example:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>ghci src/Path/Module1.hs src/Path/Module2.hs</span></span></code></pre>
+<p>Or, perhaps more useful, use a <code>ghci</code> invocation wrapper that comes
+with your build tool, <code>cabal</code> or <code>stack</code>:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>stack ghci</span></span>
+<span class="giallo-l"><span>cabal repl</span></span></code></pre>
+<p>For a simple <code>ghci</code> workflow, make some changes to the files in your
+project, then navigate to your <code>ghci</code> window and type <code>:reload</code> (or
+<code>:r</code> for short). <code>ghci</code> will type check and compiles your changes,
+printing any errors or warnings from GHC.  Simple!</p>
+<p>You might feel that continually typing <code>:r</code> ought to be automated
+away. If so then check out the next section on <code>ghcid</code>.</p>
+<h3 id="ghcid"><code>ghcid</code></h3>
+<p><a rel="noopener external" target="_blank" href="https://github.com/ndmitchell/ghcid"><code>ghcid</code></a> is a wrapper around <code>ghci</code> that automates issuing <code>:r</code> when
+any file in your project changes, so its workflow is even easier than
+that of <code>ghci</code>: make some changes to the files in your project and
+then merely <em>look at</em> your <code>ghcid</code> window; <code>ghcid</code> will have detected
+your changes and the result of type check and compilation will appear
+automatically.</p>
+<h4 id="automatically-running-tests">Automatically running tests</h4>
+<p><code>ghcid</code> also allows you to get more quick feedback than just the
+result of type checking and compilation: you can run tests (or indeed
+any code) when your source files change.  There are two ways to do
+this:</p>
+<ol>
+<li>
+<p>Embed comments with expressions to be evaluated. For example add
+this comment to a source file to evaluate <code>expr</code> after loading:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>-- $&gt; expr</span></span></code></pre>
+<p>(Evaluating embedded comment expressions requires using the
+<code>--allow-eval</code> flag.)</p>
+</li>
+<li>
+<p>Pass an expression to the command line option <code>--test</code>, to run
+after the code is loaded successfully, for example:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>ghcid --test myTestFun</span></span></code></pre>
+<p>(By default the test expression will only run if the code is
+warning-free.  To run the test expression even if there are
+warnings, also pass <code>--warnings</code>.)</p>
+</li>
+</ol>
+<p>For more information on these features, see the
+<a rel="noopener external" target="_blank" href="https://github.com/ndmitchell/ghcid#evaluation">Evaluation</a> section
+of the <code>ghcid</code> README.</p>
+<h4 id="installation">Installation</h4>
+<p><code>ghcid</code> is a normal executable package on Hackage, so you can install
+it with, for example, <code>cabal install ghcid</code>.</p>
+<h3 id="ghcid-check"><code>ghcid-check</code></h3>
+<p>One limitation of <code>ghcid</code>'s default behaviour is that it is not
+<em>programatic</em>.  When you change source files, <code>ghcid</code>'s updates appear
+in the terminal in which it is already running.  That's no good if you
+want to give fast feedback to a coding agent; ideally the coding agent
+would run a command line executable to obtain the feedback.</p>
+<p>That's fine, because <code>ghcid</code> supports that too, with its <code>--reload</code> and
+<code>--outputfile</code> options. But setting that up is a little fiddly, so
+here's a simple <code>ghcid</code> wrapper <code>bash</code> script called <code>ghcid-check</code>:</p>
+<ul>
+<li><a rel="noopener external" target="_blank" href="https://github.com/tomjaguarpaw/ghcid-check/">https://github.com/tomjaguarpaw/ghcid-check/</a></li>
+</ul>
+<p><code>ghcid-check</code> is very basic and you might want to customize it to meet
+your own particular needs.</p>
+<p>Beyond <code>ghcid</code>, there are another couple of projects based on a
+similar idea that bring new features: <code>ghciwatch</code> and Tricorder.</p>
+<h3 id="ghciwatch"><code>ghciwatch</code></h3>
+<p><a rel="noopener external" target="_blank" href="https://github.com/mercurytechnologies/ghciwatch#ghciwatch"><code>ghciwatch</code></a>
+is an updated take on <code>ghcid</code>, from the Haskell developers at
+<a rel="noopener external" target="_blank" href="https://mercury.com/blog/topics/engineering-blog">Mercury</a>.  Compared
+to <code>ghcid</code> it has more sophisticated checking for new, removed and new
+modules, which sometimes trip up <code>ghcid</code>, as well as other new
+features.</p>
+<h3 id="tricorder">Tricorder</h3>
+<p><a rel="noopener external" target="_blank" href="https://github.com/tweag/tricorder#tricorder">Tricorder</a> is from
+Tweag and provides even more live status and diagnostic updates than
+<code>ghcid</code> or <code>ghciwatch</code>, including access to documentation and
+machine-readable output, and is designed from the ground up to be
+usable programatically by coding agents as well as interactively by
+humans.</p>
+<p>Check out the <a rel="noopener external" target="_blank" href="https://discourse.haskell.org/t/ann-tricorder-a-new-development-tool-for-haskell-and-llms/14208">announcement
+post</a>
+on the Haskell Discourse, which includes a short video of Tricorder
+functionality. <code>tricorder</code> is a normal executable package on Hackage,
+so you can install it with, for example, <code>cabal install tricorder</code></p>
+<h2 id="cabal-based"><code>cabal</code>-based</h2>
+<p>Let's now see how to speed up development builds using the <a rel="noopener external" target="_blank" href="https://www.haskell.org/cabal/"><code>cabal</code></a> build system. <code>cabal</code> has existed for a very long time, and you may be surprised by some of the things it offers!</p>
+<p>Speeding up development builds using <code>cabal</code> involves three broad optimizations:</p>
+<ul>
+<li>Tuning GHC's runtime options;</li>
+<li>Decreasing the amount of work <code>cabal</code> and GHC have to do by disabling compile-time optimizations;</li>
+<li>Increasing resource-sharing for more effective build parallelism.</li>
+</ul>
+<p>Before we describe the build optimizations above, it is worth understanding how cabal can be configured. Cabal uses <em>project</em> files to bundle configuration options related to multiple packages. The default configuration file, which is picked up automatically by <code>cabal</code>, is <code>cabal.project</code>. A typical <code>cabal.project</code> file for a project with three packages looks like:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>packages:</span></span>
+<span class="giallo-l"><span>    packageA</span></span>
+<span class="giallo-l"><span>    packageB</span></span>
+<span class="giallo-l"><span>    packageC</span></span></code></pre>
+<p>Recent versions of cabal allow project files to import other projects files. Therefore, without changing our default <code>cabal.project</code> file, we'll create a new configuration file specifically for development builds. Let's call it <code>cabal.fast.project</code>:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>import: cabal.project</span></span></code></pre>
+<p>As we go through build optimizations below, we'll append to our <code>cabal.fast.project</code>. Then, a fast build will specify to use <code>cabal.fast.project</code>:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">$</span><span style="color: #50A14F;"> cabal build all</span><span style="color: #986801;"> --project-file=cabal.fast.project</span></span></code></pre>
+<p>That way, we have an easy set-up for fast builds. We could have project files for profiling builds, release builds, etc.</p>
+<p>Running the above command, we got a baseline compilation time on a private, commercial Haskell codebase of more than 150 000 lines of Haskell code. As we go through build optimizations below, we will report on the speedups achieved from this baseline.</p>
+<h3 id="tuning-ghc-s-runtime-options">Tuning GHC's runtime options</h3>
+<p>GHC is a wonderful piece of technology. In some ways, it might as well be from the future. However, compiling Haskell programs into performant executables is hard work, and GHC is itself a Haskell program. This means we must tune its runtime system to squeeze out more performance.</p>
+<p>Take a look at the <a rel="noopener external" target="_blank" href="https://downloads.haskell.org/ghc/9.14.1/docs/users_guide/runtime_control.html">GHC 9.14.1 user guide's section on runtime control</a>. In our experience, however, simply tuning the garbage collection allocation size is a great first step if your computer is somewhat recent. In particular, increasing the allocation size from the default of 4MB to 64MB, 128MB, er even 256MB may dramatically increase compilation throughput!</p>
+<p>Thus, we update our <code>cabal.fast.project</code> project file to pass the appropriate flag to GHC. We'll use an allocation area of 64MB, but do experiment on your own workloads:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>import: cabal.project</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 1: tuning GHC</span></span>
+<span class="giallo-l"><span>program-options</span></span>
+<span class="giallo-l"><span>   ghc-options: +RTS -A64m -RTS</span></span></code></pre>
+<p>Building with the above project file, we achieve a speedup of approximately 10%. Not huge, but not marginal either. Big gains remain!</p>
+<h3 id="disabling-compile-time-optimizations">Disabling compile-time optimizations</h3>
+<p>Even if GHC is given the appropriate resources to do its job more effectively, it still does a lot of work by default, since GHC's default optimization level is <code>-O1</code>. This means that GHC performs <em>some</em> optimizations, which necessarily requires more compilation time.</p>
+<p>But this is merely the <em>default</em> behavior, and this article is all about speed. Instead, we can disable optimizations via the <code>optimization</code> option in cabal project files:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>import: cabal.project</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 1: tuning GHC</span></span>
+<span class="giallo-l"><span>program-options</span></span>
+<span class="giallo-l"><span>   ghc-options: +RTS -A64m -RTS</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 2: disable optimizations</span></span>
+<span class="giallo-l"><span>optimization: False</span></span></code></pre>
+<p>Note that this optimization flag only applies to your locally-built packages. Your third-party dependencies will be compiled using the default optimization level, <code>-O1</code>. This is generally considered acceptable since your third-party dependencies are rarely built, and it allows you to re-use them for other build profiles.</p>
+<p>At this stage, the codebase is building 2x faster!</p>
+<h3 id="better-resource-sharing-for-build-parallelism">Better resource-sharing for build parallelism</h3>
+<p>We've tuned GHC, and minimized the amount of work it needs to do. What is left is speed up the build across <em>multiple packages</em>.</p>
+<p><code>cabal</code> has an option for parallel builds called <code>--jobs</code>. You can either specify a number of capabilities to dedicate to the build (e.g. <code>--jobs=2</code>), or let <code>cabal</code> decide based on your hardware (using a bare <code>--jobs</code>). Higher is not <em>always</em> better; this depends on your build graph!</p>
+<p>In our experience, a number from 4 - 8 is appropriate to start with. We therefore update our <code>cabal.fast.project</code> project file:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>import cabal.project</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 1: tuning GHC</span></span>
+<span class="giallo-l"><span>program-options</span></span>
+<span class="giallo-l"><span>   ghc-options: +RTS -A64m -RTS</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 2: disable optimizations</span></span>
+<span class="giallo-l"><span>optimization: False</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 3: build parallelism</span></span>
+<span class="giallo-l"><span>jobs: 6</span></span></code></pre>
+<p>We can do even better! If you use <code>cabal</code> 3.12+ in combination with GHC 9.8+, you can take advantage of a new flag, <code>--semaphore</code>, which allows <code>cabal</code> to share resources better with GHC. While <a rel="noopener external" target="_blank" href="https://well-typed.com/blog/2023/08/reducing-haskell-parallel-build-times/">Well-Typed has a full breakdown of the why and how</a>, we summarize the result here. In short, if cabal can take advantage of multiple parallel invocations of GHC, it will do so; however, under the <code>--semaphore</code> option, if cabal <em>cannot</em> take advantage of all the cores it was allocated, it can tell GHC to use more cores. This can result in compilation time reductions of up to 30%!</p>
+<p>We update our <code>cabal.fast.project</code> one final time:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="plain"><span class="giallo-l"><span>import: cabal.project</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 1: tuning GHC</span></span>
+<span class="giallo-l"><span>program-options</span></span>
+<span class="giallo-l"><span>   ghc-options: +RTS -A64m -RTS</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 2: disable optimizations</span></span>
+<span class="giallo-l"><span>optimization: False</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>-- Step 3: build parallelism</span></span>
+<span class="giallo-l"><span>jobs: 6</span></span>
+<span class="giallo-l"><span>semaphore: True</span></span></code></pre>
+<p>Finally, our builds will be much faster:</p>
+<pre class="giallo" style="color: #383A42; background-color: #FAFAFA;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #4078F2;">$</span><span style="color: #50A14F;"> cabal build all</span><span style="color: #986801;"> --project-file=cabal.fast.project</span></span></code></pre>
+<p>Compared to our baseline, we achieve a cumulative build speedup of 2.6x!</p>
+<h2 id="going-further">Going further</h2>
+<p>If you're eager for even more build time improvements and are willing
+to spend time adjusting the structure of your codebase, we can point
+you where to look next: watch of Teo Camarasu's talk at the 2026
+Haskell Ecosystem Workshop, <a rel="noopener external" target="_blank" href="https://www.youtube.com/watch?v=nmE6aa_I5TU">Optimising for fast builds with
+GHC</a>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>We hope you enjoyed our brief tour of using <code>ghci</code> and <code>cabal</code> for
+fast iterative development in Haskell. If you have any comments or
+questions, or have your own tips and techniques you can share with the
+community, then please post on <a rel="noopener external" target="_blank" href="https://discourse.haskell.org/">the Haskell
+Discourse</a>.</p>
+<h2 id="references">References</h2>
+<p>Lots of people have already written up their experience of workflows
+that <code>ghci</code>, including for fast iterative development. You might want
+to check them out.</p>
+<ul>
+<li><a rel="noopener external" target="_blank" href="https://ghc.gitlab.haskell.org/ghc/doc/users_guide/ghci.html">Using GHCi — GHC Users Guide</a></li>
+<li><a rel="noopener external" target="_blank" href="https://haskellweekly.news/episode/6.html">Fast Feedback</a></li>
+<li><a rel="noopener external" target="_blank" href="https://academy.fpblock.com/blog/2018/08/haskell-development-workflows-4-ways/">Haskell Development Workflows (4 ways)</a></li>
+<li><a rel="noopener external" target="_blank" href="https://www.parsonsmatt.org/2018/05/19/ghcid_for_the_win.html">ghcid for the win!</a></li>
+<li><a rel="noopener external" target="_blank" href="https://functor.tokyo/blog/2019-04-07-ghcid-for-web-app-dev">ghcid for Web App Development</a></li>
+<li><a rel="noopener external" target="_blank" href="https://mercury.com/blog/announcing-ghciwatch">Announcing ghciwatch 1.0</a></li>
+<li><a rel="noopener external" target="_blank" href="https://jeancharles.quillet.org/posts/2024-09-04-Haskell-dev-workflow-with-ghcid-and-neovim.html">Haskell dev workflow with ghcid and neovim</a></li>
+<li><a rel="noopener external" target="_blank" href="https://www.well-typed.com/blog/2023/03/cabal-multi-unit/">Multiple Component support for cabal repl</a></li>
+<li><a rel="noopener external" target="_blank" href="https://github.com/alexfmpe/semantic-satiation/blob/main/posts/002-cheaper.md">Cheaper: producing a program with less developer time</a></li>
+<li><a rel="noopener external" target="_blank" href="https://hackage.haskell.org/package/rapid/docs/Rapid.html">Rapid</a></li>
+</ul>
+
+      <nav>
+        <div>
+          <a href="https://blog.haskell.org/revised-haskell-2010-report/">&#8249; A Revised Haskell 2010 Language Report</a>
+        </div>
+        <div>
+          <a href="https://blog.haskell.org/enterprise-haskell-at-h-e-b/"> Enterprise Haskell at H-E-B &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.haskell.org/atom.xml" target="_blank" title="The Haskell Programming Language&#x27;s blog Atom Feed"><i type="Button" class="svg rss" title="The Haskell Programming Language&#x27;s blog Atom Feed"></i></a><a href="https://fosstodon.org/@haskell" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/haskellOrg/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://github.com/haskell&#x2F;blog.haskell.org/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s80"> &copy; <span id="year">2026</span> The Haskell Programming Language's blog</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>
