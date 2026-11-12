@@ -38,6 +38,7 @@ external_links_target_blank = true # rel="noopener"
 external_links_no_follow = false   # rel="nofollow"
 external_links_no_referrer = false # rel="noreferrer"
 smart_punctuation = false          # `...` to `…`, `"quote"` to `“curly”` etc
+insert_anchor_links = "heading"
 
 [markdown.highlighting]
 # theme = "material-theme-lighter"
