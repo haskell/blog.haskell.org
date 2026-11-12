@@ -1,26 +1,23 @@
-{% extends "base.html" %}
-{%- set uglyurls = config.extra.uglyurls | default(value=false) -%}
-{%- if config.extra.offline %}{% set uglyurls = true %}{% endif %}
-
-{%- block seo %}
-  {{- super() }}
-  {%- set title = term.name %}
-
-  {%- if config.title %}
-    {%- set title_addition = title_separator ~ config.title %}
-  {%- else %}
-    {%- set title_addition = "" %}
-  {%- endif %}
-
-  {%- set description = config.description %}
-
-  {{- macros_seo::seo(config=config, title=title, title_addition=title_addition, description=description, is_home=true) }}
-{%- endblock seo %}
-
+{%- extends "base.html" -%}
+{%- block seo -%}
+  {{- super() -}}
+  {%- set title = term.name -%}
+  {%- if config.title -%}
+    {%- set title_addition = title_separator ~ config.title -%}
+  {%- else -%}
+    {%- set title_addition = "" -%}
+  {%- endif -%}
+  {%- set description = config.description -%}
+  {{<seo config={config}  title={title}  title_addition={title_addition}  description={description or ""}  page_url={current_url}  taxonomy_kind={taxonomy.name}  current_lang={lang}  taxonomy_term={term.name}  taxonomy_current_permalink={term.permalink}  paginator_index={paginator.current_index if paginator else 1} />}}
+{%- endblock seo -%}
 {%- block content %}
+    {%- set uglyurls = (config.extra.uglyurls or config.extra.offline or false) -%}
     <div>
       <h2>{{ term.name }}</h2>
-      {%- for year, posts in term.pages | group_by(attribute="year") %}
+      {%- set grouped = term.pages | group_by(attribute="year") -%}
+      {%- set years = grouped | keys | sort | reverse -%}
+      {%- for year in years %}
+      {%- set posts = grouped[year] -%}
       <h3>{{ year }}</h3>
       {%- for page in posts %}
       <p><a href="{{ page.permalink | safe }}{%- if uglyurls %}index.html{%- endif %}">{{ page.title }}</a> - <time datetime="{{ page.date }}">{{ page.date | date(format="%F") }}</time></p>
