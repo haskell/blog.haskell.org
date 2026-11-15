@@ -11,7 +11,7 @@ Audio for streaming platforms is delivered at a loudness target, usually around 
 
 <!-- more -->
 
-I edit video for a living, at [Mark Studios](https://www.markstudios.com/), and checking loudness before delivery is a daily job. The interesting part here is the testing: a property test caught my own wrong assumption about FFmpeg in its first run. Everything below runs with GHC 9.14.1, cabal 3.16 and FFmpeg 5.1.
+I edit video for a living, and checking loudness before delivery is a daily job. The interesting part here is the testing: a property test caught my own wrong assumption about FFmpeg in its first run. Everything below runs with GHC 9.14.1, cabal 3.16 and FFmpeg 5.1.
 
 ## What FFmpeg prints
 
